@@ -118,7 +118,7 @@ class OwnerReportListScreen extends Component {
             onPress={() => this.setState(INITIAL_LAYOUT)}
           />
           
-          <Text style={{ textAlign: 'center', paddingVertical: 10, color: '#1B73B4', fontSize: 18, fontWeight: '500' }}>Reportd Details</Text>
+          <Text style={{ textAlign: 'center', paddingVertical: 10, color: '#1B73B4', fontSize: 18, fontWeight: '500' }}>Report Details</Text>
           <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 20, paddingVertical: 10 }}>
             <Text style={{ fontWeight: '500' }}>Ticket #</Text>
             <Text>{code}</Text>
