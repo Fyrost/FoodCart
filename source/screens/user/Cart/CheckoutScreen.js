@@ -1,0 +1,395 @@
+import React, { Component } from "react";
+import { View, SectionList, ActivityIndicator } from "react-native";
+import {
+  Button,
+  Text,
+  Input,
+  Overlay,
+  Icon,
+  Divider,
+  Image
+} from "react-native-elements";
+import { NavigationEvents } from "react-navigation";
+import { getCheckout, postCheckout, errorHandler } from "../../../actions";
+import ActivityLoading from "../../../components/ActivityLoading";
+
+formatCart = cart => {
+  return cart.map(section => {
+    return {
+      name: section.name,
+      flatRate: section.flat_rate,
+      sub_eta: section.sub_eta,
+      total: section.total,
+      data: section.menu
+    };
+  });
+};
+
+class CheckoutScreen extends Component {
+  state = {
+    checkout: [],
+    grandTotal: "",
+    totalCookTime: "",
+    totalFlatRate: "",
+    loading: false,
+    overlayLoading: false,
+    error: "",
+    overLayError: "",
+    changeFor: "",
+    orderOverlayVisible: false
+  };
+
+  componentDidMount() {
+    this.props.navigation.setParams({
+      orderOverlayVisible: this.handleOverlay
+    });
+  }
+  makeRemoteRequest = () => {
+    this.setState({ loading: true });
+    getCheckout()
+      .then(res => {
+        if (res.data.success) {
+          const {
+            data,
+            grand_total,
+            total_cooking_time,
+            total_flat_rate
+          } = res.data;
+          this.setState({
+            loading: false,
+            checkout: formatCart(data),
+            grandTotal: grand_total,
+            totalCookTime: total_cooking_time,
+            totalFlatRate: total_flat_rate
+          });
+        } else {
+          this.setState({
+            loading: false,
+            error: res.data.message
+          });
+        }
+      })
+      .catch(err =>
+        this.setState({
+          error: errorHandler(err),
+          loading: false
+        })
+      );
+  };
+
+  handleOverlay = () => {
+    this.setState({
+      orderOverlayVisible: true
+    });
+  };
+
+  handleConfirm = () => {
+    this.setState({ overlayLoading: true, overLayError: "" });
+    postCheckout(this.state.changeFor)
+      .then(res => {
+        if (res.data.success) {
+          alert(res.data.message);
+          this.props.navigation.pop(2);
+        } else {
+          this.setState({
+            overlayLoading: false,
+            overLayError: res.data.errors.change[0]
+          });
+        }
+      })
+      .catch(err =>
+        this.setState({
+          overlayLoading: false,
+          overLayError: errorHandler(err)
+        })
+      );
+  };
+
+  renderOrderOverlay = () => (
+    <Overlay
+      isVisible={this.state.orderOverlayVisible}
+      height={"auto"}
+      overlayContainerStyle={{ padding: 100 }}
+      borderRadius={0}
+      windowBackgroundColor={"rgba(0, 0, 0, 0.8)"}
+      onBackdropPress={() => this.setState({ orderOverlayVisible: false })}
+    >
+      <View>
+        <Icon
+          raised
+          reverse
+          name={"times"}
+          type={"font-awesome"}
+          color={"#1B73B4"}
+          size={18}
+          underlayColor={"black"}
+          containerStyle={{
+            zIndex: 99999,
+            position: "absolute",
+            right: -32,
+            top: -30
+          }}
+          onPress={() => this.setState({ orderOverlayVisible: false })}
+        />
+        <View>
+          <Text style={{ fontSize: 20, fontWeight: "500" }}>Confirm Order</Text>
+          <Input
+            placeholder="Change for"
+            value={this.state.changeFor}
+            onChangeText={changeFor => this.setState({ changeFor })}
+          />
+          <Text containerStyle={{ height: 20 }} style={{ color: "red" }}>
+            {this.state.overLayError}
+          </Text>
+          <Button
+            title="Confirm"
+            onPress={this.handleConfirm}
+            loading={this.state.overlayLoading}
+          />
+        </View>
+      </View>
+    </Overlay>
+  );
+
+  renderSectionHeader = ({ section: { name } }) => (
+    <View
+      style={{
+        justifyContent: "center",
+        backgroundColor: "#1B73B4",
+        paddingHorizontal: 20,
+        paddingVertical: 10
+      }}
+    >
+      <Text style={{ fontWeight: "400", fontSize: 18, color: "white" }}>
+        {name}
+      </Text>
+    </View>
+  );
+
+  renderSectionFooter = ({
+    section: { name, flatRate, eta, sub_eta, total }
+  }) => (
+    <View
+      style={{
+        justifyContent: "center",
+        backgroundColor: "#5999C8",
+        paddingHorizontal: 20,
+        paddingVertical: 10,
+        marginBottom: 3
+      }}
+    >
+      <View style={{ flexDirection: "row", alignItems: "center" }}>
+        <Text style={{ color: "white" }}>Flat Rate: </Text>
+        <Text style={{ color: "white" }}>{flatRate} PHP</Text>
+      </View>
+      <View style={{ flexDirection: "row", alignItems: "center" }}>
+        <Text style={{ color: "white" }}>ETA: </Text>
+        <Text style={{ color: "white" }}> {sub_eta} MINS </Text>
+        <Icon name="ios-timer" type="ionicon" color={"white"} />
+      </View>
+      <Divider style={{ backgroundColor: "white" }} />
+      <View style={{ flexDirection: "row", alignItems: "center" }}>
+        <Text style={{ color: "white" }}>Total: </Text>
+        <Text style={{ color: "white" }}>₱ {total} </Text>
+      </View>
+    </View>
+  );
+
+  renderItem = ({
+    item: { name, price, cooking_time, slug, image_name, quantity, id },
+    index
+  }) => (
+    <View style={styles.mainRow}>
+      <View
+        style={{
+          flex: 3,
+          flexDirection: "row",
+          justifyContent: "flex-start",
+          alignItems: "center",
+          paddingLeft: 20
+        }}
+      >
+        {image_name ? (
+          <Image
+            source={{
+              uri: `http://pinoyfoodcart.com/image/menu/${image_name}`
+            }}
+            style={{ height: 100, width: 100, resizeMode: "cover" }}
+          />
+        ) : null}
+        <View style={{ paddingHorizontal: 10 }}>
+          <Text style={{ fontSize: 16, fontWeight: "600" }}>{name}</Text>
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "space-between"
+            }}
+          >
+            <Text>{price} PHP </Text>
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignItems: "center"
+              }}
+            >
+              <Text>{cooking_time} MINS</Text>
+            </View>
+          </View>
+        </View>
+      </View>
+
+      <View
+        style={{
+          flex: 1,
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent: "flex-end",
+          paddingHorizontal: 10,
+          marginLeft: 20,
+          paddingRight: 10
+        }}
+      >
+        <View
+          style={{
+            flex: 1,
+            height: 35,
+            width: 10,
+            justifyContent: "center",
+            alignItems: "center",
+            borderColor: "#11CDEF",
+            borderBottomWidth: 1
+          }}
+        >
+          <Text style={{ fontSize: 20 }}>{quantity}</Text>
+        </View>
+      </View>
+    </View>
+  );
+
+  renderFooter = () =>
+    this.state.loading ? <ActivityIndicator size="large" /> : null;
+
+  renderEmpty = () =>
+    !this.state.loading ? (
+      <View style={{ marginTop: 50, alignItems: "center" }}>
+        <Text style={{ fontWeight: "600", fontSize: 18 }}>Cart is Empty!</Text>
+      </View>
+    ) : null;
+
+  render() {
+    const {
+      checkout,
+      grandTotal,
+      totalCookTime,
+      totalFlatRate,
+      error,
+      loading
+    } = this.state;
+    const {
+      makeRemoteRequest,
+      renderSectionHeader,
+      renderSectionFooter,
+      renderItem,
+      renderFooter,
+      renderEmpty,
+      renderOrderOverlay
+    } = this;
+    if (loading) return <ActivityLoading type={"list"} size={"large"} />;
+    else if (error)
+      return (
+        <View style={{ marginTop: 50, alignItems: "center" }}>
+          <Text style={{ fontWeight: "600", fontSize: 18, color: "red" }}>
+            {String(error)}
+          </Text>
+        </View>
+      );
+    return (
+      <View style={{ flex: 1 }}>
+        <NavigationEvents onWillFocus={makeRemoteRequest} />
+        {renderOrderOverlay()}
+        <View
+          style={{
+            flex: 1,
+            borderColor: "gray",
+            borderBottomWidth: 1,
+            paddingHorizontal: 10,
+            justifyContent: "center"
+          }}
+        >
+          <Text style={{ fontSize: 18, fontWeight: "500" }}>Your Cart</Text>
+        </View>
+        <View style={{ flex: 8, backgroundColor: "#171a29" }}>
+          <SectionList
+            sections={checkout}
+            keyExtractor={(item, index) => item + index}
+            renderSectionHeader={renderSectionHeader}
+            renderSectionFooter={renderSectionFooter}
+            renderItem={renderItem}
+            ListFooterComponent={renderFooter}
+            ListEmptyComponent={renderEmpty}
+          />
+        </View>
+        <View
+          style={{
+            flex: 2,
+            borderColor: "gray",
+            borderTopWidth: 1,
+            paddingHorizontal: 10,
+            justifyContent: "center"
+          }}
+        >
+          <Text style={{ fontSize: 14, fontWeight: "500" }}>
+            Billing Summary
+          </Text>
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "space-between"
+            }}
+          >
+            <Text>Estimated Time: </Text>
+            <Text>{totalCookTime} MINS</Text>
+          </View>
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "space-between"
+            }}
+          >
+            <Text>Total Flat Rate: </Text>
+            <Text>₱ {totalFlatRate}</Text>
+          </View>
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "space-between"
+            }}
+          >
+            <Text>Grand Total: </Text>
+            <Text>₱ {grandTotal}</Text>
+          </View>
+        </View>
+      </View>
+    );
+  }
+}
+
+export default CheckoutScreen;
+
+const styles = {
+  mainRow: {
+    flexDirection: "row",
+    flexGrow: 1,
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingVertical: 10,
+    backgroundColor: "white",
+    borderBottomColor: "lightgrey",
+    borderBottomWidth: 1
+  }
+};
