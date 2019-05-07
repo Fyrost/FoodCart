@@ -89,7 +89,7 @@ const styles = {
     flexDirection: "row"
   },
   drawerHeader: {
-    flex: 1.5,
+    flex: 3,
     backgroundColor: "#11CDEF",
     justifyContent: "center",
     alignItems: "center"
@@ -117,7 +117,7 @@ const styles = {
   },
 
   drawerFooter: {
-    flex: 1/2,
+    flex: 1,
     justifyContent: "space-evenly",
     paddingLeft: 20
   },
