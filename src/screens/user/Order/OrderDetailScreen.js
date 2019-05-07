@@ -7,11 +7,13 @@ const formatOrder = order => {
   return order.map(section => {
     return {
       name: section.restaurant.name,
+      contact_number: section.restaurant.contact_number,
       slug: section.restaurant.slug,
       flatRate: section.restaurant.flat_rate,
       deliveryTime: section.restaurant.eta,
       estimatedTime: section.cooking_time_total,
       total: section.total,
+      payment: section.payment,
       data: section.itemlist
     };
   });
@@ -60,10 +62,12 @@ class OrderDetailScreen extends Component {
       );
   };
 
-  renderSectionHeader = ({ section: { name } }) => (
+  renderSectionHeader = ({ section: { name, contact_number } }) => (
     <View
       style={{
-        justifyContent: "center",
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent:'space-between',
         backgroundColor: "#1B73B4",
         paddingHorizontal: 20,
         paddingVertical: 10
@@ -72,12 +76,20 @@ class OrderDetailScreen extends Component {
       <Text style={{ fontWeight: "400", fontSize: 18, color: "white" }}>
         {name}
       </Text>
+      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+      <Text style={{ fontWeight: "400", fontSize: 18, color: "white" }}>
+        {contact_number} 
+      </Text>
+      <Icon name={'phone'} type={'font-awesome'} color={'white'} />
+      </View>
     </View>
   );
 
   renderSectionFooter = ({
-    section: { name, flatRate, estimatedTime, total }
-  }) => (
+    section: { payment, flatRate, deliveryTime, estimatedTime, total,  }
+  }) => {
+    const change = Number(payment) - Number(total)
+    return(
       <View
         style={{
           justifyContent: "center",
@@ -91,77 +103,57 @@ class OrderDetailScreen extends Component {
           <Text style={{ color: "white" }}>Flat Rate: </Text>
           <Text style={{ color: "white" }}>{flatRate} PHP</Text>
         </View>
+
         <View style={{ flexDirection: "row", alignItems: "center" }}>
-          <Text style={{ color: "white" }}>ETA: </Text>
+          <Text style={{ color: "white" }}>Delivery Time: </Text>
+          <Text style={{ color: "white" }}> {deliveryTime} MINS </Text>
+          <Icon name="ios-timer" type="ionicon" color={"white"} />
+        </View>
+
+        <View style={{ flexDirection: "row", alignItems: "center" }}>
+          <Text style={{ color: "white" }}>Estimated Time: </Text>
           <Text style={{ color: "white" }}> {estimatedTime} MINS </Text>
           <Icon name="ios-timer" type="ionicon" color={"white"} />
         </View>
+        
         <Divider style={{ backgroundColor: "white" }} />
-        <View style={{ flexDirection: "row", alignItems: "center" }}>
+        <View style={{ flexDirection: "row", justifyContent:'flex-end', alignItems: "center" }}>
           <Text style={{ color: "white" }}>Total: </Text>
           <Text style={{ color: "white" }}>₱ {total} </Text>
         </View>
+        
+        <View style={{ flexDirection: "row", justifyContent:'flex-end', alignItems: "center" }}>
+          <Text style={{ color: "white" }}>Payment: </Text>
+          <Text style={{ color: "white" }}>₱ {payment} </Text>
+        </View>
+
+        <View style={{ flexDirection: "row", justifyContent:'flex-end', alignItems: "center" }}>
+          <Text style={{ color: "white" }}>Change: </Text>
+          <Text style={{ color: "white" }}>₱ {change} </Text>
+        </View>
       </View>
-    );
+    )
+  }
+      
+    
 
   renderItem = ({ item: { name, price, cooking_time, quantity }, index }) => (
     <View style={styles.mainRow}>
-      <View
-        style={{
-          flex: 3,
-          flexDirection: "row",
-          justifyContent: "flex-start",
-          alignItems: "center",
-          paddingLeft: 20
-        }}
-      >
-        <View style={{ paddingHorizontal: 10 }}>
-          <Text style={{ fontSize: 16, fontWeight: "600" }}>{name}</Text>
-          <View
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-              justifyContent: "space-between",
-              paddingHorizontal: 10
-            }}
-          >
-            <Text>{price} PHP </Text>
-            <View
-              style={{
-                flexDirection: "row",
-                justifyContent: "space-between",
-                alignItems: "center",
-                paddingHorizontal: 10
-              }}
-            >
-              <Text>{cooking_time} MINS</Text>
-            </View>
-          </View>
+      
+      <View style={{ flex: 3, paddingHorizontal: 10 }}>
+        <Text style={{ fontSize: 16, fontWeight: "500" }}>{name}</Text>
+        <View style={{ flexDirection: "row", alignItems: "center", paddingHorizontal: 10 }}>
+          <Text>Price: </Text>
+          <Text>₱ {price}.00</Text>
+        </View>
+        <View style={{ flexDirection: "row", alignItems: "center", paddingHorizontal: 10 }}>
+          <Text>Cooking Time: </Text>
+          <Text>{cooking_time} mins</Text>
         </View>
       </View>
 
-      <View
-        style={{
-          flex: 1,
-          flexDirection: "row",
-          alignItems: "center",
-          justifyContent: "flex-end",
-          paddingHorizontal: 10,
-          marginLeft: 20,
-          paddingRight: 10
-        }}
-      >
-        <View
-          style={{
-            flex: 1,
-            height: 35,
-            width: 10,
-            justifyContent: "center",
-            alignItems: "center",
-            borderColor: "#11CDEF",
-            borderBottomWidth: 1
-          }}
-        >
+      <View style={{ flex: 1, flexDirection: "row", alignItems: "center", justifyContent: "flex-end", paddingHorizontal: 10, marginLeft: 20, paddingRight: 10 }}>
+        <View style={{ flex: 1, height: 35, width: 'auto', justifyContent: "center", alignItems: "center", borderColor: "#11CDEF", borderBottomWidth: 1 }}>
           <Text style={{ fontSize: 20 }}>{quantity}</Text>
         </View>
       </View>
@@ -214,7 +206,7 @@ class OrderDetailScreen extends Component {
             </Text>
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               <Text style={{ fontSize: 16, fontWeight: '500' }}>Status: </Text>
-              <Text style={{ fontSize: 16, fontWeight: 'normal', color: subtitle.color }}>{subtitle.text}</Text>
+              <Text style={{ fontSize: 16, fontWeight: '500', color: subtitle.color }}>{subtitle.text}</Text>
             </View>
           </View>
         )}
@@ -230,50 +222,28 @@ class OrderDetailScreen extends Component {
           />
         </View>
 
-        <View
-          style={{
-            flex: 4,
-            borderColor: "gray",
-            borderTopWidth: 1,
-            justifyContent: "center"
-          }}
-        >
-          <View
-            style={{
-              alignItems: "center",
-              paddingVertical: 10,
-              backgroundColor: "#5999C8"
-            }}
-          >
+        <View style={{ flex: 4, borderColor: "gray", borderTopWidth: 1, justifyContent: "center" }}>
+          <View style={{ alignItems: "center", paddingVertical: 10, backgroundColor: "#5999C8" }}>
             <Text style={{ color: "white", fontSize: 16, fontWeight: "500" }}>
               Billing Information
             </Text>
           </View>
+
           <ScrollView>
-            <View
-              style={{
-                justifyContent: "space-evenly",
-                paddingHorizontal: 10,
-                paddingVertical: 5,
-                borderColor: "gray",
-                borderBottomWidth: 0.8
-              }}
-            >
-              <Text style={{ fontWeight: "500" }}>Grand Total: </Text>
-              <Text style={{ fontWeight: "normal" }}>₱ {data.total}</Text>
+            
+            <View style={{ justifyContent: "space-evenly", paddingHorizontal: 10, paddingVertical: 5, borderColor: "gray", borderBottomWidth: 0.8 }}>
+              <Text style={{ fontWeight: "500" }}>Date Ordered:</Text>
+              <Text style={{ fontWeight: "normal" }}>{data.date}</Text>
             </View>
 
-            <View
-              style={{
-                justifyContent: "space-evenly",
-                paddingHorizontal: 10,
-                paddingVertical: 5,
-                borderColor: "gray",
-                borderBottomWidth: 0.8
-              }}
-            >
-              <Text style={{ fontWeight: "500" }}>Your Payment: </Text>
-              <Text style={{ fontWeight: "normal" }}>₱ {data.payment}</Text>
+            <View style={{ justifyContent: "space-evenly", paddingHorizontal: 10, paddingVertical: 5, borderColor: "gray", borderBottomWidth: 0.8 }}>
+              <Text style={{ fontWeight: "500" }}>Estimated Time: </Text>
+              <Text style={{ fontWeight: "normal" }}>{data.cooking_time_total}</Text>
+            </View>
+
+            <View style={{ justifyContent: "space-evenly", paddingHorizontal: 10, paddingVertical: 5, borderColor: "gray", borderBottomWidth: 0.8 }}>
+              <Text style={{ fontWeight: "500" }}>Grand Total: </Text>
+              <Text style={{ fontWeight: "normal" }}>₱ {data.total}</Text>
             </View>
 
             <View style={{ height: 10 }} />

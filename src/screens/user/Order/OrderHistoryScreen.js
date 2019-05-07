@@ -49,10 +49,19 @@ class OrderHistoryScreen extends Component {
       () => this.makeRemoteRequest()
     );
   };
-  renderItem = ({ item }) => (
-    <ListItem
+  renderItem = ({ item }) => {
+    const subtitle
+    = item.status==="0" ?  {text:"Pending", color: '#9DA0A3'}  
+    : item.status==="1" ?  {text:"Processing", color: '#11CDEF'}
+    : item.status==="2" ?  {text:"Delivering", color: '#f1c40f'}
+    : item.status==="3" ?  {text:"Completed", color: '#00CC66'}
+    : item.status==="4" ?  {text:"Rejected",  color: '#EF1B17'}
+    : {text:"Cancelled", color: 'orange'}
+    return(
+      <ListItem
       title={"Order # " + item.code}
-      rightTitle={item.status}
+      rightTitle={subtitle.text}
+      rightTitleStyle={{ fontWeight: '500', color:subtitle.color }}
       subtitle={item.date}
       chevron={true}
       bottomDivider
@@ -60,7 +69,8 @@ class OrderHistoryScreen extends Component {
         this.props.navigation.navigate("OrderView", { code: item.code })
       }
     />
-  );
+    )
+  }
 
   render() {
     const { order, loading, refreshing } = this.state;
