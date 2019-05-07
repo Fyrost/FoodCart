@@ -22,7 +22,7 @@ export const OWNER_CATEGORY = `owner/category`;
 export const OWNER_CATEGORY_SELECT = id => `owner/category/${id}`;
 export const OWNER_CATEGORY_DELETED = `owner/get/deletedCategory`;
 export const OWNER_CATEGORY_RESTORE = id => `owner/category/${id}/restore`;
-export const OWNER_ORDER = `owner/order`;
+export const OWNER_ORDER = status => `owner/order?status=${status}`;
 export const OWNER_ORDER_SELECT = id => `owner/order/${id}`;
 export const OWNER_ORDER_ACCEPT = id => `owner/order/${id}/accept`;
 export const OWNER_ORDER_REJECT = id => `owner/order/${id}/reject`;

@@ -262,9 +262,9 @@ export const postRestoInfo = (
   });
 };
 
-export const getOwnerOrder = () => {
+export const getOwnerOrder = status => {
   return Axios({
-    url: API.OWNER_ORDER,
+    url: API.OWNER_ORDER(status),
     method: "get"
   });
 };

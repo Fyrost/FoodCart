@@ -63,10 +63,7 @@ TagRejected.navigationOptions = {
 
 const TagNavigator = createBottomTabNavigator(
   { TagPending, TagApproved, TagRejected },
-  {
-    tabBarOptions: TabStyles,
-    animationEnabled: true
-  }
+  { tabBarOptions: TabStyles, animationEnabled: true }
 );
 
 export { TagNavigator };
