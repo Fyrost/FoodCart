@@ -47,7 +47,7 @@ export const ADMIN_PARTNERSHIP_APPROVE = id => `admin/partnership/${id}/accept`;
 export const ADMIN_PARTNERSHIP_REJECT = id => `admin/partnership/${id}/reject`;
 export const ADMIN_RESTAURANT = `admin/restaurant`;
 export const ADMIN_RESTAURANT_SELECT = id => `admin/restaurant/${id}`;
-export const ADMIN_MENU = `admin/menu`;
+export const ADMIN_MENU = tag => `admin/menu?tag=${tag}`;
 export const ADMIN_MENU_SELECT = id => `admin/menu/${id}`;
 export const ADMIN_CUSTOMER = `admin/customer`;
 export const ADMIN_CUSTOMER_SELECT = id => `admin/customer/${id}`;

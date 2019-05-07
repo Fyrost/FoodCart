@@ -439,9 +439,9 @@ export const getAdminRestoDetail = id => {
   });
 };
 
-export const getAdminMenu = () => {
+export const getAdminMenu = tag => {
   return Axios({
-    url: API.ADMIN_MENU,
+    url: API.ADMIN_MENU(tag ? tag : ""),
     method: "get"
   });
 };

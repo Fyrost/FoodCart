@@ -6,6 +6,7 @@ import { getAdminRestoDetail, errorHandler } from "../../../actions";
 class AdminRestoViewScreen extends Component {
   state = {
     data: {},
+    menu:[],
     loading: false,
     error: ""
   };
@@ -17,12 +18,13 @@ class AdminRestoViewScreen extends Component {
         if (res.data.success) {
           this.setState({
             loading: false,
-            data: res.data.data.restaurant
+            data: res.data.data.restaurant,
+            menu: res.data.menu
           });
         } else {
           this.setState({
             loading: false,
-            errpr: res.data.message
+            error: res.data.message
           });
         }
       })
@@ -74,7 +76,7 @@ class AdminRestoViewScreen extends Component {
           </View>
 
           <Divider />
-
+          {/* BASIC INFORMATION */}
           <View style={styles.restoTitle}>
             <Text style={styles.restoSubtitle}>Basic Information</Text>
 
@@ -99,7 +101,7 @@ class AdminRestoViewScreen extends Component {
           </View>
 
           <Divider />
-
+          {/* RESTAURANT SETTING */}
           <View style={styles.restoTitle}>
             <Text style={styles.restoSubtitle}>Restaurant Settings</Text>
 
@@ -116,6 +118,16 @@ class AdminRestoViewScreen extends Component {
             <View style={styles.cardRowContent}>
               <Text style={styles.restoSubtitleText}>Open Time:</Text>
               <Text style={styles.restoText}>{time}</Text>
+            </View>
+          </View>
+
+          <Divider />
+          {/* MENU LIST */}
+          <View style={styles.restoTitle}>
+            <Text style={styles.restoSubtitle}>Menu List</Text>
+
+            <View style={styles.cardRowContent}>
+            
             </View>
           </View>
         </Card>

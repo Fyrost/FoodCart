@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { View, ActivityIndicator, Alert } from "react-native";
-import { ListItem, Text } from "react-native-elements";
+import { Button, ListItem, Text, Overlay } from "react-native-elements";
 import { NavigationEvents } from "react-navigation";
 import _ from "lodash";
 
@@ -15,6 +15,13 @@ import List from "../../../components/List";
 class TagPendingScreen extends Component {
   state = {
     data: [],
+    detail: {
+      name: "",
+      slug: "",
+      usedBy: "",
+      status: ""
+    },
+    isDetailVisible: false,
     refreshing: false,
     loading: false
   };
@@ -55,7 +62,7 @@ class TagPendingScreen extends Component {
       () => this.makeRemoteRequest()
     );
   };
-  
+
   handleApprove = id => {
     this.setState({ loading: true });
     approveTag(id)
@@ -104,31 +111,85 @@ class TagPendingScreen extends Component {
       );
   };
 
+  renderTagDetail = () => {
+    return (
+      <Overlay
+        isVisible={this.state.isDetailVisible}
+        width="auto"
+        height="auto"
+        onBackdropPress={() => this.setState({ isDetailVisible: false })}
+      >
+        <View>
+          <Text>{this.state.detail.name}</Text>
+          <Text>{this.state.detail.slug}</Text>
+          <Text>{this.state.detail.usedBy}</Text>
+          <Text>{this.state.detail.status}</Text>
+          <Button
+            title={`Approve`}
+            onPress={() => {
+              this.setState({ isDetailVisible: false });
+              this.props.navigation.navigate("MenuList", {
+                tag: this.state.detail.slug
+              });
+            }}
+          />
+          <Button
+            title={`Reject`}
+            onPress={() => {
+              this.setState({ isDetailVisible: false });
+              this.props.navigation.navigate("MenuList", {
+                tag: this.state.detail.slug
+              });
+            }}
+          />
+          <Button
+            title={`View Item/s`}
+            onPress={() => {
+              this.setState({ isDetailVisible: false });
+              this.props.navigation.navigate("MenuList", {
+                tag: this.state.detail.slug
+              });
+            }}
+          />
+        </View>
+      </Overlay>
+    );
+  };
   renderItem = ({ item }) => (
     <ListItem
       title={item.name}
       titleStyle={{ fontWeight: "500", fontSize: 18, color: "#1B73B4" }}
       subtitle={"Sent: " + item.created_at}
       chevron={true}
-      onPress={() =>
-        Alert.alert("Manage Tag", "Approve or Reject " + item.name + "?", [
-          {
-            text: "Cancel",
-            style: "cancel"
-          },
-          {
-            text: "Reject",
-            onPress: () => {
-              this.handleReject(item.id);
+      onPress={
+        () =>
+          this.setState({
+            isDetailVisible: true,
+            detail: {
+              name: item.name,
+              slug: item.slug,
+              usedBy: `${item.used_by} item/s`,
+              status: item.status
             }
-          },
-          {
-            text: "Approve",
-            onPress: () => {
-              this.handleApprove(item.id);
-            }
-          }
-        ])
+          })
+        // Alert.alert("Manage Tag", "Approve or Reject " + item.name + "?", [
+        //   {
+        //     text: "Cancel",
+        //     style: "cancel"
+        //   },
+        //   {
+        //     text: "Reject",
+        //     onPress: () => {
+        //       this.handleReject(item.id);
+        //     }
+        //   },
+        //   {
+        //     text: "Approve",
+        //     onPress: () => {
+        //       this.handleApprove(item.id);
+        //     }
+        //   }
+        // ])
       }
       bottomDivider
     />
@@ -136,11 +197,17 @@ class TagPendingScreen extends Component {
 
   render() {
     const { data, error, loading, refreshing } = this.state;
-    const { makeRemoteRequest, renderItem, handleRefresh } = this;
+    const {
+      makeRemoteRequest,
+      renderItem,
+      handleRefresh,
+      renderTagDetail
+    } = this;
     if (error) return <Text>{error}</Text>;
     return (
       <View>
         <NavigationEvents onDidFocus={makeRemoteRequest} />
+        {renderTagDetail()}
         <List
           data={data}
           renderItem={renderItem}
