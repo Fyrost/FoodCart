@@ -37,7 +37,8 @@ class OrderViewScreen extends Component {
             status,
             total,
             cooking_time_total,
-            order: { code, created_at, payment },
+            payment,
+            order: { code, created_at, },
             customer: { fname, lname, address, contact_number },
             itemlist
           } = res.data.data;
@@ -53,7 +54,7 @@ class OrderViewScreen extends Component {
               : status === "4"
               ? "rejected"
               : "cancelled";
-
+          console.log(res.data)
           this.setState({
             loading: false,
             orderDetail: {
@@ -272,6 +273,7 @@ class OrderViewScreen extends Component {
     if (error) return <Text>{error}</Text>;
     return (
       <View style={{ flex: 1 }}>
+        {console.log(this.state.paymentDetail)}
         <NavigationEvents onWillFocus={this.makeRemoteRequest} />
         <Loading loading={this.state.screenLoading} opacity={0.5} size={50} />
         <View
