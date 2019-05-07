@@ -111,48 +111,46 @@ class TagPendingScreen extends Component {
       );
   };
 
-  renderTagDetail = () => {
-    return (
-      <Overlay
-        isVisible={this.state.isDetailVisible}
-        width="auto"
-        height="auto"
-        onBackdropPress={() => this.setState({ isDetailVisible: false })}
-      >
-        <View>
-          <Text>{this.state.detail.name}</Text>
-          <Text>{this.state.detail.slug}</Text>
-          <Text>{this.state.detail.usedBy}</Text>
-          <Text>{this.state.detail.status}</Text>
-          <Button
-            title={`Approve`}
-            onPress={() =>
-              ConfirmAlert("Approve Tag", "Are you sure?", () =>
-                this.handleApprove(this.state.detail.id)
-              )
-            }
-          />
-          <Button
-            title={`Reject`}
-            onPress={() =>
-              ConfirmAlert("Reject Tag", "Are you sure?", () =>
-                this.handleReject(this.state.detail.id)
-              )
-            }
-          />
-          <Button
-            title={`View Item/s`}
-            onPress={() => {
-              this.setState({ isDetailVisible: false });
-              this.props.navigation.navigate("MenuList", {
-                tag: this.state.detail.slug
-              });
-            }}
-          />
-        </View>
-      </Overlay>
-    );
-  };
+  renderTagDetail = () => (
+    <Overlay
+      isVisible={this.state.isDetailVisible}
+      width="auto"
+      height="auto"
+      onBackdropPress={() => this.setState({ isDetailVisible: false })}
+    >
+      <View>
+        <Text>Name: {this.state.detail.name}</Text>
+        <Text>Slug: {this.state.detail.slug}</Text>
+        <Text>Used by: {this.state.detail.usedBy}</Text>
+        <Button
+          title={`Approve`}
+          onPress={() =>
+            ConfirmAlert("Approve Tag", "Are you sure?", () =>
+              this.handleApprove(this.state.detail.id)
+            )
+          }
+        />
+        <Button
+          title={`Reject`}
+          onPress={() =>
+            ConfirmAlert("Reject Tag", "Are you sure?", () =>
+              this.handleReject(this.state.detail.id)
+            )
+          }
+        />
+        <Button
+          title={`View Item/s`}
+          onPress={() => {
+            this.setState({ isDetailVisible: false });
+            this.props.navigation.navigate("MenuList", {
+              tag: this.state.detail.slug
+            });
+          }}
+        />
+      </View>
+    </Overlay>
+  );
+
   renderItem = ({ item }) => (
     <ListItem
       title={item.name}

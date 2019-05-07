@@ -44,8 +44,6 @@ class AdminMenuViewScreen extends Component {
 
   render() {
     const { loading, error } = this.state;
-    if (loading) return <ActivityIndicator size="large" />;
-    else if (error) return <Text>{error}</Text>;
     const {
       id,
       name,
@@ -62,6 +60,9 @@ class AdminMenuViewScreen extends Component {
       restaurant_name,
       tag
     } = this.state.data;
+    if (loading) return <ActivityIndicator size="large" />;
+    else if (error) return <Text>{error}</Text>;
+    else if (!id) return <Text>Item may have been deleted</Text>;
     return (
       <ScrollView style={{ flex: 1 }}>
         <NavigationEvents onWillFocus={this.makeRemoteRequest} />
@@ -95,7 +96,9 @@ class AdminMenuViewScreen extends Component {
               <TouchableHighlight
                 onPress={_.debounce(
                   () =>
-                    this.props.navigation.push("RestoView", { restoId: restaurant_id }),
+                    this.props.navigation.push("RestoView", {
+                      restoId: restaurant_id
+                    }),
                   1000,
                   {
                     leading: true,
@@ -139,9 +142,22 @@ class AdminMenuViewScreen extends Component {
                     ? styles.tagContainerAccepted
                     : styles.tagContainerRejected;
                 return (
-                  <Text style={tagContainer} key={index}>
-                    {tag.name}
-                  </Text>
+                  <TouchableHighlight
+                    onPress={_.debounce(
+                      () =>
+                        this.props.navigation.push("MenuList", {
+                          tag: tag.slug
+                        }),
+                      1000,
+                      {
+                        leading: true,
+                        trailing: false
+                      }
+                    )}
+                    key={index}
+                  >
+                    <Text style={tagContainer}>{tag.name}</Text>
+                  </TouchableHighlight>
                 );
               })}
             </View>

@@ -1,12 +1,13 @@
 import React, { Component } from "react";
 import { View, ActivityIndicator, Text, ScrollView } from "react-native";
-import { Card, Divider } from "react-native-elements";
+import { Card, Divider, ListItem } from "react-native-elements";
 import { NavigationEvents } from "react-navigation";
 import { getAdminRestoDetail, errorHandler } from "../../../actions";
+import List from "../../../components/List";
 class AdminRestoViewScreen extends Component {
   state = {
     data: {},
-    menu:[],
+    menu: [],
     loading: false,
     error: ""
   };
@@ -36,10 +37,38 @@ class AdminRestoViewScreen extends Component {
       });
   };
 
+  renderItem = ({
+    item: {
+      id,
+      name,
+      description,
+      price,
+      image_name,
+      slug,
+      deleted_at,
+      created_at,
+      updated_at
+    }
+  }) => (
+    <ListItem
+      title={name}
+      titleStyle={{ fontWeight: "500", fontSize: 18, color: "#1B73B4" }}
+      subtitle={
+        <View>
+          <Text>Price: ₱ {price}.00</Text>
+          <Text>Created: {created_at}</Text>
+        </View>
+      }
+      chevron={true}
+      bottomDivider
+      onPress={() => this.props.navigation.push("MenuView", { menuId: id })}
+    />
+  );
+
   render() {
     const contactType = String(contact_number).length < 11 ? "(Tel)" : "(Cell)";
     const { loading, error } = this.state;
-    const { makeRemoteRequest } = this
+    const { makeRemoteRequest } = this;
     if (loading) return <ActivityIndicator size="large" />;
     else if (error) return <Text>{error}</Text>;
     const {
@@ -126,8 +155,15 @@ class AdminRestoViewScreen extends Component {
           <View style={styles.restoTitle}>
             <Text style={styles.restoSubtitle}>Menu List</Text>
 
-            <View style={styles.cardRowContent}>
-            
+            <View>
+              <List
+                data={this.state.menu}
+                renderItem={this.renderItem}
+                loading={this.state.loading}
+                emptyText={"No Menu"}
+                showsVerticalScrollIndicator={false}
+                contentContainerStyle={{ paddingBottom: 75 }}
+              />
             </View>
           </View>
         </Card>
