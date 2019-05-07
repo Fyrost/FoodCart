@@ -4,7 +4,8 @@ import {
   MenuNavigator,
   OrderNavigator,
   SalesNavigator,
-  ReportNavigator
+  ReportNavigator,
+  LogsNavigator
 } from "./components";
 import {
   leftBackButton,
@@ -65,13 +66,22 @@ const Report = {
   }
 };
 
+const Logs = {
+  screen: LogsNavigator,
+  navigationOptions: {
+    drawerLabel: "Activity Logs",
+    drawerIcon: ({ tintColor }) => ReportIcon({ tintColor })
+  }
+};
+
 const OwnerDrawer = createDrawerNavigator(
   {
     Order,
     Menu,
     Category,
     Sales,
-    Report
+    Report,
+    Logs
   },
   {
     initialRouteName: "Order",

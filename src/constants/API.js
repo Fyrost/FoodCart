@@ -34,6 +34,7 @@ export const OWNER_ORDER_SALES = `owner/chart/order/sales`;
 export const OWNER_SALES_MENU = query => `owner/sales/menu?search=${query}`;
 export const OWNER_REPORT = `owner/report`;
 export const OWNER_REPORT_SELECT = code => `owner/report/${code}`;
+export const OWNER_LOGS = `owner/logs`;
 export const OWNER_PROFILE = `owner/profile`;
 
 export const ADMIN_TAG_FILTER = filter => `admin/tag?filter=${filter}`;

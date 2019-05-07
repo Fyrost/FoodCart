@@ -3,9 +3,9 @@ import { View, Text } from "react-native";
 import { NavigationEvents } from "react-navigation";
 import { ListItem } from "react-native-elements";
 import List from "../../../components/List";
-import { getLogList, errorHandler } from "../../../actions";
+import { getOwnerLogList, errorHandler } from "../../../actions";
 
-class AdminLogListScreen extends Component {
+class OwnerLogListScreen extends Component {
   state = {
     data: [],
     loading: false,
@@ -14,7 +14,7 @@ class AdminLogListScreen extends Component {
 
   makeRemoteRequest = () => {
     this.setState({ loading: true });
-    getLogList()
+    getOwnerLogList()
       .then(res => {
         if (res.data.success) {
           this.setState({
@@ -43,11 +43,7 @@ class AdminLogListScreen extends Component {
   };
 
   renderItem = ({ item: { id, type, description, origin, created_at } }) => (
-    <ListItem
-      title={description}
-      rightTitle={created_at}
-      subtitle={type}
-    />
+    <ListItem title={description} rightTitle={created_at} subtitle={type} />
   );
 
   render() {
@@ -59,7 +55,7 @@ class AdminLogListScreen extends Component {
           data={data}
           renderItem={this.renderItem}
           loading={loading}
-          emptyText={"No Customer Found"}
+          emptyText={"No Logs Found"}
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{ paddingBottom: 75 }}
           refreshing={refreshing}
@@ -70,4 +66,4 @@ class AdminLogListScreen extends Component {
   }
 }
 
-export default AdminLogListScreen;
+export default OwnerLogListScreen;
