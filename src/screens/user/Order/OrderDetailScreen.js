@@ -3,7 +3,6 @@ import { View, SectionList, ActivityIndicator, ScrollView } from "react-native";
 import { NavigationEvents } from "react-navigation";
 import { Text, Icon, Divider, Image } from "react-native-elements";
 import { getOrderDetail, errorHandler } from "../../../actions";
-
 const formatOrder = order => {
   return order.map(section => {
     return {
@@ -20,7 +19,16 @@ const formatOrder = order => {
 
 class OrderDetailScreen extends Component {
   state = {
-    order: [],
+    order: [{
+      name: "",
+      slug: '',
+      flatRate: '',
+      deliveryTime: '',
+      estimatedTime: '',
+      total: '',
+      data: []
+    }],
+    data: [],
     loading: false,
     error: ""
   };
@@ -68,7 +76,7 @@ class OrderDetailScreen extends Component {
   );
 
   renderSectionFooter = ({
-    section: { name, flatRate, eta, sub_eta, total }
+    section: { name, flatRate, estimatedTime, total }
   }) => (
       <View
         style={{
@@ -85,7 +93,7 @@ class OrderDetailScreen extends Component {
         </View>
         <View style={{ flexDirection: "row", alignItems: "center" }}>
           <Text style={{ color: "white" }}>ETA: </Text>
-          <Text style={{ color: "white" }}> {sub_eta} MINS </Text>
+          <Text style={{ color: "white" }}> {estimatedTime} MINS </Text>
           <Icon name="ios-timer" type="ionicon" color={"white"} />
         </View>
         <Divider style={{ backgroundColor: "white" }} />
@@ -169,7 +177,7 @@ class OrderDetailScreen extends Component {
     !this.state.loading ? <Text>Cart is Empty!</Text> : null;
 
   render() {
-    const { order, error, data } = this.state;
+    const { order, error, data, loading } = this.state;
     const {
       makeRemoteRequest,
       renderSectionHeader,
@@ -177,8 +185,17 @@ class OrderDetailScreen extends Component {
       renderItem,
       renderFooter,
       renderEmpty
-    } = this;
-    if (error) return <Text>{error}</Text>;
+    } = this; 
+    const subtitle
+    = data.status==="0" ?  {text:"Pending", color: '#9DA0A3'}  
+    : data.status==="1" ?  {text:"Processing", color: '#11CDEF'}
+    : data.status==="2" ?  {text:"Delivering", color: '#f1c40f'}
+    : data.status==="3" ?  {text:"Completed", color: '#00CC66'}
+    : data.status==="4" ?  {text:"Rejected",  color: '#EF1B17'}
+    : {text:"Cancelled", color: 'orange'}
+    
+    if (loading) return <ActivityIndicator size="large" color={"#11CDEF"} />
+    else if (error) return <Text>{error}</Text>;
     return (
       <View style={{ flex: 1 }}>
         <NavigationEvents onWillFocus={makeRemoteRequest} />
@@ -195,7 +212,10 @@ class OrderDetailScreen extends Component {
             <Text style={{ fontSize: 16, fontWeight: "500" }}>
               Order Code # {this.state.code}
             </Text>
-            <Text>Status {data.status}</Text>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <Text style={{ fontSize: 16, fontWeight: '500' }}>Status: </Text>
+              <Text style={{ fontSize: 16, fontWeight: 'normal', color: subtitle.color }}>{subtitle.text}</Text>
+            </View>
           </View>
         )}
         <View style={{ flex: 8 }}>
@@ -239,8 +259,8 @@ class OrderDetailScreen extends Component {
                 borderBottomWidth: 0.8
               }}
             >
-              <Text style={{ fontWeight: "500" }}>Estimated Time: </Text>
-              <Text style={{ fontWeight: "normal" }}>{order.estimatedTime} MINS</Text>
+              <Text style={{ fontWeight: "500" }}>Grand Total: </Text>
+              <Text style={{ fontWeight: "normal" }}>₱ {data.total}</Text>
             </View>
 
             <View
@@ -252,34 +272,8 @@ class OrderDetailScreen extends Component {
                 borderBottomWidth: 0.8
               }}
             >
-              <Text style={{ fontWeight: "500" }}>Flat Rate Total: </Text>
-              <Text style={{ fontWeight: "normal" }}>₱ {order.flatRate}</Text>
-            </View>
-
-            <View
-              style={{
-                justifyContent: "space-evenly",
-                paddingHorizontal: 10,
-                paddingVertical: 5,
-                borderColor: "gray",
-                borderBottomWidth: 0.8
-              }}
-            >
-              <Text style={{ fontWeight: "500" }}>Delivery Time: </Text>
-              <Text style={{ fontWeight: "normal" }}>₱ {order.deliveryTime}</Text>
-            </View>
-
-            <View
-              style={{
-                justifyContent: "space-evenly",
-                paddingHorizontal: 10,
-                paddingVertical: 5,
-                borderColor: "gray",
-                borderBottomWidth: 0.8
-              }}
-            >
-              <Text style={{ fontWeight: "500" }}>Total: </Text>
-              <Text style={{ fontWeight: "normal" }}>₱ {order.total}</Text>
+              <Text style={{ fontWeight: "500" }}>Your Payment: </Text>
+              <Text style={{ fontWeight: "normal" }}>₱ {data.payment}</Text>
             </View>
 
             <View style={{ height: 10 }} />

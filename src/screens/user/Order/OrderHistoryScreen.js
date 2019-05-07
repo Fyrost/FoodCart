@@ -51,8 +51,8 @@ class OrderHistoryScreen extends Component {
   };
   renderItem = ({ item }) => (
     <ListItem
-      title={item.status}
-      rightTitle={"order # " + item.code}
+      title={"Order # " + item.code}
+      rightTitle={item.status}
       subtitle={item.date}
       chevron={true}
       bottomDivider
