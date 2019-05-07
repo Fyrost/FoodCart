@@ -369,6 +369,13 @@ export const postOwnerReport = ({
   });
 };
 
+export const getOwnerLogList = () => {
+  return Axios({
+    url: API.OWNER_LOGS,
+    method: "get"
+  });
+};
+
 export const getAdminTagList = filter => {
   return Axios({
     url: API.ADMIN_TAG_FILTER(filter),

@@ -55,6 +55,7 @@ class CartScreen extends Component {
             loading: false,
             error: res.data.message
           });
+          this.props.navigation.setParams({isCartEmpty:true})
         }
       })
       .catch(err =>
