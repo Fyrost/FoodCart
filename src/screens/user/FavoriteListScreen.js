@@ -2,8 +2,14 @@ import React, { Component } from "react";
 import { View, Text, Dimensions } from "react-native";
 import { Card, Button, Icon, Divider } from "react-native-elements";
 import { NavigationEvents } from "react-navigation";
-import { getFavoriteResto, errorHandler } from "../../actions";
+import {
+  getFavoriteResto,
+  deleteFavoriteResto,
+  errorHandler
+} from "../../actions";
+import { ConfirmAlert } from "../../components/Alerts";
 import List from "../../components/List";
+import Loading from "../../components/Loading";
 import _ from "lodash";
 const numColumns = 1;
 
@@ -22,7 +28,8 @@ const formatData = (data, numColumns) => {
 class FavoriteListScreen extends Component {
   state = {
     resto: [],
-    loading: false
+    loading: false,
+    screenLoading: false
   };
   makeRemoteRequest = () => {
     this.setState({ loading: true });
@@ -49,6 +56,22 @@ class FavoriteListScreen extends Component {
       );
   };
 
+  handleUnfavorite = slug => {
+    this.setState({ screenLoading: true });
+    deleteFavoriteResto(slug)
+      .then(res => {
+        this.setState({
+          screenLoading: false
+        });
+        alert(res.data.message);
+        if (res.data.success) this.makeRemoteRequest();
+      })
+      .catch(err => {
+        this.setState({ screenLoading: false });
+        alert(errorHandler(err));
+      });
+  };
+
   renderItem = ({ item }) => {
     if (item.empty === true) {
       return <View style={[styles.item, styles.itemInvisible]} />;
@@ -73,7 +96,7 @@ class FavoriteListScreen extends Component {
           </View>
 
           <View style={styles.itemRowSpaceBetween}>
-            <Text >{item.address}</Text>
+            <Text>{item.address}</Text>
           </View>
           <View style={styles.space} />
           <Divider style={{ height: 1.5 }} />
@@ -89,6 +112,25 @@ class FavoriteListScreen extends Component {
               </View>
             </View>
             <Button
+              raised
+              icon={
+                <Icon
+                  name={"heart"}
+                  type={"font-awesome"}
+                  color={"white"}
+                  size={16}
+                />
+              }
+              buttonStyle={{ backgroundColor: "#EA5B7A" }}
+              title={" Unfavorite"}
+              titleStyle={{ color: "white" }}
+              onPress={() =>
+                ConfirmAlert("Unfavorite", "Are you sure?", () =>
+                  this.handleUnfavorite(item.slug)
+                )
+              }
+            />
+            <Button
               icon={<Icon name="eye" type={"font-awesome"} color="#ffffff" />}
               backgroundColor={"#03A9F4"}
               containerStyle={styles.flexContainer}
@@ -101,7 +143,9 @@ class FavoriteListScreen extends Component {
               title={" View Menu"}
               onPress={_.debounce(
                 () =>
-                  this.props.navigation.navigate("RestoMenu", { slug: item.slug }),
+                  this.props.navigation.navigate("RestoMenu", {
+                    slug: item.slug
+                  }),
                 1000,
                 { leading: true, trailing: false }
               )}
@@ -116,6 +160,7 @@ class FavoriteListScreen extends Component {
     return (
       <View style={{ flex: 1, backgroundColor: "#F9F9F9" }}>
         <NavigationEvents onWillFocus={this.makeRemoteRequest} />
+        <Loading loading={this.state.screenLoading} size="large" />
         <List
           data={formatData(this.state.resto, numColumns)}
           renderItem={this.renderItem}

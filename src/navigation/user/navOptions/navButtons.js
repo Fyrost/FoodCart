@@ -1,6 +1,6 @@
 import React from "react";
 import { View } from "react-native";
-import { Button, Avatar } from "react-native-elements";
+import { Button, Avatar, Icon } from "react-native-elements";
 import _ from "lodash";
 import { ConfirmAlert } from "../../../components/Alerts";
 import { HeaderBackButton } from "react-navigation";
@@ -38,7 +38,8 @@ export const rightCartButton = ({ navigation }) => (
     style={{
       flexDirection: "row",
       alignItems: "center",
-      justifyContent: "space-between"
+      justifyContent: "space-between",
+      display: navigation.getParam("isCartEmpty")?'none':'flex'
     }}
   >
     <Avatar
@@ -64,6 +65,7 @@ export const rightCartButton = ({ navigation }) => (
       size={48}
       onPress={() => navigation.navigate("Checkout")}
       containerStyle={{ marginRight: 5 }}
+      
     />
   </View>
 );
