@@ -18,7 +18,7 @@ const PartnerPending = createStackNavigator({
     screen: PartnerPendingScreen,
     navigationOptions: ({ navigation }) => ({
       ...headerStyles,
-      title: "Pending Parnership",
+      title: "Pending Partnership",
       headerLeft: leftDrawerButton({ navigation })
     })
   }
@@ -34,7 +34,7 @@ const PartnerApproved = createStackNavigator({
     screen: PartnerApprovedScreen,
     navigationOptions: ({ navigation }) => ({
       ...headerStyles,
-      title: "Approved Parnership",
+      title: "Approved Partnership",
       headerLeft: leftDrawerButton({ navigation })
     })
   }
@@ -50,7 +50,7 @@ const PartnerRejected = createStackNavigator({
     screen: PartnerRejectedScreen,
     navigationOptions: ({ navigation }) => ({
       ...headerStyles,
-      title: "Rejected Parnership",
+      title: "Rejected Partnership",
       headerLeft: leftDrawerButton({ navigation })
     })
   }
