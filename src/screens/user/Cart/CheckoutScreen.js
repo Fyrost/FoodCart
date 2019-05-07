@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, SectionList, ActivityIndicator } from "react-native";
+import { View, SectionList, ActivityIndicator, ScrollView } from "react-native";
 import {
   Button,
   Text,
@@ -304,7 +304,7 @@ class CheckoutScreen extends Component {
         >
           <Text style={{ fontSize: 18, fontWeight: "500" }}>Your Cart</Text>
         </View>
-        <View style={{ flex: 8, backgroundColor: "#171a29" }}>
+        <View style={{ flex: 8 }}>
           <SectionList
             sections={checkout}
             keyExtractor={(item, index) => item + index}
@@ -317,46 +317,65 @@ class CheckoutScreen extends Component {
         </View>
         <View
           style={{
-            flex: 2,
+            flex: 4,
             borderColor: "gray",
             borderTopWidth: 1,
-            paddingHorizontal: 10,
             justifyContent: "center"
           }}
         >
-          <Text style={{ fontSize: 14, fontWeight: "500" }}>
-            Billing Summary
-          </Text>
           <View
             style={{
-              flexDirection: "row",
               alignItems: "center",
-              justifyContent: "space-between"
+              paddingVertical: 10,
+              backgroundColor: "#5999C8"
             }}
           >
-            <Text>Estimated Time: </Text>
-            <Text>{totalCookTime} MINS</Text>
+            <Text style={{ color: "white", fontSize: 16, fontWeight: "500" }}>
+              Billing Information
+            </Text>
           </View>
-          <View
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-              justifyContent: "space-between"
-            }}
-          >
-            <Text>Total Flat Rate: </Text>
-            <Text>₱ {totalFlatRate}</Text>
-          </View>
-          <View
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-              justifyContent: "space-between"
-            }}
-          >
-            <Text>Grand Total: </Text>
-            <Text>₱ {grandTotal}</Text>
-          </View>
+          <ScrollView>
+            <View
+              style={{
+                justifyContent: "space-evenly",
+                paddingHorizontal: 10,
+                paddingVertical: 5,
+                borderColor: "gray",
+                borderBottomWidth: 0.8
+              }}
+            >
+              <Text style={{ fontWeight: "500" }}>Estimated Time: </Text>
+              <Text style={{ fontWeight: "normal" }}>{totalCookTime} MINS</Text>
+            </View>
+
+            <View
+              style={{
+                justifyContent: "space-evenly",
+                paddingHorizontal: 10,
+                paddingVertical: 5,
+                borderColor: "gray",
+                borderBottomWidth: 0.8
+              }}
+            >
+              <Text style={{ fontWeight: "500" }}>Total Flat Rate: </Text>
+              <Text style={{ fontWeight: "normal" }}>₱ {totalFlatRate}</Text>
+            </View>
+
+            <View
+              style={{
+                justifyContent: "space-evenly",
+                paddingHorizontal: 10,
+                paddingVertical: 5,
+                borderColor: "gray",
+                borderBottomWidth: 0.8
+              }}
+            >
+              <Text style={{ fontWeight: "500" }}>Grand Total: </Text>
+              <Text style={{ fontWeight: "normal" }}>₱ {grandTotal}</Text>
+            </View>
+
+            <View style={{ height: 10 }} />
+          </ScrollView>
         </View>
       </View>
     );

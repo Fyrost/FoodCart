@@ -1,70 +1,333 @@
 import React, { Component } from "react";
-import { View, Text } from "react-native";
-import { Image, Icon, Avatar } from "react-native-elements";
+import { View, Text, ScrollView, Animated, Dimensions } from "react-native";
+import { Image, Icon, Avatar, Card, SearchBar } from "react-native-elements";
 
 class HomeScreen extends Component {
+  state = {
+    toggleSearch: false
+  }
+
+  componentWillMount() {
+    this._animatedIsFocused = new Animated.Value(
+      this.state.toggleSearch ? 1 : 0
+    );
+  }
+
+  componentDidMount() {
+    this.props.navigation.setParams({
+      toggleSearch: this.handleSearchVisible
+    });
+  }
+
+  componentDidUpdate() {
+    Animated.timing(this._animatedIsFocused, {
+      toValue: this.state.toggleSearch ? 1 : 0,
+      duration: 100
+    }).start();
+  }
+
+  handleSearchVisible = () => {
+    this.setState({ toggleSearch: !this.state.toggleSearch });
+  };
+
+  renderHeader = () => {
+    const viewStyle = {
+      top: this._animatedIsFocused.interpolate({
+        inputRange: [0, 1],
+        outputRange: [-100, 0]
+      })
+    };
+    return (
+      <Animated.View
+        style={[
+          viewStyle,
+          {
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center",
+            elevation: 1,
+            backgroundColor: "#FAFAFA"
+          }
+        ]}
+      >
+        <SearchBar
+          containerStyle={{
+            display: "flex",
+            flex: 1,
+            backgroundColor: "transparent",
+            borderTopWidth: 0,
+            borderBottomWidth: 0
+          }}
+          inputStyle={{ color: "#484749", backgroundColor: "transparent" }}
+          inputContainerStyle={{ backgroundColor: "transparent" }}
+          leftIconContainerStyle={{ backgroundColor: "transparent" }}
+          rightIconContainerStyle={{ backgroundColor: "transparent" }}
+          placeholder="Search Restaurants, Tags..."
+          onChangeText={this.handleSearch}
+          value={this.state.search}
+          round
+          autoCorrect={false}
+        />
+      </Animated.View>
+    );
+  };
+
   render() {
+    const width = Dimensions.get('screen').width
     return (
       <View style={{ flex: 1 }}>
-        <View style={{ flex: 1, backgroundColor: "blue" }}>
-          <Image
-            source={{
-              uri:
-                "https://image.shutterstock.com/image-photo/spices-herbs-over-black-stone-260nw-1058131856.jpg"
-            }}
-            style={{ height: "100%" }}
-            resizeMode={"cover"}
-          />
-        </View>
-        <View style={{ flex: 2, justifyContent: "space-around" }}>
-          <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "space-around",
-              alignItems: "center"
-            }}
-          >
-            <Avatar
-              size={120}
-              icon={{ name: "store", type: "FontAwesome" }}
-              onPress={() => console.log("Works!")}
-              activeOpacity={0.7}
-              overlayContainerStyle={{ borderRadius: 20 }}
-              containerStyle={{ flex: 1, paddingHorizontal: 20 }}
-            />
-          </View>
-          <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "space-around",
-              alignItems: "center"
-            }}
-          >
-            <Avatar
-              size={120}
-              icon={{ name: "shopping-cart", type: "FontAwesome" }}
-              onPress={() => console.log("Works!")}
-              activeOpacity={0.7}
-              overlayContainerStyle={{ borderRadius: 20 }}
-              containerStyle={{ flex: 1, paddingHorizontal: 20 }}
-            />
-          </View>
-          <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "space-around",
-              alignItems: "center"
-            }}
-          >
-            <Avatar
-              size={120}
-              icon={{ name: "history", type: "FontAwesome" }}
-              onPress={() => console.log("Works!")}
-              activeOpacity={0.7}
-              overlayContainerStyle={{ borderRadius: 20 }}
-              containerStyle={{ flex: 1, paddingHorizontal: 20 }}
-            />
-          </View>
+        {this.state.toggleSearch ? this.renderHeader() : null}
+        <View style={{ flex: 1 }}>
+          <ScrollView>
+            <ScrollView
+              style={{ backgroundColor: '#171a29', height: 'auto' }}
+              contentContainerStyle={{ paddingBottom: 15 }}
+              bounces={false}
+              horizontal
+            >
+              <Card
+                title="HORIZONTAL FEATURE"
+                containerStyle={{ margin: width/32 }}
+                wrapperStyle={{ width: width/2 }}
+              >
+                <Text>[-------------]</Text>
+                <Text>[-------------]</Text>
+                <Text>[-------------]</Text>
+                <Text>[-------------]</Text>
+                <Text>[-------------]</Text>
+                <Text>[-------------]</Text>
+                <Text>[-------------]</Text>
+              </Card>
+              
+              <Card
+                title="HORIZONTAL FEATURE"
+                containerStyle={{ margin: width/32 }}
+                wrapperStyle={{ width: width/2 }}
+              >
+                <Text>[-------------]</Text>
+                <Text>[-------------]</Text>
+                <Text>[-------------]</Text>
+                <Text>[-------------]</Text>
+                <Text>[-------------]</Text>
+                <Text>[-------------]</Text>
+                <Text>[-------------]</Text>
+              </Card>
+
+              <Card
+                title="HORIZONTAL FEATURE"
+                containerStyle={{ margin: width/32 }}
+                wrapperStyle={{ width: width/2 }}
+              >
+                <Text>[-------------]</Text>
+                <Text>[-------------]</Text>
+                <Text>[-------------]</Text>
+                <Text>[-------------]</Text>
+                <Text>[-------------]</Text>
+                <Text>[-------------]</Text>
+                <Text>[-------------]</Text>
+              </Card>
+            </ScrollView>
+            
+            <Text style={{ fontSize: 22, fontWeight: '500', paddingVertical: 10, paddingHorizontal: 20, color: '#11CDEF' }}>What's Hot</Text>
+            <ScrollView
+              style={{ backgroundColor: '#171a29', height: 'auto' }}
+              contentContainerStyle={{ paddingBottom: 15 }}
+              bounces={false}
+              horizontal
+            >
+              <Card
+                title="Whats Hot FEATURE"
+                containerStyle={{ margin: width/32 }}
+                wrapperStyle={{ width: width/2 }}
+              >
+                <Text>[-------------]</Text>
+                <Text>[-------------]</Text>
+                <Text>[-------------]</Text>
+                <Text>[-------------]</Text>
+                <Text>[-------------]</Text>
+                <Text>[-------------]</Text>
+                <Text>[-------------]</Text>
+              </Card>
+              
+              <Card
+                title="Whats Hot FEATURE"
+                containerStyle={{ margin: width/32 }}
+                wrapperStyle={{ width: width/2 }}
+              >
+                <Text>[-------------]</Text>
+                <Text>[-------------]</Text>
+                <Text>[-------------]</Text>
+                <Text>[-------------]</Text>
+                <Text>[-------------]</Text>
+                <Text>[-------------]</Text>
+                <Text>[-------------]</Text>
+              </Card>
+
+              <Card
+                title="Whats Hot FEATURE"
+                containerStyle={{ margin: width/32 }}
+                wrapperStyle={{ width: width/2 }}
+              >
+                <Text>[-------------]</Text>
+                <Text>[-------------]</Text>
+                <Text>[-------------]</Text>
+                <Text>[-------------]</Text>
+                <Text>[-------------]</Text>
+                <Text>[-------------]</Text>
+                <Text>[-------------]</Text>
+              </Card>
+            </ScrollView>
+            
+            <Text style={{ fontSize: 22, fontWeight: '500', paddingVertical: 10, paddingHorizontal: 20, color: '#11CDEF' }}>Top Rated</Text>
+            <ScrollView
+              style={{ backgroundColor: '#171a29', height: 'auto' }}
+              contentContainerStyle={{ paddingBottom: 15 }}
+              bounces={false}
+              horizontal
+            >
+              <Card
+                title="Whats Hot FEATURE"
+                containerStyle={{ margin: width/32 }}
+                wrapperStyle={{ width: width/2 }}
+              >
+                <Text>[-------------]</Text>
+                <Text>[-------------]</Text>
+                <Text>[-------------]</Text>
+                <Text>[-------------]</Text>
+                <Text>[-------------]</Text>
+                <Text>[-------------]</Text>
+                <Text>[-------------]</Text>
+              </Card>
+              
+              <Card
+                title="Whats Hot FEATURE"
+                containerStyle={{ margin: width/32 }}
+                wrapperStyle={{ width: width/2 }}
+              >
+                <Text>[-------------]</Text>
+                <Text>[-------------]</Text>
+                <Text>[-------------]</Text>
+                <Text>[-------------]</Text>
+                <Text>[-------------]</Text>
+                <Text>[-------------]</Text>
+                <Text>[-------------]</Text>
+              </Card>
+
+              <Card
+                title="Whats Hot FEATURE"
+                containerStyle={{ margin: width/32 }}
+                wrapperStyle={{ width: width/2 }}
+              >
+                <Text>[-------------]</Text>
+                <Text>[-------------]</Text>
+                <Text>[-------------]</Text>
+                <Text>[-------------]</Text>
+                <Text>[-------------]</Text>
+                <Text>[-------------]</Text>
+                <Text>[-------------]</Text>
+              </Card>
+            </ScrollView>
+            
+            <Text style={{ fontSize: 22, fontWeight: '500', paddingVertical: 10, paddingHorizontal: 20, color: '#11CDEF' }}>Newly Added</Text>
+            <ScrollView
+              style={{ backgroundColor: '#171a29', height: 'auto' }}
+              contentContainerStyle={{ paddingBottom: 15 }}
+              bounces={false}
+              horizontal
+            >
+              <Card
+                title="Whats Hot FEATURE"
+                containerStyle={{ margin: width/32 }}
+                wrapperStyle={{ width: width/2 }}
+              >
+                <Text>[-------------]</Text>
+                <Text>[-------------]</Text>
+                <Text>[-------------]</Text>
+                <Text>[-------------]</Text>
+                <Text>[-------------]</Text>
+                <Text>[-------------]</Text>
+                <Text>[-------------]</Text>
+              </Card>
+              
+              <Card
+                title="Whats Hot FEATURE"
+                containerStyle={{ margin: width/32 }}
+                wrapperStyle={{ width: width/2 }}
+              >
+                <Text>[-------------]</Text>
+                <Text>[-------------]</Text>
+                <Text>[-------------]</Text>
+                <Text>[-------------]</Text>
+                <Text>[-------------]</Text>
+                <Text>[-------------]</Text>
+                <Text>[-------------]</Text>
+              </Card>
+
+              <Card
+                title="Whats Hot FEATURE"
+                containerStyle={{ margin: width/32 }}
+                wrapperStyle={{ width: width/2 }}
+              >
+                <Text>[-------------]</Text>
+                <Text>[-------------]</Text>
+                <Text>[-------------]</Text>
+                <Text>[-------------]</Text>
+                <Text>[-------------]</Text>
+                <Text>[-------------]</Text>
+                <Text>[-------------]</Text>
+              </Card>
+            </ScrollView>
+            
+            <Text style={{ fontSize: 22, fontWeight: '500', paddingVertical: 10, paddingHorizontal: 20, color: '#11CDEF' }}>Popular</Text>
+            <ScrollView
+              style={{ backgroundColor: '#171a29', height: 'auto' }}
+              contentContainerStyle={{ paddingBottom: 15 }}
+              bounces={false}
+              horizontal
+            >
+              <Card
+                title="Whats Hot FEATURE"
+                containerStyle={{ margin: width/32 }}
+                wrapperStyle={{ width: width/2 }}
+              >
+                <Text>[-------------]</Text>
+                <Text>[-------------]</Text>
+                <Text>[-------------]</Text>
+                <Text>[-------------]</Text>
+                <Text>[-------------]</Text>
+                <Text>[-------------]</Text>
+                <Text>[-------------]</Text>
+              </Card>
+              
+              <Card
+                title="Whats Hot FEATURE"
+                containerStyle={{ margin: width/32 }}
+                wrapperStyle={{ width: width/2 }}
+              >
+                <Text>[-------------]</Text>
+                <Text>[-------------]</Text>
+                <Text>[-------------]</Text>
+                <Text>[-------------]</Text>
+                <Text>[-------------]</Text>
+                <Text>[-------------]</Text>
+                <Text>[-------------]</Text>
+              </Card>
+
+              <Card
+                title="Whats Hot FEATURE"
+                containerStyle={{ margin: width/32 }}
+                wrapperStyle={{ width: width/2 }}
+              >
+                <Text>[-------------]</Text>
+                <Text>[-------------]</Text>
+                <Text>[-------------]</Text>
+                <Text>[-------------]</Text>
+                <Text>[-------------]</Text>
+                <Text>[-------------]</Text>
+                <Text>[-------------]</Text>
+              </Card>
+            </ScrollView>
+          </ScrollView>
         </View>
       </View>
     );

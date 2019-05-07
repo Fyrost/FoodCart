@@ -15,17 +15,40 @@ export const leftDrawerButton = ({ navigation }) => (
   />
 );
 
+export const leftDrawerButtonBlue = ({ navigation }) => (
+  <Avatar
+    containerStyle={{ backgroundColor: "transparent", marginLeft: 5 }}
+    overlayContainerStyle={{ backgroundColor: "transparent" }}
+    icon={{ name: "bars", type: "font-awesome", color: "#11CDEF" }}
+    size={50}
+    onPress={() => navigation.openDrawer()}
+  />
+);
+
 export const leftBackButton = ({ navigation }) => (
   <HeaderBackButton tintColor={"white"} onPress={() => navigation.goBack()} />
 );
 export const leftDismissButton = ({ navigation }) => (
   <HeaderBackButton tintColor={"white"} onPress={() => navigation.dismiss()} />
 );
+
 export const rightSearchButton = ({ navigation }) => (
   <Avatar
     rounded
     containerStyle={{ backgroundColor: "#afafaf" }}
     icon={{ name: "search", type: "font-awesome" }}
+    overlayContainerStyle={{ backgroundColor: "transparent" }}
+    size={45}
+    containerStyle={{ marginRight: 5 }}
+    onPress={navigation.getParam("toggleSearch")}
+  />
+);
+
+export const rightSearchButtonBlue = ({ navigation }) => (
+  <Avatar
+    rounded
+    containerStyle={{ backgroundColor: "transparent" }}
+    icon={{ name: "search", type: "font-awesome", color: "#11CDEF" }}
     overlayContainerStyle={{ backgroundColor: "transparent" }}
     size={45}
     containerStyle={{ marginRight: 5 }}

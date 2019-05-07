@@ -313,18 +313,18 @@ class OrderViewScreen extends Component {
             justifyContent: "center"
           }}
         >
+          <View
+            style={{
+              alignItems: "center",
+              paddingVertical: 10,
+              backgroundColor: "#5999C8"
+            }}
+          >
+            <Text style={{ color: "white", fontSize: 16, fontWeight: "500" }}>
+              Billing Information
+            </Text>
+          </View>
           <ScrollView>
-            <View
-              style={{
-                alignItems: "center",
-                paddingVertical: 10,
-                backgroundColor: "#5999C8"
-              }}
-            >
-              <Text style={{ color: "white", fontSize: 16, fontWeight: "500" }}>
-                Billing Information
-              </Text>
-            </View>
             <View
               style={{
                 justifyContent: "space-evenly",

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, SectionList, ActivityIndicator } from "react-native";
+import { View, SectionList, ActivityIndicator, ScrollView } from "react-native";
 import { NavigationEvents } from "react-navigation";
 import { Text, Icon, Divider, Image } from "react-native-elements";
 import { getOrderDetail, errorHandler } from "../../../actions";
@@ -34,6 +34,7 @@ class OrderDetailScreen extends Component {
           this.setState({
             loading: false,
             order: formatOrder(data.suborder),
+            data: data,
             code: data.code
           });
         } else {
@@ -69,31 +70,31 @@ class OrderDetailScreen extends Component {
   renderSectionFooter = ({
     section: { name, flatRate, eta, sub_eta, total }
   }) => (
-    <View
-      style={{
-        justifyContent: "center",
-        backgroundColor: "#5999C8",
-        paddingHorizontal: 20,
-        paddingVertical: 10,
-        marginBottom: 3
-      }}
-    >
-      <View style={{ flexDirection: "row", alignItems: "center" }}>
-        <Text style={{ color: "white" }}>Flat Rate: </Text>
-        <Text style={{ color: "white" }}>{flatRate} PHP</Text>
+      <View
+        style={{
+          justifyContent: "center",
+          backgroundColor: "#5999C8",
+          paddingHorizontal: 20,
+          paddingVertical: 10,
+          marginBottom: 3
+        }}
+      >
+        <View style={{ flexDirection: "row", alignItems: "center" }}>
+          <Text style={{ color: "white" }}>Flat Rate: </Text>
+          <Text style={{ color: "white" }}>{flatRate} PHP</Text>
+        </View>
+        <View style={{ flexDirection: "row", alignItems: "center" }}>
+          <Text style={{ color: "white" }}>ETA: </Text>
+          <Text style={{ color: "white" }}> {sub_eta} MINS </Text>
+          <Icon name="ios-timer" type="ionicon" color={"white"} />
+        </View>
+        <Divider style={{ backgroundColor: "white" }} />
+        <View style={{ flexDirection: "row", alignItems: "center" }}>
+          <Text style={{ color: "white" }}>Total: </Text>
+          <Text style={{ color: "white" }}>₱ {total} </Text>
+        </View>
       </View>
-      <View style={{ flexDirection: "row", alignItems: "center" }}>
-        <Text style={{ color: "white" }}>ETA: </Text>
-        <Text style={{ color: "white" }}> {sub_eta} MINS </Text>
-        <Icon name="ios-timer" type="ionicon" color={"white"} />
-      </View>
-      <Divider style={{ backgroundColor: "white" }} />
-      <View style={{ flexDirection: "row", alignItems: "center" }}>
-        <Text style={{ color: "white" }}>Total: </Text>
-        <Text style={{ color: "white" }}>₱ {total} </Text>
-      </View>
-    </View>
-  );
+    );
 
   renderItem = ({ item: { name, price, cooking_time, quantity }, index }) => (
     <View style={styles.mainRow}>
@@ -168,7 +169,7 @@ class OrderDetailScreen extends Component {
     !this.state.loading ? <Text>Cart is Empty!</Text> : null;
 
   render() {
-    const { order, error } = this.state;
+    const { order, error, data } = this.state;
     const {
       makeRemoteRequest,
       renderSectionHeader,
@@ -191,9 +192,10 @@ class OrderDetailScreen extends Component {
               justifyContent: "center"
             }}
           >
-            <Text style={{ fontSize: 18, fontWeight: "500" }}>
+            <Text style={{ fontSize: 16, fontWeight: "500" }}>
               Order Code # {this.state.code}
             </Text>
+            <Text>Status {data.status}</Text>
           </View>
         )}
         <View style={{ flex: 8 }}>
@@ -206,6 +208,82 @@ class OrderDetailScreen extends Component {
             ListFooterComponent={renderFooter}
             ListEmptyComponent={renderEmpty}
           />
+        </View>
+
+        <View
+          style={{
+            flex: 4,
+            borderColor: "gray",
+            borderTopWidth: 1,
+            justifyContent: "center"
+          }}
+        >
+          <View
+            style={{
+              alignItems: "center",
+              paddingVertical: 10,
+              backgroundColor: "#5999C8"
+            }}
+          >
+            <Text style={{ color: "white", fontSize: 16, fontWeight: "500" }}>
+              Billing Information
+            </Text>
+          </View>
+          <ScrollView>
+            <View
+              style={{
+                justifyContent: "space-evenly",
+                paddingHorizontal: 10,
+                paddingVertical: 5,
+                borderColor: "gray",
+                borderBottomWidth: 0.8
+              }}
+            >
+              <Text style={{ fontWeight: "500" }}>Estimated Time: </Text>
+              <Text style={{ fontWeight: "normal" }}>{order.estimatedTime} MINS</Text>
+            </View>
+
+            <View
+              style={{
+                justifyContent: "space-evenly",
+                paddingHorizontal: 10,
+                paddingVertical: 5,
+                borderColor: "gray",
+                borderBottomWidth: 0.8
+              }}
+            >
+              <Text style={{ fontWeight: "500" }}>Flat Rate Total: </Text>
+              <Text style={{ fontWeight: "normal" }}>₱ {order.flatRate}</Text>
+            </View>
+
+            <View
+              style={{
+                justifyContent: "space-evenly",
+                paddingHorizontal: 10,
+                paddingVertical: 5,
+                borderColor: "gray",
+                borderBottomWidth: 0.8
+              }}
+            >
+              <Text style={{ fontWeight: "500" }}>Delivery Time: </Text>
+              <Text style={{ fontWeight: "normal" }}>₱ {order.deliveryTime}</Text>
+            </View>
+
+            <View
+              style={{
+                justifyContent: "space-evenly",
+                paddingHorizontal: 10,
+                paddingVertical: 5,
+                borderColor: "gray",
+                borderBottomWidth: 0.8
+              }}
+            >
+              <Text style={{ fontWeight: "500" }}>Total: </Text>
+              <Text style={{ fontWeight: "normal" }}>₱ {order.total}</Text>
+            </View>
+
+            <View style={{ height: 10 }} />
+          </ScrollView>
         </View>
       </View>
     );

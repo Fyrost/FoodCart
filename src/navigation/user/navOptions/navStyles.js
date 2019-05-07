@@ -8,6 +8,13 @@ export const headerStyles = {
   }
 };
 
+export const headerStylesWhite = {
+  headerStyle: {
+    backgroundColor: 'white'
+  },
+  headerTintColor: 'black',
+}
+
 export const TabStyles = {
   activeTintColor: "#11CDEF",
   inactiveTintColor: "#484749",
