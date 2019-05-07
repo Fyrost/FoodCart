@@ -24,6 +24,7 @@ import ProfileStackNavigator from "../ProfileStackNavigator";
 import PartnerViewScreen from "../../screens/admin/partner/PartnerViewScreen";
 import AdminRestoViewScreen from "../../screens/admin/resto/AdminRestoViewScreen";
 import AdminCustomerViewScreen from "../../screens/admin/customer/AdminCustomerViewScreen";
+import AdminMenuListScreen from "../../screens/admin/menu/AdminMenuListScreen";
 import AdminMenuViewScreen from "../../screens/admin/menu/AdminMenuViewScreen";
 import DrawerLayout from "../../components/DrawerLayout";
 
@@ -142,13 +143,21 @@ const CustomerView = {
     headerLeft: leftBackButton({ navigation })
   })
 };
-const AdminMenuView = {
+const MenuList = {
+  screen: AdminMenuListScreen,
+  navigationOptions: ({ navigation }) => ({
+    title: `Tag ${navigation.getParam("tag")} List`,
+    headerLeft: leftBackButton({ navigation })
+  })
+}
+const MenuView = {
   screen: AdminMenuViewScreen,
   navigationOptions: ({ navigation }) => ({
     title: "Menu Details",
     headerLeft: leftBackButton({ navigation })
   })
 };
+
 
 export default createStackNavigator(
   {
@@ -157,7 +166,8 @@ export default createStackNavigator(
     RestoView,
     PartnerView,
     CustomerView,
-    AdminMenuView
+    MenuList,
+    MenuView
   },
   {
     defaultNavigationOptions: headerStyles,

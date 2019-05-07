@@ -14,7 +14,8 @@ class AdminMenuListScreen extends Component {
 
   makeRemoteRequest = () => {
     this.setState({ loading: true });
-    getAdminMenu()
+    console.log(this.props.navigation.getParam("tag"));
+    getAdminMenu(this.props.navigation.getParam("tag", ""))
       .then(res => {
         if (res.data.success) {
           this.setState({
@@ -41,7 +42,7 @@ class AdminMenuListScreen extends Component {
       () => this.makeRemoteRequest()
     );
   };
-  
+
   renderItem = ({
     item: {
       id,
@@ -57,7 +58,7 @@ class AdminMenuListScreen extends Component {
   }) => (
     <ListItem
       title={name}
-      titleStyle={{ fontWeight: '500', fontSize: 18, color: '#1B73B4' }}
+      titleStyle={{ fontWeight: "500", fontSize: 18, color: "#1B73B4" }}
       subtitle={
         <View>
           <Text>Price: ₱ {price}.00</Text>
@@ -67,7 +68,7 @@ class AdminMenuListScreen extends Component {
       chevron={true}
       bottomDivider
       onPress={() =>
-        this.props.navigation.push("AdminMenuView", { menuId: id })
+        this.props.navigation.push("MenuView", { menuId: id })
       }
     />
   );

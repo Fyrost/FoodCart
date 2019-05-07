@@ -13,7 +13,7 @@ import styles from "../styles";
 
 class LoginScreen extends Component {
   state = {
-    email: "francismgantonio@gmail.com",
+    email: "francis@yahoo.com",
     password: "123456",
     error: "",
     loading: false,
@@ -146,20 +146,20 @@ class LoginScreen extends Component {
         <View style={loginButtonContainer}>
           <Button
             title={"RESEND VERIFICATION"}
-            buttonStyle={[loginButton, { backgroundColor: 'orange' }]}
+            buttonStyle={[loginButton, { backgroundColor: "orange" }]}
             containerStyle={[
               loginButtonSize,
               {
                 display: showResend ? "flex" : "none",
                 top: 0,
-                backgroundColor:'orange'
+                backgroundColor: "orange"
               }
             ]}
             onPress={onResend.bind(this)}
             loading={loadingResend}
             raised
           />
-            
+
           <Button
             title={"LOGIN "}
             buttonStyle={[loginButton]}

@@ -1,12 +1,19 @@
 import React, { Component } from "react";
-import { View, ActivityIndicator, Text, ScrollView } from "react-native";
+import {
+  View,
+  ActivityIndicator,
+  Text,
+  ScrollView,
+  TouchableHighlight
+} from "react-native";
+import _ from "lodash";
 import { Card, Divider } from "react-native-elements";
 import { NavigationEvents } from "react-navigation";
 import { getAdminMenuDetail, errorHandler } from "../../../actions";
 class AdminMenuViewScreen extends Component {
   state = {
     data: {
-      tag:[]
+      tag: []
     },
     loading: false
   };
@@ -37,8 +44,6 @@ class AdminMenuViewScreen extends Component {
 
   render() {
     const { loading, error } = this.state;
-    if (loading) return <ActivityIndicator size="large" />;
-    else if (error) return <Text>{error}</Text>;
     const {
       id,
       name,
@@ -55,6 +60,9 @@ class AdminMenuViewScreen extends Component {
       restaurant_name,
       tag
     } = this.state.data;
+    if (loading) return <ActivityIndicator size="large" />;
+    else if (error) return <Text>{error}</Text>;
+    else if (!id) return <Text>Item may have been deleted</Text>;
     return (
       <ScrollView style={{ flex: 1 }}>
         <NavigationEvents onWillFocus={this.makeRemoteRequest} />
@@ -85,7 +93,23 @@ class AdminMenuViewScreen extends Component {
 
             <View style={styles.cardRowContent}>
               <Text style={styles.restoSubtitleText}>Restaurant:</Text>
-              <Text style={styles.restoText}>{restaurant_name}</Text>
+              <TouchableHighlight
+                onPress={_.debounce(
+                  () =>
+                    this.props.navigation.push("RestoView", {
+                      restoId: restaurant_id
+                    }),
+                  1000,
+                  {
+                    leading: true,
+                    trailing: false
+                  }
+                )}
+              >
+                <Text style={[styles.restoText, { color: "#1B73B4" }]}>
+                  {restaurant_name}
+                </Text>
+              </TouchableHighlight>
             </View>
 
             <View style={styles.cardRowContent}>
@@ -118,9 +142,22 @@ class AdminMenuViewScreen extends Component {
                     ? styles.tagContainerAccepted
                     : styles.tagContainerRejected;
                 return (
-                  <Text style={tagContainer} key={index}>
-                    {tag.name}
-                  </Text>
+                  <TouchableHighlight
+                    onPress={_.debounce(
+                      () =>
+                        this.props.navigation.push("MenuList", {
+                          tag: tag.slug
+                        }),
+                      1000,
+                      {
+                        leading: true,
+                        trailing: false
+                      }
+                    )}
+                    key={index}
+                  >
+                    <Text style={tagContainer}>{tag.name}</Text>
+                  </TouchableHighlight>
                 );
               })}
             </View>
@@ -170,32 +207,32 @@ const styles = {
     paddingVertical: 10
   },
   tagContainerPending: {
-    backgroundColor:'#99B0D7',
-    borderRadius:3,
-    color:'#091428',
-    paddingVertical:2,
-    paddingHorizontal:4,
+    backgroundColor: "#99B0D7",
+    borderRadius: 3,
+    color: "#091428",
+    paddingVertical: 2,
+    paddingHorizontal: 4,
     marginRight: 5,
-    marginBottom: 8,
+    marginBottom: 8
   },
 
   tagContainerRejected: {
-    backgroundColor:'#F68CA2',
-    borderRadius:3,
-    color:'#f80031',
-    paddingVertical:2,
-    paddingHorizontal:4,
+    backgroundColor: "#F68CA2",
+    borderRadius: 3,
+    color: "#f80031",
+    paddingVertical: 2,
+    paddingHorizontal: 4,
     marginRight: 5,
-    marginBottom: 8,
+    marginBottom: 8
   },
-  
+
   tagContainerAccepted: {
-    backgroundColor:'#c3f2fb',
-    borderRadius:3,
-    color:'#03acca',
-    paddingVertical:2,
-    paddingHorizontal:4,
+    backgroundColor: "#c3f2fb",
+    borderRadius: 3,
+    color: "#03acca",
+    paddingVertical: 2,
+    paddingHorizontal: 4,
     marginRight: 5,
-    marginBottom: 8,
-  },
+    marginBottom: 8
+  }
 };

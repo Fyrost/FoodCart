@@ -262,9 +262,9 @@ export const postRestoInfo = (
   });
 };
 
-export const getOwnerOrder = () => {
+export const getOwnerOrder = status => {
   return Axios({
-    url: API.OWNER_ORDER,
+    url: API.OWNER_ORDER(status),
     method: "get"
   });
 };
@@ -439,9 +439,9 @@ export const getAdminRestoDetail = id => {
   });
 };
 
-export const getAdminMenu = () => {
+export const getAdminMenu = tag => {
   return Axios({
-    url: API.ADMIN_MENU,
+    url: API.ADMIN_MENU(tag ? tag : ""),
     method: "get"
   });
 };
