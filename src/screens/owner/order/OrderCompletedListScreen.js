@@ -4,7 +4,7 @@ import { ListItem, Text } from "react-native-elements";
 import { NavigationEvents } from "react-navigation";
 import List from "../../../components/List";
 import { getOwnerOrder, errorHandler } from "../../../actions";
-class OrderListScreen extends Component {
+class OrderCompletedListScreen extends Component {
   state = {
     data: [],
     loading: false,
@@ -96,7 +96,7 @@ class OrderListScreen extends Component {
   }
 }
 
-export default OrderListScreen;
+export default OrderCompletedListScreen;
 
 const normal = {
   fontSize: 16,

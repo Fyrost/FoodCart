@@ -76,7 +76,7 @@ export const CUSTOMER_PROFILE = `profile`;
 
 export const CHECKOUT = `checkout`;
 
-export const ORDER_HISTORY = `order/history`;
+export const ORDER_HISTORY = status => `order/history?status=${status}`;
 export const ORDER_SELECT = code => `order/${code}`;
 
 export const USER_PASSWORD = `user/update`;

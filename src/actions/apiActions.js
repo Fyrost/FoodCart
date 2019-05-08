@@ -631,9 +631,10 @@ export const postCheckout = change => {
   });
 };
 
-export const getOrderHistory = () => {
+export const getOrderHistory = (status) => {
+  console.log(API.ORDER_HISTORY(status))
   return Axios({
-    url: API.ORDER_HISTORY,
+    url: API.ORDER_HISTORY(status),
     method: "get"
   });
 };
