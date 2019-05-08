@@ -18,7 +18,8 @@ import {
   menuIcon,
   customerIcon,
   salesIcon,
-  reportIcon
+  reportIcon,
+  logIcon
 } from "./navOptions/navIcons";
 import ProfileStackNavigator from "../ProfileStackNavigator";
 import PartnerViewScreen from "../../screens/admin/partner/PartnerViewScreen";
@@ -88,7 +89,7 @@ const Logs = {
   screen: LogsNavigator,
   navigationOptions: {
     title: "Logs",
-    drawerIcon: ({ tintColor }) => reportIcon({ tintColor })
+    drawerIcon: ({ tintColor }) => logIcon({ tintColor })
   }
 };
 
