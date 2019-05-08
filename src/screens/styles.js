@@ -204,7 +204,7 @@ module.exports=StyleSheet.create({
   },
 
   ownerFormBody: {
-    flex: 6,
+    flex: 10,
     justifyContent: 'space-between',
   },
 
