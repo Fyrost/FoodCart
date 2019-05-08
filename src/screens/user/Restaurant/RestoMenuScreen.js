@@ -98,7 +98,7 @@ class RestoViewScreen extends Component {
                   arr => arr.slug === res[0].data.data.slug
                 )[0].rate
               : "",
-            rateVisible: res[2].data.data.some(
+            rateVisible: !res[2].data.data.some(
               arr => arr.slug === res[0].data.data.slug
             )
           });
@@ -177,12 +177,14 @@ class RestoViewScreen extends Component {
         if (res.data.success) {
           this.setState({ yourRating: rating.toString() });
           getRestaurantMenu(this.props.navigation.getParam("slug"))
-            .then(resp => {
-              if (resp.data.success) {
-                this.setState({ restoRating: resp.data.data.rating });
-                alert(res.data.message);
+            .then(res => {
+              if (res.data.success) {
+                this.setState({
+                  restoRating: res.data.data.rating,
+                  rateVisible: false
+                });
               } else {
-                alert(resp.data.message);
+                alert(res.data.message);
               }
               this.setState({ screenLoading: false });
             })
@@ -316,7 +318,7 @@ class RestoViewScreen extends Component {
           {this.renderFavorite()}
           {this.renderRating()}
         </View>
-        {!this.state.rateVisible && (
+        {this.state.rateVisible && (
           <View style={stylesResto.ratingContainer}>
             <Rating
               showRating
@@ -560,6 +562,7 @@ class RestoViewScreen extends Component {
     return (
       <View>
         <NavigationEvents onWillFocus={makeRemoteRequest} />
+        {console.log(this.state.rateVisible)}
         <Loading loading={screenLoading} opacity={0.5} size={50} />
         {renderMenuDetail()}
         <SectionList
