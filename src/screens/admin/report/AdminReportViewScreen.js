@@ -1,11 +1,25 @@
 import React, { Component } from "react";
-import { View, ActivityIndicator, ScrollView } from "react-native";
-import { Text, Card, Divider, ListItem } from "react-native-elements";
+import { View, ActivityIndicator, ScrollView, TextInput } from "react-native";
+import {
+  Text,
+  Button,
+  Card,
+  Icon,
+  Divider,
+  ListItem,
+  CheckBox,
+  Overlay
+} from "react-native-elements";
 import { NavigationEvents } from "react-navigation";
-import { MessageAlert } from "../../../components/Alerts";
+import { ConfirmAlert, MessageAlert } from "../../../components/Alerts";
 import ImageViewer from "../../../components/ImageViewer";
 import List from "../../../components/List";
-import { getAdminReportDetail, errorHandler } from "../../../actions";
+import {
+  getAdminReportDetail,
+  investigateAdminReport,
+  closeAdminReport,
+  errorHandler
+} from "../../../actions";
 
 const formatStatus = status =>
   status === "0" ? "Open" : status === "1" ? "Under Investigation" : "Closed";
@@ -17,6 +31,8 @@ const proofFormat = permit =>
 
 class AdminReportViewScreen extends Component {
   state = {
+    comment: "",
+    ban: false,
     ticket: {
       id: "",
       code: "",
@@ -39,8 +55,17 @@ class AdminReportViewScreen extends Component {
       contact_number: "",
       address: ""
     },
-    loading: false
+    loading: false,
+    screenLoading: false,
+    overlayVisible: false
   };
+
+  componentWillMount() {
+    this.props.navigation.setParams({
+      handleInvestigate: this.handleInvestigate,
+      handleOverlayVisible: this.handleOverlayVisible
+    });
+  }
 
   makeRemoteRequest = () => {
     this.setState({ loading: true });
@@ -87,6 +112,139 @@ class AdminReportViewScreen extends Component {
       });
   };
 
+  handleOverlayVisible = () => {
+    this.setState({ overlayVisible: true });
+  };
+
+  handleInvestigate() {
+    this.setState({ screenLoading: true });
+    investigateAdminReport(this.props.navigation.getParam("code"))
+      .then(res => {
+        this.setState({ screenLoading: false });
+        MessageAlert("Investigate Report", res.data.message);
+        this.props.navigation.pop();
+      })
+      .catch(err => {
+        this.setState({ screenLoading: false });
+        MessageAlert("Investigate Report", errorHandler(err));
+      });
+  }
+
+  handleClose() {
+    this.setState({ screenLoading: true });
+    closeAdminReport({
+      code: this.props.navigation.getParam("code"),
+      comment: this.state.comment,
+      ban: this.state.ban
+    })
+      .then(res => {
+        this.setState({ screenLoading: false });
+        MessageAlert("Close Report", res.data.message);
+        if (res.data.success) this.props.navigation.pop();
+      })
+      .catch(err => {
+        this.setState({ screenLoading: false });
+        MessageAlert("Close Report", errorHandler(err));
+      });
+  }
+
+  renderOverlay = () => {
+    const INITIAL_STATE = {
+      comment: "",
+      ban: false,
+      overlayVisible: false
+    };
+    return (
+      <Overlay
+        fullScreen
+        isVisible={this.state.overlayVisible}
+        borderRadius={0}
+        containerStyle={{ flex: 1 }}
+        overlayStyle={{ margin: 0, padding: 0 }}
+        windowBackgroundColor={"rgba(0, 0, 0, .8)"}
+        onBackdropPress={() => this.setState(INITIAL_STATE)}
+      >
+        <View style={{ flex: 1 }}>
+          <Icon
+            raised
+            reverse
+            name={"times"}
+            type={"font-awesome"}
+            color={"#1B73B4"}
+            size={20}
+            underlayColor={"black"}
+            containerStyle={{
+              zIndex: 99999,
+              position: "absolute",
+              right: 10,
+              top: 7
+            }}
+            onPress={() => this.setState(INITIAL_STATE)}
+          />
+          <View style={{ flex: 12 }}>
+            <ScrollView contentContainerStyle={{ paddingHorizontal: 20 }}>
+              <Text h3 h3Style={{ color: "#1B73B4", marginTop: 15 }}>
+                Close Report
+              </Text>
+              <Text style={{ fontSize: 16, marginTop: 15 }}>
+                Why do you want to close this report?
+              </Text>
+              <TextInput
+                value={this.state.comment}
+                multiline={true}
+                placeholder={"Enter your reason here..."}
+                numberOfLines={5}
+                style={{
+                  borderColor: "gray",
+                  borderWidth: 1,
+                  paddingHorizontal: 10
+                }}
+                onChangeText={comment => this.setState({ comment })}
+              />
+            </ScrollView>
+          </View>
+          <CheckBox
+            right
+            title="Do you want to ban this customer?"
+            checked={this.state.ban}
+            onPress={() => this.setState({ ban: !this.state.ban })}
+          />
+          <View style={{ flex: 1, flexDirection: "row", alignItems: "center" }}>
+            <Button
+              title={"Cancel"}
+              onPress={() => this.setState(INITIAL_STATE)}
+              buttonStyle={{
+                borderRadius: 0,
+                backgroundColor: "#EF1B17",
+                flex: 1
+              }}
+              containerStyle={{ flex: 1 }}
+              disabled={this.state.loading}
+            />
+            <Button
+              title={"Close"}
+              onPress={() =>
+                this.state.ban
+                  ? ConfirmAlert(
+                      "Close Report",
+                      "Are you sure you want to ban this customer and close the report?",
+                      this.handleClose
+                    )
+                  : this.handleClose
+              }
+              disabled={this.state.loading}
+              containerStyle={{ flex: 1 }}
+              buttonStyle={{
+                borderRadius: 0,
+                backgroundColor: "orange",
+                flex: 1
+              }}
+            />
+          </View>
+        </View>
+      </Overlay>
+    );
+  };
   renderItem = ({ item }) => (
     <ListItem
       title={item.name}
@@ -102,12 +260,13 @@ class AdminReportViewScreen extends Component {
 
   render() {
     const { loading, ticket, order, restaurant, customer } = this.state;
-    const { makeRemoteRequest } = this;
+    const { makeRemoteRequest, renderOverlay } = this;
     if (loading) return <ActivityIndicator size="large" />;
     return (
       <ScrollView style={{ paddingVertical: 10 }}>
         {console.log(order.itemlist)}
         <NavigationEvents onWillFocus={makeRemoteRequest} />
+        {renderOverlay()}
         <Card wrapperStyle={{ margin: 0, padding: 0 }}>
           <Text h4 style={styles.cardTitle}>
             Ticket Information

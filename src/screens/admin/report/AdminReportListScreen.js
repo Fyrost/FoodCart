@@ -3,10 +3,7 @@ import { View, Text, ActivityIndicator } from "react-native";
 import { ListItem, Overlay } from "react-native-elements";
 import { NavigationEvents } from "react-navigation";
 import { MessageAlert } from "../../../components/Alerts";
-import {
-  getAdminReportList,
-  errorHandler
-} from "../../../actions";
+import { getAdminReportList, errorHandler } from "../../../actions";
 import List from "../../../components/List";
 
 class AdminReportListScreen extends Component {
@@ -72,25 +69,39 @@ class AdminReportListScreen extends Component {
       updated_at
     }
   }) => {
-    const statusType = status === "0" 
-                ? {text: 'OPEN', color: '#00CC66'}
-                : status === "1" 
-                  ? {text: 'UNDER INVESTIGATION', color: '#11CDEF'}
-                  : {text: 'CLOSED', color: '#EF1B17'}
+    const statusType =
+      status === "0"
+        ? { text: "OPEN", color: "#00CC66" }
+        : status === "1"
+        ? { text: "UNDER INVESTIGATION", color: "#11CDEF" }
+        : { text: "CLOSED", color: "#EF1B17" };
     return (
       <ListItem
         title={`Ticket # ${code}`}
-        titleStyle={{ fontWeight: '500', fontSize: 18, color: '#1B73B4' }}
+        titleStyle={{ fontWeight: "500", fontSize: 18, color: "#1B73B4" }}
         subtitle={
           <View>
-            <Text style={{ fontSize: 12, fontWeight: '500', color: statusType.color }}>{statusType.text}</Text>
+            <Text
+              style={{
+                fontSize: 12,
+                fontWeight: "500",
+                color: statusType.color
+              }}
+            >
+              {statusType.text}
+            </Text>
             <Text>Submitted:</Text>
             <Text>{created_at}</Text>
           </View>
-        } 
-        chevron={true} 
-        bottomDivider 
-        onPress={() => this.props.navigation.push('AdminReportView', { code })} 
+        }
+        chevron={true}
+        bottomDivider
+        onPress={() =>
+          this.props.navigation.push("AdminReportView", {
+            code,
+            investigate: status === "1" ? true : false
+          })
+        }
       />
     );
   };

@@ -523,14 +523,15 @@ export const investigateAdminReport = code => {
   });
 };
 
-export const closeAdminReport = (code, comment) => {
+export const closeAdminReport = ({code, comment, ban}) => {
+  let data = new FormData();
+  data.append("report_code", code);
+  data.append("report_comment", comment);
+  if (ban) data.append("report_ban", ban);
   return Axios({
     url: API.ADMIN_REPORT_CLOSE(code),
     method: "post",
-    data: {
-      report_code: code,
-      report_comment: comment
-    }
+    data
   });
 };
 

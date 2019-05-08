@@ -30,14 +30,17 @@ export const rightSearchButton = ({ navigation }) => (
 ////ADMIN REPORT////
 export const rightReportButton = ({ navigation }) => (
   <View style={{ flexDirection: "row" }}>
-    <Avatar
-      rounded
-      containerStyle={{ backgroundColor: "transparent" }}
-      icon={{ name: "eye", type: "font-awesome" }}
-      overlayContainerStyle={{ backgroundColor: "orange" }}
-      size={40}
-      containerStyle={{ marginRight: 5 }}
-    />
+    {!navigation.getParam("investigate", false) && (
+      <Avatar
+        rounded
+        containerStyle={{ backgroundColor: "transparent" }}
+        icon={{ name: "eye", type: "font-awesome" }}
+        overlayContainerStyle={{ backgroundColor: "orange" }}
+        size={40}
+        containerStyle={{ marginRight: 5 }}
+        onPress={navigation.getParam("handleInvestigate")}
+      />
+    )}
     <Avatar
       rounded
       containerStyle={{ backgroundColor: "transparent" }}
@@ -45,6 +48,7 @@ export const rightReportButton = ({ navigation }) => (
       overlayContainerStyle={{ backgroundColor: "#EF1B17" }}
       size={40}
       containerStyle={{ marginRight: 5 }}
+      onPress={navigation.getParam("handleOverlayVisible")}
     />
   </View>
 );
