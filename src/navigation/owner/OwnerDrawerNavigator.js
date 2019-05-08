@@ -18,7 +18,8 @@ import {
   MenuIcon,
   CategoryIcon,
   SalesIcon,
-  ReportIcon
+  ReportIcon,
+  LogIcon
 } from "./navOptions/navIcons";
 // import OwnerScreen from "../screens/owner/OwnerScreen";
 import ProfileStackNavigator from "../ProfileStackNavigator";
@@ -70,7 +71,7 @@ const Logs = {
   screen: LogsNavigator,
   navigationOptions: {
     drawerLabel: "Activity Logs",
-    drawerIcon: ({ tintColor }) => ReportIcon({ tintColor })
+    drawerIcon: ({ tintColor }) => LogIcon({ tintColor })
   }
 };
 

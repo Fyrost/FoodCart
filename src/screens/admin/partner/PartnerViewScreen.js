@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { View, ScrollView, ActivityIndicator } from "react-native";
 import ImageViewer from "../../../components/ImageViewer";
 import { ConfirmAlert, MessageAlert } from "../../../components/Alerts";
-import { Text, Button } from "react-native-elements";
+import { Text, Button, Card } from "react-native-elements";
 import {
   getApplyDetail,
   approveApply,
@@ -197,87 +197,94 @@ class PartnerViewScreen extends Component {
       <View style={{ flex: 1 }}>
         <Loading loading={screenLoading} opacity={0.5} size={50} />
         <View style={{ flex: 9 }}>
-          <ScrollView
-            contentContainerStyle={{ justifyContent: "space-evenly" }}
-          >
-            <View style={styles.cardContent}>
-              <View style={styles.cardRow}>
-                <Text style={styles.cardRowTitle}>Owner Name</Text>
-              </View>
-              <View style={styles.cardRow2}>
-                <Text style={styles.cardRowText}>
-                  {owner_lname}, {owner_fname} {owner_mname}
-                </Text>
-              </View>
-
-              <View style={styles.cardRow}>
-                <Text style={styles.cardRowTitle}>Restaurant Name</Text>
-              </View>
-              <View style={styles.cardRow2}>
-                <Text style={styles.cardRowText}>{name}</Text>
-              </View>
-
-              <View style={styles.cardRow}>
-                <Text style={styles.cardRowTitle}>Address</Text>
-              </View>
-              <View style={styles.cardRow2}>
-                <Text style={styles.cardRowText}>{address}</Text>
-              </View>
-
-              <View style={styles.cardRow}>
-                <Text style={styles.cardRowTitle}>Email</Text>
-              </View>
-              <View style={styles.cardRow2}>
-                <Text style={styles.cardRowText}>{email}</Text>
-              </View>
-
-              <View style={styles.cardRow}>
-                <Text style={styles.cardRowTitle}>
-                  Contact Number {contactType}
-                </Text>
-              </View>
-              <View style={styles.cardRow2}>
-                <Text style={styles.cardRowText}>{contact_number}</Text>
-              </View>
-
-              <View style={styles.cardRow}>
-                <Text style={styles.cardRowTitle}>Submitted At</Text>
-              </View>
-              <View style={styles.cardRow2}>
-                <Text style={styles.cardRowText}>{created_at}</Text>
-              </View>
-
-              <View style={{ display: status === "0" ? "none" : "flex" }}>
+          <ScrollView>
+            <Card
+              title={
+                <View style={styles.cardTitleContent}>
+                  <Text style={styles.cardTitleText}>Applicant Information</Text>
+                </View>
+              }
+              wrapperStyle={styles.cardWrapper}
+              titleStyle={styles.cardWrapper}
+            >
+              <View style={styles.cardContent}>
                 <View style={styles.cardRow}>
-                  <Text style={styles.cardRowTitle}>{statusType} At</Text>
+                  <Text style={styles.cardRowTitle}>Owner Name</Text>
                 </View>
                 <View style={styles.cardRow2}>
-                  <Text style={styles.cardRowText}>{updated_at}</Text>
+                  <Text style={styles.cardRowText}>
+                    {owner_lname}, {owner_fname} {owner_mname}
+                  </Text>
+                </View>
+
+                <View style={styles.cardRow}>
+                  <Text style={styles.cardRowTitle}>Restaurant Name</Text>
+                </View>
+                <View style={styles.cardRow2}>
+                  <Text style={styles.cardRowText}>{name}</Text>
+                </View>
+
+                <View style={styles.cardRow}>
+                  <Text style={styles.cardRowTitle}>Address</Text>
+                </View>
+                <View style={styles.cardRow2}>
+                  <Text style={styles.cardRowText}>{address}</Text>
+                </View>
+
+                <View style={styles.cardRow}>
+                  <Text style={styles.cardRowTitle}>Email</Text>
+                </View>
+                <View style={styles.cardRow2}>
+                  <Text style={styles.cardRowText}>{email}</Text>
+                </View>
+
+                <View style={styles.cardRow}>
+                  <Text style={styles.cardRowTitle}>
+                    Contact Number {contactType}
+                  </Text>
+                </View>
+                <View style={styles.cardRow2}>
+                  <Text style={styles.cardRowText}>{contact_number}</Text>
+                </View>
+
+                <View style={styles.cardRow}>
+                  <Text style={styles.cardRowTitle}>Submitted At</Text>
+                </View>
+                <View style={styles.cardRow2}>
+                  <Text style={styles.cardRowText}>{created_at}</Text>
+                </View>
+
+                <View style={{ display: status === "0" ? "none" : "flex" }}>
+                  <View style={styles.cardRow}>
+                    <Text style={styles.cardRowTitle}>{statusType} At</Text>
+                  </View>
+                  <View style={styles.cardRow2}>
+                    <Text style={styles.cardRowText}>{updated_at}</Text>
+                  </View>
+                </View>
+
+                <View style={styles.cardRow}>
+                  <Text style={styles.cardRowTitle}>Permits</Text>
+                </View>
+                <View
+                  style={{
+                    width: "100%",
+                    height: 100,
+                    backgroundColor: "#06070E"
+                  }}
+                >
+                  <ImageViewer
+                    imageUrls={permitFormat(permits)}
+                    containerStyle={{
+                      flexDirection: "row",
+                      justifyContent: "center"
+                    }}
+                  />
                 </View>
               </View>
-
-              <View style={styles.cardRow}>
-                <Text style={styles.cardRowTitle}>Permits</Text>
-              </View>
-              <View
-                style={{
-                  width: "100%",
-                  height: 100,
-                  backgroundColor: "#06070E"
-                }}
-              >
-                <ImageViewer
-                  imageUrls={permitFormat(permits)}
-                  containerStyle={{
-                    flexDirection: "row",
-                    justifyContent: "center"
-                  }}
-                />
-              </View>
-            </View>
-          </ScrollView>
+            </Card>
+          </ScrollView>          
         </View>
-
         {this.props.navigation.getParam("pending") ? this.renderButton() : null}
       </View>
     );
@@ -319,18 +326,20 @@ const styles = {
     justifyContent: "space-between",
     paddingVertical: 10,
     paddingHorizontal: 15,
-    backgroundColor: "#5999C8"
+    borderColor: "lightgrey",
+    borderBottomWidth: 0.8
   },
   cardRow2: {
     flex: 2,
     justifyContent: "space-between",
     paddingVertical: 10,
-    paddingHorizontal: 15
+    paddingHorizontal: 15,
+    borderColor: "lightgrey",
+    borderBottomWidth: 0.8
   },
   cardRowTitle: {
     fontSize: 16,
-    fontWeight: "500",
-    color: "white"
+    fontWeight: "500"
   },
   cardRowText: {
     fontWeight: "normal",
