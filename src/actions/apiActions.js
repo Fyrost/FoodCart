@@ -481,6 +481,27 @@ export const getAdminMenuSales = search => {
   });
 };
 
+export const getAdminOrderList = () => {
+  return Axios({
+    url: API.ADMIN_ORDER,
+    method: "get"
+  });
+};
+
+export const getAdminOrderDetail = id => {
+  return Axios({
+    url: API.ADMIN_ORDER_SELECT(id),
+    method: "get"
+  });
+};
+
+export const getAdminBlockList = () => {
+  return Axios({
+    url: API.ADMIN_BLOCK,
+    method: "get"
+  });
+};
+
 export const getAdminReportList = () => {
   return Axios({
     url: API.ADMIN_REPORT,
@@ -631,8 +652,8 @@ export const postCheckout = change => {
   });
 };
 
-export const getOrderHistory = (status) => {
-  console.log(API.ORDER_HISTORY(status))
+export const getOrderHistory = status => {
+  console.log(API.ORDER_HISTORY(status));
   return Axios({
     url: API.ORDER_HISTORY(status),
     method: "get"

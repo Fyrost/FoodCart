@@ -5,6 +5,7 @@ import {
   PartnerNavigator,
   ReportNavigator,
   RestoNavigator,
+  OrderNavigator,
   SalesNavigator,
   TagNavigator,
   LogsNavigator
@@ -25,6 +26,7 @@ import ProfileStackNavigator from "../ProfileStackNavigator";
 import PartnerViewScreen from "../../screens/admin/partner/PartnerViewScreen";
 import AdminRestoViewScreen from "../../screens/admin/resto/AdminRestoViewScreen";
 import AdminCustomerViewScreen from "../../screens/admin/customer/AdminCustomerViewScreen";
+import AdminOrderViewScreen from "../../screens/admin/order/AdminOrderViewScreen";
 import AdminMenuListScreen from "../../screens/admin/menu/AdminMenuListScreen";
 import AdminMenuViewScreen from "../../screens/admin/menu/AdminMenuViewScreen";
 import DrawerLayout from "../../components/DrawerLayout";
@@ -69,6 +71,13 @@ const Customer = {
   }
 };
 
+const Order = {
+  screen: OrderNavigator,
+  navigationOptions: {
+    title: "Orders",
+    drawerIcon: ({ tintColor }) => customerIcon({ tintColor })
+  }
+};
 const Sales = {
   screen: SalesNavigator,
   navigationOptions: {
@@ -100,6 +109,7 @@ const AdminDrawer = createDrawerNavigator(
     Resto,
     Menu,
     Customer,
+    Order,
     Sales,
     Report,
     Logs
@@ -144,13 +154,20 @@ const CustomerView = {
     headerLeft: leftBackButton({ navigation })
   })
 };
+const OrderView = {
+  screen: AdminOrderViewScreen,
+  navigationOptions: ({ navigation }) => ({
+    title: "Order Details",
+    headerLeft: leftBackButton({ navigation })
+  })
+};
 const MenuList = {
   screen: AdminMenuListScreen,
   navigationOptions: ({ navigation }) => ({
     title: `Tag ${navigation.getParam("tag")} List`,
     headerLeft: leftBackButton({ navigation })
   })
-}
+};
 const MenuView = {
   screen: AdminMenuViewScreen,
   navigationOptions: ({ navigation }) => ({
@@ -159,7 +176,6 @@ const MenuView = {
   })
 };
 
-
 export default createStackNavigator(
   {
     AdminDrawer,
@@ -167,6 +183,7 @@ export default createStackNavigator(
     RestoView,
     PartnerView,
     CustomerView,
+    OrderView,
     MenuList,
     MenuView
   },
