@@ -84,7 +84,7 @@ class SURestaurantCredentialsScreen extends Component {
     const { pickImage, handleRegister } = this;
     return (
       <View style={[styles.horizontalPadding16, { flex: 1 }]}>
-        <View style={[{ flex: 7, justifyContent: "space-around" }]}>
+        <View style={[{ flex: 7, justifyContent: "space-evenly" }]}>
           <View style={{ flex: 1 }}>
             <Text>Please provide your business permits.</Text>
           </View>
