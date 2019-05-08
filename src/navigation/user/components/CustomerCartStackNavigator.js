@@ -8,7 +8,7 @@ import { headerStyles } from "../navOptions/navStyles";
 import CartScreen from "../../../screens/user/Cart/CartScreen";
 import CheckoutScreen from "../../../screens/user/Cart/CheckoutScreen";
 
-const Cart = {
+const UserCart = {
   screen: CartScreen,
   navigationOptions: ({ navigation }) => ({
     title: "Cart",
@@ -17,7 +17,7 @@ const Cart = {
   })
 };
 
-const Checkout = {
+const UserCheckout = {
   screen: CheckoutScreen,
   navigationOptions: ({ navigation }) => ({
     title: "Checkout",
@@ -26,7 +26,7 @@ const Checkout = {
 };
 
 const CartNavigator = createStackNavigator(
-  { Cart, Checkout },
+  { UserCart, UserCheckout },
   { defaultNavigationOptions: headerStyles }
 );
 

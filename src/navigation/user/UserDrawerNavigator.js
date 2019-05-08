@@ -72,7 +72,7 @@ const Favorite = {
     headerLeft: leftBackButton({ navigation })
   })
 };
-const RestoMenu = {
+const UserRestoMenu = {
   screen: RestoMenuScreen,
   navigationOptions: ({ navigation }) => ({
     title: "Menu",
@@ -80,7 +80,7 @@ const RestoMenu = {
     headerRight: rightRestoCartButton({ navigation })
   })
 };
-const OrderView = {
+const UserOrderView = {
   screen: OrderDetailScreen,
   navigationOptions: ({ navigation }) => ({
     title: "Order Details",
@@ -95,8 +95,8 @@ export default createStackNavigator(
     Profile,
     Cart,
     Favorite,
-    RestoMenu,
-    OrderView
+    UserRestoMenu,
+    UserOrderView
   },
 
   {

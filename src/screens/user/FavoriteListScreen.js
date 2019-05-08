@@ -143,7 +143,7 @@ class FavoriteListScreen extends Component {
               title={" View Menu"}
               onPress={_.debounce(
                 () =>
-                  this.props.navigation.navigate("RestoMenu", {
+                  this.props.navigation.navigate("UserRestoMenu", {
                     slug: item.slug
                   }),
                 1000,

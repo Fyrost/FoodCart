@@ -136,7 +136,7 @@ class RestoListScreen extends Component {
             title={" View Menu"}
             onPress={_.debounce(
               () =>
-                this.props.navigation.push("RestoMenu", { slug: item.slug }),
+                this.props.navigation.push("UserRestoMenu", { slug: item.slug }),
               1000,
               { leading: true, trailing: false }
             )}

@@ -6,7 +6,7 @@ import {
 import { headerStyles } from "../navOptions/navStyles";
 import RestoListScreen from "../../../screens/user/Restaurant/RestoListScreen";
 
-const RestoList = {
+const UserRestoList = {
   screen: RestoListScreen,
   navigationOptions: ({ navigation }) => ({
     title: "Restaurant List",
@@ -16,7 +16,7 @@ const RestoList = {
 };
 
 const RestoNavigator = createStackNavigator(
-  { RestoList },
+  { UserRestoList },
   { defaultNavigationOptions: headerStyles }
 );
 
