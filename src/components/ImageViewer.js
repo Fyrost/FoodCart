@@ -39,7 +39,19 @@ class ImageViewer extends Component {
           transparent={true}
           onRequestClose={() => this.setState({ modalVisible: false })}
         >
-          <Text style={{color:'white',backgroundColor:'black'}}>close</Text>
+          <Icon 
+            name={'close'} 
+            type={'antdesign'} 
+            color={'white'} 
+            size={36} 
+            underlayColor={'transparent'}
+            containerStyle={{
+              zIndex: 9999,
+              position: 'absolute',
+              right: 20,
+              top: 30
+            }}
+            onPress={()=>this.setState({ modalVisible: false })}/>
           <Viewer
             imageUrls={imageUrls}
             index={this.state.index}
