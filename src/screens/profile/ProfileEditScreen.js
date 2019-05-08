@@ -729,7 +729,7 @@ class ProfileEditScreen extends Component {
           </ScrollView>
         </View>
         <Button
-          title="update"
+          title="UPDATE"
           containerStyle={{ flex: 1, justifyContent: "center" }}
           onPress={() =>
             ConfirmAlert(
