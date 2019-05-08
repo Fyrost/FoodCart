@@ -13,7 +13,7 @@ import styles from "../styles";
 
 class LoginScreen extends Component {
   state = {
-    email: "francis@yahoo.com",
+    email: "francismgantonio@gmail.com",
     password: "123456",
     error: "",
     loading: false,

@@ -1,28 +1,48 @@
-import { createStackNavigator } from "react-navigation";
-import { leftBackButton, leftDrawerButton } from "../navOptions/navButtons";
-import { headerStyles } from "../navOptions/navStyles";
-import OrderHistoryScreen from "../../../screens/user/Order/OrderHistoryScreen";
-import OrderDetailScreen from "../../../screens/user/Order/OrderDetailScreen";
+import {
+  createStackNavigator,
+  createBottomTabNavigator
+} from "react-navigation";
+import { leftDrawerButton } from "../navOptions/navButtons";
+import { headerStyles, TabStyles } from "../navOptions/navStyles";
+import { HomeIcon } from "../navOptions/navIcons";
+import OrderOnProcessListScreen from "../../../screens/user/Order/OrderOnProcessListScreen";
+import OrderCompletedListScreen from "../../../screens/user/Order/OrderCompletedListScreen";
 
-const OrderHistory = {
-  screen: OrderHistoryScreen,
-  navigationOptions: ({ navigation }) => ({
-    title: "Order History",
-    headerLeft: leftDrawerButton({ navigation })
-  })
+const OrderOnProgress = createStackNavigator({
+  OrderProgress: {
+    screen: OrderOnProcessListScreen,
+    navigationOptions: ({ navigation }) => ({
+      ...headerStyles,
+      title: "Orders",
+      headerLeft: leftDrawerButton({ navigation })
+    })
+  }
+});
+
+OrderOnProgress.navigationOptions = {
+  tabBarLabel: "On Progress",
+  tabBarIcon: ({ tintColor }) => HomeIcon({ tintColor })
 };
 
-const OrderView = {
-  screen: OrderDetailScreen,
-  navigationOptions: ({ navigation }) => ({
-    title: "Order Details",
-    headerLeft: leftBackButton({ navigation })
-  })
+const OrderCompleted = createStackNavigator({
+  OrderCompleted: {
+    screen: OrderCompletedListScreen,
+    navigationOptions: ({ navigation }) => ({
+      ...headerStyles,
+      title: "Order History",
+      headerLeft: leftDrawerButton({ navigation })
+    })
+  }
+});
+
+OrderCompleted.navigationOptions = {
+  tabBarLabel: "History",
+  tabBarIcon: ({ tintColor }) => HomeIcon({ tintColor })
 };
 
-const OrderNavigator = createStackNavigator(
-  { OrderHistory, OrderView },
-  { defaultNavigationOptions: headerStyles }
+const OrderNavigator = createBottomTabNavigator(
+  { OrderOnProgress, OrderCompleted },
+  { tabBarOptions: TabStyles, animationEnabled: true }
 );
 
 export { OrderNavigator };

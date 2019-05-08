@@ -5,7 +5,7 @@ import { ListItem } from "react-native-elements";
 import List from "../../../components/List";
 import { getOrderHistory, errorHandler } from "../../../actions";
 
-class OrderHistoryScreen extends Component {
+class OrderCompletedListScreen extends Component {
   state = {
     order: [],
     loading: false,
@@ -16,7 +16,7 @@ class OrderHistoryScreen extends Component {
 
   makeRemoteRequest = () => {
     this.setState({ loading: true });
-    getOrderHistory()
+    getOrderHistory("completed")
       .then(res => {
         if (res.data.success) {
           const { data } = res.data;
@@ -92,4 +92,4 @@ class OrderHistoryScreen extends Component {
   }
 }
 
-export default OrderHistoryScreen;
+export default OrderCompletedListScreen;

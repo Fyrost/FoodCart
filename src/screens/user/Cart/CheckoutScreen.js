@@ -93,16 +93,16 @@ class CheckoutScreen extends Component {
     });
     postCheckout(changefor)
       .then(res => {
+        this.setState({
+          screenLoading: false
+        });
         if (res.data.success) {
           alert(res.data.message);
           this.props.navigation.pop(2);
         } else {
-          this.setState({
-            screenLoading: false
-          });
           let errors = ``;
           Object.values(res.data.errors).map(value => {
-            error += `${value[0]}\n`;
+            errors += `${value[0]}\n`;
           });
           MessageAlert(res.data.message, errors);
         }
@@ -271,7 +271,8 @@ class CheckoutScreen extends Component {
       totalCookTime,
       totalFlatRate,
       error,
-      loading
+      loading,
+      screenLoading
     } = this.state;
     const {
       makeRemoteRequest,
@@ -293,6 +294,7 @@ class CheckoutScreen extends Component {
     return (
       <View style={{ flex: 1 }}>
         <NavigationEvents onWillFocus={makeRemoteRequest} />
+        <Loading loading={screenLoading} size={"large"} />
         <View
           style={{
             flex: 1,
