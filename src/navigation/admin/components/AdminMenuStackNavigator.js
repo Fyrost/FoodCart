@@ -1,5 +1,5 @@
 import { createStackNavigator } from "react-navigation";
-import { leftDrawerButton, leftBackButton } from "../navOptions/navButtons";
+import { leftDrawerButton } from "../navOptions/navButtons";
 import { headerStyles } from "../navOptions/navStyles";
 import AdminMenuListScreen from "../../../screens/admin/menu/AdminMenuListScreen";
 
