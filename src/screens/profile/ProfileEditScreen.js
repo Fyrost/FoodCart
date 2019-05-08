@@ -715,11 +715,11 @@ class ProfileEditScreen extends Component {
     if (this.state.loading) return <ActivityIndicator size="large" />;
     else if (this.state.error) return <Text>{this.state.error}</Text>;
     return (
-      <View style={[styles.flexContainer, styles.horizontalPadding16]}>
+      <View style={styles.flexContainer}>
         <NavigationEvents onWillFocus={this.preRequest} />
         <Loading loading={this.state.screenLoading} opacity={0.5} size={50} />
         {this.renderPasswordOverlay()}
-        <View style={styles.ownerFormBody}>
+        <View style={[styles.ownerFormBody, styles.horizontalPadding16]}>
           <ScrollView style={styles.flexContainer}>
             {this.state.accessLevel == "3"
               ? this.renderAdminProfile()
@@ -731,6 +731,7 @@ class ProfileEditScreen extends Component {
         <Button
           title="UPDATE"
           containerStyle={{ flex: 1, justifyContent: "center" }}
+          buttonStyle={{ flex: 1 }}
           onPress={() =>
             ConfirmAlert(
               "Update Profile",
