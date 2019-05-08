@@ -133,42 +133,42 @@ const Profile = {
   }
 };
 ////Modals
-const RestoView = {
+const AdminRestoView = {
   screen: AdminRestoViewScreen,
   navigationOptions: ({ navigation }) => ({
     title: "Restaurant Details",
     headerLeft: leftBackButton({ navigation })
   })
 };
-const PartnerView = {
+const AdminPartnerView = {
   screen: PartnerViewScreen,
   navigationOptions: ({ navigation }) => ({
     title: "Application Details",
     headerLeft: leftBackButton({ navigation })
   })
 };
-const CustomerView = {
+const AdminCustomerView = {
   screen: AdminCustomerViewScreen,
   navigationOptions: ({ navigation }) => ({
     title: "Customer Details",
     headerLeft: leftBackButton({ navigation })
   })
 };
-const OrderView = {
+const AdminOrderView = {
   screen: AdminOrderViewScreen,
   navigationOptions: ({ navigation }) => ({
     title: "Order Details",
     headerLeft: leftBackButton({ navigation })
   })
 };
-const MenuList = {
+const AdminMenuList = {
   screen: AdminMenuListScreen,
   navigationOptions: ({ navigation }) => ({
     title: `Tag ${navigation.getParam("tag")} List`,
     headerLeft: leftBackButton({ navigation })
   })
 };
-const MenuView = {
+const AdminMenuView = {
   screen: AdminMenuViewScreen,
   navigationOptions: ({ navigation }) => ({
     title: "Menu Details",
@@ -180,12 +180,12 @@ export default createStackNavigator(
   {
     AdminDrawer,
     Profile,
-    RestoView,
-    PartnerView,
-    CustomerView,
-    OrderView,
-    MenuList,
-    MenuView
+    AdminRestoView,
+    AdminPartnerView,
+    AdminCustomerView,
+    AdminOrderView,
+    AdminMenuList,
+    AdminMenuView
   },
   {
     defaultNavigationOptions: headerStyles,

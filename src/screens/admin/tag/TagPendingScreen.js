@@ -142,7 +142,7 @@ class TagPendingScreen extends Component {
           title={`View Item/s`}
           onPress={() => {
             this.setState({ isDetailVisible: false });
-            this.props.navigation.navigate("MenuList", {
+            this.props.navigation.navigate("AdminMenuList", {
               tag: this.state.detail.slug
             });
           }}

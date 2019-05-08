@@ -96,7 +96,7 @@ class AdminMenuViewScreen extends Component {
               <TouchableHighlight
                 onPress={_.debounce(
                   () =>
-                    this.props.navigation.push("RestoView", {
+                    this.props.navigation.push("AdminRestoView", {
                       restoId: restaurant_id
                     }),
                   1000,
@@ -145,7 +145,7 @@ class AdminMenuViewScreen extends Component {
                   <TouchableHighlight
                     onPress={_.debounce(
                       () =>
-                        this.props.navigation.push("MenuList", {
+                        this.props.navigation.push("AdminMenuList", {
                           tag: tag.slug
                         }),
                       1000,

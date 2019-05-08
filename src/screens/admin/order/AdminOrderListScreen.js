@@ -71,7 +71,7 @@ class OrderCompletedListScreen extends Component {
         chevron={true}
         bottomDivider
         onPress={() =>
-          this.props.navigation.navigate("OrderView", { id: item.id })
+          this.props.navigation.navigate("AdminOrderView", { id: item.id })
         }
       />
     );

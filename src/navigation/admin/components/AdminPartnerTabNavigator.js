@@ -13,7 +13,7 @@ import PartnerPendingScreen from "../../../screens/admin/partner/PartnerPendingS
 import PartnerApprovedScreen from "../../../screens/admin/partner/PartnerApprovedScreen";
 import PartnerRejectedScreen from "../../../screens/admin/partner/PartnerRejectedScreen";
 
-const PartnerPending = createStackNavigator({
+const AdminPartnerPending = createStackNavigator({
   PartnerPending: {
     screen: PartnerPendingScreen,
     navigationOptions: ({ navigation }) => ({
@@ -24,12 +24,12 @@ const PartnerPending = createStackNavigator({
   }
 });
 
-PartnerPending.navigationOptions = {
+AdminPartnerPending.navigationOptions = {
   tabBarLabel: "Pending",
   tabBarIcon: ({ tintColor }) => partnerPendingIcon({ tintColor })
 };
 
-const PartnerApproved = createStackNavigator({
+const AdminPartnerApproved = createStackNavigator({
   PartnerApproved: {
     screen: PartnerApprovedScreen,
     navigationOptions: ({ navigation }) => ({
@@ -40,12 +40,12 @@ const PartnerApproved = createStackNavigator({
   }
 });
 
-PartnerApproved.navigationOptions = {
+AdminPartnerApproved.navigationOptions = {
   tabBarLabel: "Approved",
   tabBarIcon: ({ tintColor }) => partnerApprovedIcon({ tintColor })
 };
 
-const PartnerRejected = createStackNavigator({
+const AdminPartnerRejected = createStackNavigator({
   PartnerRejected: {
     screen: PartnerRejectedScreen,
     navigationOptions: ({ navigation }) => ({
@@ -56,13 +56,13 @@ const PartnerRejected = createStackNavigator({
   }
 });
 
-PartnerRejected.navigationOptions = {
+AdminPartnerRejected.navigationOptions = {
   tabBarLabel: "Rejected",
   tabBarIcon: ({ tintColor }) => partnerRejectedIcon({ tintColor })
 };
 
 const PartnerNavigator = createBottomTabNavigator(
-  { PartnerPending, PartnerApproved, PartnerRejected },
+  { AdminPartnerPending, AdminPartnerApproved, AdminPartnerRejected },
   {
     tabBarOptions: TabStyles,
     animationEnabled: true

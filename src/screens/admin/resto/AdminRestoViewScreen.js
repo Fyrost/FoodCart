@@ -61,7 +61,7 @@ class AdminRestoViewScreen extends Component {
       }
       chevron={true}
       bottomDivider
-      onPress={() => this.props.navigation.push("MenuView", { menuId: id })}
+      onPress={() => this.props.navigation.push("AdminMenuView", { menuId: id })}
     />
   );
 

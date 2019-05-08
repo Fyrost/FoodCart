@@ -66,7 +66,7 @@ class AdminCustomerListScreen extends Component {
       chevron={true}
       bottomDivider
       onPress={() =>
-        this.props.navigation.push("CustomerView", { customerId: id })
+        this.props.navigation.push("AdminCustomerView", { customerId: id })
       }
     />
   );

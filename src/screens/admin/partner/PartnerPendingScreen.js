@@ -106,7 +106,7 @@ class RestoApplyPendingScreen extends Component {
       }
       chevron={true}
       onPress={() =>
-        this.props.navigation.navigate("PartnerView", {
+        this.props.navigation.navigate("AdminPartnerView", {
           restoId: item.id,
           pending: true
         })

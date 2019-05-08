@@ -253,7 +253,7 @@ class AdminReportViewScreen extends Component {
       titleStyle={{ fontWeight: "500", fontSize: 18, color: "#1B73B4" }}
       bottomDivider
       onPress={() =>
-        this.props.navigation.push("MenuView", { menuId: `${item.id}` })
+        this.props.navigation.push("AdminMenuView", { menuId: `${item.id}` })
       }
     />
   );

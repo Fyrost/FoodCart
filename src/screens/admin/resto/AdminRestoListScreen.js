@@ -85,7 +85,7 @@ class AdminRestoListScreen extends Component {
       bottomDivider
       onPress={
          _.debounce(() =>
-        this.props.navigation.push("RestoView", { restoId: id }), 1000,{
+        this.props.navigation.push("AdminRestoView", { restoId: id }), 1000,{
           'leading': true,
           'trailing': false
         })

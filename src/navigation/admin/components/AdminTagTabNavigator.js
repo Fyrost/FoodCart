@@ -13,8 +13,8 @@ import TagPendingScreen from "../../../screens/admin/tag/TagPendingScreen";
 import TagApprovedScreen from "../../../screens/admin/tag/TagApprovedScreen";
 import TagRejectedScreen from "../../../screens/admin/tag/TagRejectedScreen";
 
-const TagPending = createStackNavigator({
-  Pending: {
+const AdminTagPending = createStackNavigator({
+  AdminTagPending: {
     screen: TagPendingScreen,
     navigationOptions: ({ navigation }) => ({
       ...headerStyles,
@@ -24,13 +24,13 @@ const TagPending = createStackNavigator({
   }
 });
 
-TagPending.navigationOptions = {
+AdminTagPending.navigationOptions = {
   tabBarLabel: "Pending",
   tabBarIcon: ({ tintColor }) => tagPendingIcon({ tintColor })
 };
 
-const TagApproved = createStackNavigator({
-  Approved: {
+const AdminTagApproved = createStackNavigator({
+  AdminTagApproved: {
     screen: TagApprovedScreen,
     navigationOptions: ({ navigation }) => ({
       ...headerStyles,
@@ -40,13 +40,13 @@ const TagApproved = createStackNavigator({
   }
 });
 
-TagApproved.navigationOptions = {
+AdminTagApproved.navigationOptions = {
   tabBarLabel: "Approved",
   tabBarIcon: ({ tintColor }) => tagApprovedIcon({ tintColor })
 };
 
-const TagRejected = createStackNavigator({
-  Rejected: {
+const AdminTagRejected = createStackNavigator({
+  AdminTagRejected: {
     screen: TagRejectedScreen,
     navigationOptions: ({ navigation }) => ({
       ...headerStyles,
@@ -56,13 +56,13 @@ const TagRejected = createStackNavigator({
   }
 });
 
-TagRejected.navigationOptions = {
+AdminTagRejected.navigationOptions = {
   tabBarLabel: "Rejected",
   tabBarIcon: ({ tintColor }) => tagRejectedIcon({ tintColor })
 };
 
 const TagNavigator = createBottomTabNavigator(
-  { TagPending, TagApproved, TagRejected },
+  { AdminTagPending, AdminTagApproved, AdminTagRejected },
   { tabBarOptions: TabStyles, animationEnabled: true }
 );
 

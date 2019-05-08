@@ -72,7 +72,7 @@ class RestoApplyRejectedScreen extends Component {
       }
       chevron={true}
       onPress={() =>
-        this.props.navigation.navigate("PartnerView", { restoId: item.id })
+        this.props.navigation.navigate("AdminPartnerView", { restoId: item.id })
       }
       bottomDivider
     />

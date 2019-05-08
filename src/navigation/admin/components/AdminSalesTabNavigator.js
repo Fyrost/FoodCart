@@ -5,11 +5,11 @@ import {
 import { leftDrawerButton, rightSearchButton } from "../navOptions/navButtons";
 import { headerStyles, TabStyles } from "../navOptions/navStyles";
 import { salesRestoIcon, salesMenuIcon } from "../navOptions/navIcons";
-import AdminMenuSales from "../../../screens/admin/sales/AdminMenuSales";
+import AdminMenuSalesScreen from "../../../screens/admin/sales/AdminMenuSalesScreen";
 import AdminRestoSalesScreen from "../../../screens/admin/sales/AdminRestoSalesScreen";
 
-const RestoSales = createStackNavigator({
-  RestoSales: {
+const AdminRestoSales = createStackNavigator({
+  AdminRestoSales: {
     screen: AdminRestoSalesScreen,
     navigationOptions: ({ navigation }) => ({
       ...headerStyles,
@@ -20,14 +20,14 @@ const RestoSales = createStackNavigator({
   }
 });
 
-RestoSales.navigationOptions = {
+AdminRestoSales.navigationOptions = {
   tabBarLabel: "Restaurant",
   tabBarIcon: ({ tintColor }) => salesRestoIcon({ tintColor })
 };
 
-const MenuSales = createStackNavigator({
-  MenuSales: {
-    screen: AdminMenuSales,
+const AdminMenuSales = createStackNavigator({
+  AdminMenuSales: {
+    screen: AdminMenuSalesScreen,
     navigationOptions: ({ navigation }) => ({
       ...headerStyles,
       title: "Menu Sales",
@@ -37,13 +37,13 @@ const MenuSales = createStackNavigator({
   }
 });
 
-MenuSales.navigationOptions = {
+AdminMenuSales.navigationOptions = {
   tabBarLabel: "Menu",
   tabBarIcon: ({ tintColor }) => salesMenuIcon({ tintColor })
 };
 
 const SalesNavigator = createBottomTabNavigator(
-  { RestoSales, MenuSales },
+  { AdminRestoSales, AdminMenuSales },
   {
     tabBarOptions: TabStyles,
     animationEnabled: true

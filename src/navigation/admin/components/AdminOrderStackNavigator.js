@@ -3,7 +3,7 @@ import { leftDrawerButton } from "../navOptions/navButtons";
 import { headerStyles } from "../navOptions/navStyles";
 import AdminOrderListScreen from "../../../screens/admin/order/AdminOrderListScreen";
 
-const OrderList = {
+const AdminOrderList = {
   screen: AdminOrderListScreen,
   navigationOptions: ({ navigation }) => ({
     title: "Orders",
@@ -12,7 +12,7 @@ const OrderList = {
 };
 
 const OrderNavigator = createStackNavigator(
-  { OrderList },
+  { AdminOrderList },
   { defaultNavigationOptions: headerStyles }
 );
 
