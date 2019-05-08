@@ -67,8 +67,11 @@ export const salesIcon = ({ tintColor }) => (
   <Icon name={"payment"} type={"material"} color={tintColor} />
 );
 export const reportIcon = ({ tintColor }) => (
-  <Icon name={"report"} type={"material"} color={tintColor} />
+  <Icon name={"exclamationcircleo"} type={"antdesign"} color={tintColor} />
 );
 export const logIcon = ({ tintColor }) => (
   <Icon name={"file-zip-o"} type={"font-awesome"} color={tintColor} />
+);
+export const orderIcon = ({ tintColor }) => (
+  <Icon name={"clipboard-text-outline"} type={"material-community"} color={tintColor} />
 );
