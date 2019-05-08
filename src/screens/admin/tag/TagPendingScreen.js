@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { View, ActivityIndicator, Alert } from "react-native";
-import { Button, ListItem, Text, Overlay } from "react-native-elements";
+import { Button, ListItem, Text, Overlay, Icon } from "react-native-elements";
 import { NavigationEvents } from "react-navigation";
 import _ from "lodash";
 
@@ -119,27 +119,40 @@ class TagPendingScreen extends Component {
       onBackdropPress={() => this.setState({ isDetailVisible: false })}
     >
       <View>
-        <Text>Name: {this.state.detail.name}</Text>
-        <Text>Slug: {this.state.detail.slug}</Text>
-        <Text>Used by: {this.state.detail.usedBy}</Text>
-        <Button
-          title={`Approve`}
-          onPress={() =>
-            ConfirmAlert("Approve Tag", "Are you sure?", () =>
-              this.handleApprove(this.state.detail.id)
-            )
-          }
+        <Icon
+          raised
+          reverse
+          name={"times"}
+          type={"font-awesome"}
+          color={"#1B73B4"}
+          size={20}
+          underlayColor={"black"}
+          containerStyle={{
+            zIndex: 99999,
+            position: "absolute",
+            right: -33  ,
+            top: -32
+          }}
+          onPress={() => this.setState({ isDetailVisible: false })}
         />
-        <Button
-          title={`Reject`}
-          onPress={() =>
-            ConfirmAlert("Reject Tag", "Are you sure?", () =>
-              this.handleReject(this.state.detail.id)
-            )
-          }
-        />
-        <Button
+        <View style={{ paddingHorizontal: 20, paddingVertical: 10 }}>
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <Text>Name: </Text>
+            <Text>{this.state.detail.name}</Text>
+          </View>
+
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <Text>Slug: </Text>
+            <Text>{this.state.detail.slug}</Text>
+          </View>
+
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <Text>Used by: </Text>
+            <Text>{this.state.detail.usedBy}</Text>
+          </View>
+          <Button
           title={`View Item/s`}
+          type={'clear'}
           onPress={() => {
             this.setState({ isDetailVisible: false });
             this.props.navigation.navigate("MenuList", {
@@ -147,6 +160,30 @@ class TagPendingScreen extends Component {
             });
           }}
         />
+        </View>
+
+        
+        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-evenly'}}>  
+          <Button
+            title={`Reject`}
+            buttonStyle={{ flexGrow: 1, borderRadius: 0, backgroundColor: '#EF1B17' }}
+            onPress={() =>
+              ConfirmAlert("Reject Tag", "Are you sure?", () =>
+                this.handleReject(this.state.detail.id)
+              )
+            }
+          />
+
+          <Button
+            title={`Approve`}
+            buttonStyle={{ flexGrow: 1, borderRadius: 0, backgroundColor: '#00CC66' }}
+            onPress={() =>
+              ConfirmAlert("Approve Tag", "Are you sure?", () =>
+                this.handleApprove(this.state.detail.id)
+              )
+            }
+          />
+        </View>
       </View>
     </Overlay>
   );

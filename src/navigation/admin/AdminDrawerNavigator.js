@@ -20,7 +20,8 @@ import {
   customerIcon,
   salesIcon,
   reportIcon,
-  logIcon
+  logIcon, 
+  orderIcon
 } from "./navOptions/navIcons";
 import ProfileStackNavigator from "../ProfileStackNavigator";
 import PartnerViewScreen from "../../screens/admin/partner/PartnerViewScreen";
@@ -75,7 +76,7 @@ const Order = {
   screen: OrderNavigator,
   navigationOptions: {
     title: "Orders",
-    drawerIcon: ({ tintColor }) => customerIcon({ tintColor })
+    drawerIcon: ({ tintColor }) => orderIcon({ tintColor })
   }
 };
 const Sales = {
