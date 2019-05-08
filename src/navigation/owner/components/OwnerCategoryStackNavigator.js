@@ -14,8 +14,8 @@ import {
 import CategoryActiveScreen from "../../../screens/owner/category/CategoryActiveScreen";
 import CategoryArchiveScreen from "../../../screens/owner/category/CategoryArchiveScreen";
 
-const CategoryActive = createStackNavigator({
-  Active: {
+const OwnerCategoryActive = createStackNavigator({
+  OwnerCategoryActive: {
     screen: CategoryActiveScreen,
     navigationOptions: ({ navigation }) => ({
       ...headerStyles,
@@ -26,13 +26,13 @@ const CategoryActive = createStackNavigator({
   }
 });
 
-CategoryActive.navigationOptions = {
+OwnerCategoryActive.navigationOptions = {
   tabBarLabel: "Active",
   tabBarIcon: ({ tintColor }) => categoryActiveIcon({ tintColor })
 };
 
-const CategoryArchive = createStackNavigator({
-  Archive: {
+const AdminCategoryArchive = createStackNavigator({
+  AdminCategoryArchive: {
     screen: CategoryArchiveScreen,
     navigationOptions: ({ navigation }) => ({
       ...headerStyles,
@@ -42,13 +42,13 @@ const CategoryArchive = createStackNavigator({
   }
 });
 
-CategoryArchive.navigationOptions = {
+AdminCategoryArchive.navigationOptions = {
   tabBarLabel: "Deleted",
   tabBarIcon: ({ tintColor }) => categoryDeletedIcon({ tintColor })
 };
 
 const CategoryNavigator = createBottomTabNavigator(
-  { CategoryActive, CategoryArchive },
+  { OwnerCategoryActive, AdminCategoryArchive },
   { tabBarOptions: TabStyles, animationEnabled: true }
 );
 

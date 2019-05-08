@@ -13,7 +13,6 @@ import TagInput from "react-native-tag-input";
 import { MessageAlert } from "../../../components/Alerts";
 import ToolTipHelper from "../../../components/ToolTipHelper";
 import missing from "../../../../assets/images/missing.png";
-import icon from "../../../../assets/images/icon.png";
 import styles from "../../styles";
 import {
   postCategory,

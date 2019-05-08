@@ -103,7 +103,7 @@ const Profile = {
   }
 };
 ////Modals
-const MenuView = {
+const OwnerMenuView = {
   screen: MenuViewScreen,
   navigationOptions: ({ navigation }) => ({
     title: "Menu Details",
@@ -111,7 +111,7 @@ const MenuView = {
     headerRight: rightMenuDeleteButton({ navigation })
   })
 };
-const OrderView = {
+const OwnerOrderView = {
   screen: OrderViewScreen,
   navigationOptions: ({ navigation }) => ({
     title: "Order Details",
@@ -124,8 +124,8 @@ export default createStackNavigator(
   {
     OwnerDrawer,
     Profile,
-    MenuView,
-    OrderView
+    OwnerMenuView,
+    OwnerOrderView
   },
   {
     defaultNavigationOptions: headerStyles,

@@ -68,7 +68,7 @@ class OrderOnProcessListScreen extends Component {
         subtitle={subtitle.text}
         subtitleStyle={subtitle.style}
         chevron={true}
-        onPress={() => this.props.navigation.navigate("OrderView", { id })}
+        onPress={() => this.props.navigation.navigate("OwnerOrderView", { id })}
         bottomDivider
       />
     );

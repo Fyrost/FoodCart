@@ -8,8 +8,8 @@ import { MenuIcon } from "../navOptions/navIcons";
 import OrderOnProcessListScreen from "../../../screens/owner/order/OrderOnProcessListScreen";
 import OrderCompletedListScreen from "../../../screens/owner/order/OrderCompletedListScreen";
 
-const OrderOnProgress = createStackNavigator({
-  OrderProgress: {
+const OwnerOrderOnProgress = createStackNavigator({
+  OwnerOrderOnProgress: {
     screen: OrderOnProcessListScreen,
     navigationOptions: ({ navigation }) => ({
       ...headerStyles,
@@ -19,13 +19,13 @@ const OrderOnProgress = createStackNavigator({
   }
 });
 
-OrderOnProgress.navigationOptions = {
+OwnerOrderOnProgress.navigationOptions = {
   tabBarLabel: "On Progress",
   tabBarIcon: ({ tintColor }) => MenuIcon({ tintColor })
 };
 
-const OrderCompleted = createStackNavigator({
-  OrderCompleted: {
+const OwnerOrderCompleted = createStackNavigator({
+  OwnerOrderCompleted: {
     screen: OrderCompletedListScreen,
     navigationOptions: ({ navigation }) => ({
       ...headerStyles,
@@ -35,13 +35,13 @@ const OrderCompleted = createStackNavigator({
   }
 });
 
-OrderCompleted.navigationOptions = {
+OwnerOrderCompleted.navigationOptions = {
   tabBarLabel: "History",
   tabBarIcon: ({ tintColor }) => MenuIcon({ tintColor })
 };
 
 const OrderNavigator = createBottomTabNavigator(
-  { OrderOnProgress, OrderCompleted },
+  { OwnerOrderOnProgress, OwnerOrderCompleted },
   { tabBarOptions: TabStyles, animationEnabled: true }
 );
 

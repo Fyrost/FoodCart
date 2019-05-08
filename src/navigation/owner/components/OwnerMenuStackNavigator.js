@@ -18,7 +18,7 @@ const OwnerMenuList = {
   })
 };
 
-const MAInfo = {
+const OwnerMAInfo = {
   screen: MAInfoScreen,
   navigationOptions: ({ navigation }) => ({
     title: navigation.getParam("menuId") ? "Edit Menu" : "Add Menu",
@@ -26,7 +26,7 @@ const MAInfo = {
   })
 };
 
-const MACategoryTag = {
+const OwnerMACategoryTag = {
   screen: MACategoryTagScreen,
   navigationOptions: ({ navigation }) => ({
     headerLeft: leftBackButton({ navigation })
@@ -34,7 +34,7 @@ const MACategoryTag = {
 };
 
 const MenuNavigator = createStackNavigator(
-  { OwnerMenuList, MAInfo, MACategoryTag },
+  { OwnerMenuList, OwnerMAInfo, OwnerMACategoryTag },
   { defaultNavigationOptions: headerStyles }
 );
 

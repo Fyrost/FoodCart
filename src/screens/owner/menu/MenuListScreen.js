@@ -142,7 +142,7 @@ class MenuListScreen extends Component {
       subtitleProps={{ numberOfLines: 2 }}
       chevron={true}
       onPress={() =>
-        this.props.navigation.navigate("MenuView", { menuId: item.id })
+        this.props.navigation.navigate("OwnerMenuView", { menuId: item.id })
       }
       leftElement={
         <View>

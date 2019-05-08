@@ -132,7 +132,7 @@ class MAInfoScreen extends Component {
       categoryList
     } = this.state;
     this.checkError()
-      ? this.props.navigation.navigate("MACategoryTag", {
+      ? this.props.navigation.navigate("OwnerMACategoryTag", {
           menuId:id,
           name: name.text,
           description: description.text,
