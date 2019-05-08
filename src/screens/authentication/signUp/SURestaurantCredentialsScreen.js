@@ -85,9 +85,7 @@ class SURestaurantCredentialsScreen extends Component {
     return (
       <View style={[styles.horizontalPadding16, { flex: 1 }]}>
         <View style={[{ flex: 7, justifyContent: "space-evenly" }]}>
-          <View style={{ flex: 1 }}>
-            <Text>Please provide your business permits.</Text>
-          </View>
+          <Text>Please provide your business permits.</Text>
           <ListItem
             title={"Permit 1"}
             subtitle={
