@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { View, ScrollView, TextInput, Image } from "react-native";
-import { Button, Text, Overlay, ListItem } from "react-native-elements";
+import { Button, Text, Overlay, ListItem , Icon} from "react-native-elements";
 import { ImagePicker } from "expo";
 import { NavigationEvents } from "react-navigation";
 import {
@@ -183,6 +183,7 @@ class OrderViewScreen extends Component {
       .then(res => {
         this.setState({ screenLoading: false });
         if (res.data.success) {
+          this.setState({ reportOverlayVisible: false })
           MessageAlert("Report", res.data.message);
         } else {
           let errors = ``;
@@ -292,121 +293,146 @@ class OrderViewScreen extends Component {
     );
   };
 
-  renderReportOverlay = () => (
-    <Overlay
-      isVisible={this.state.reportOverlayVisible}
-      height={"auto"}
-      overlayContainerStyle={{ padding: 100 }}
-      borderRadius={0}
-      windowBackgroundColor={"rgba(0, 0, 0, .8)"}
-      onBackdropPress={() =>
-        this.setState({
-          reportOverlayVisible: false,
-          reason: "",
-          reportImg1: "",
-          reportImg2: "",
-          reportImg3: ""
-        })
-      }
-    >
-      <View>
-        <Text h2>Report</Text>
-        <Text h4>Why do you want to report this customer?</Text>
-        <TextInput
-          value={this.state.reason}
-          multiline={true}
-          placeholder={"Enter your reason here..."}
-          numberOfLines={5}
-          style={{ borderColor: "gray", borderWidth: 1 }}
-          onChangeText={reason => this.setState({ reason })}
-        />
-        <View style={[{ justifyContent: "space-around" }]}>
-          <Text>Additional Proof</Text>
-          <ListItem
-            title={"Proof 1"}
-            subtitle={
-              <Button
-                title={"Add Proof"}
-                onPress={() => this.pickImage("reportImg1")}
-                disabled={this.state.loading}
-              />
-            }
-            chevron={false}
-            leftElement={
-              <Image
-                source={
-                  this.state.reportImg1
-                    ? { uri: this.state.reportImg1 }
-                    : require("../../../../assets/images/missing.png")
-                }
-                style={{ resizeMode: "cover", height: 100, width: 100 }}
-              />
+  renderReportOverlay = () => {
+    const INITIAL_STATE = {
+      reportOverlayVisible: false,
+      reason: "",
+      reportImg1: "",
+      reportImg2: "",
+      reportImg3: ""
+    }
+    return(
+      <Overlay
+        fullScreen
+        isVisible={this.state.reportOverlayVisible}
+        borderRadius={0}
+        containerStyle={{ flex: 1 }}
+        overlayStyle={{ margin: 0, padding: 0 }}
+        windowBackgroundColor={"rgba(0, 0, 0, .8)"}
+        onBackdropPress={() =>  this.setState(INITIAL_STATE)}
+      >
+        <View style={{ flex: 1 }}>
+          <Icon
+            raised
+            reverse
+            name={"times"}
+            type={"font-awesome"}
+            color={"#1B73B4"}
+            size={20}
+            underlayColor={"black"}
+            containerStyle={{
+              zIndex: 99999,
+              position: "absolute",
+              right: 10,
+              top: 7
+            }}
+            onPress={() =>
+              this.setState(INITIAL_STATE)
             }
           />
-          <ListItem
-            title={"Proof 2"}
-            subtitle={
-              <Button
-                title={"Add Proof"}
-                onPress={() => this.pickImage("reportImg2")}
-                disabled={this.state.loading}
+          <View style={{ flex: 12 }}>
+            <ScrollView contentContainerStyle={{ paddingHorizontal: 20 }}>
+              <Text h3 h3Style={{ color: '#1B73B4', marginTop: 15 }}>Report</Text>
+              <Text style={{ fontSize: 16, marginTop: 15 }}>Why do you want to report this customer?</Text>
+              <TextInput
+                value={this.state.reason}
+                multiline={true}
+                placeholder={"Enter your reason here..."}
+                numberOfLines={5}
+                style={{ borderColor: "gray", borderWidth: 1, paddingHorizontal: 10 }}
+                onChangeText={reason => this.setState({ reason })}
               />
-            }
-            chevron={false}
-            leftElement={
-              <Image
-                source={
-                  this.state.reportImg2
-                    ? { uri: this.state.reportImg2 }
-                    : require("../../../../assets/images/missing.png")
-                }
-                style={{ resizeMode: "cover", height: 100, width: 100 }}
-              />
-            }
-          />
-          <ListItem
-            title={"Proof 3"}
-            subtitle={
-              <Button
-                title={"Add Proof"}
-                onPress={() => this.pickImage("reportImg3")}
-                disabled={this.state.loading}
-              />
-            }
-            chevron={false}
-            leftElement={
-              <Image
-                source={
-                  this.state.reportImg3
-                    ? { uri: this.state.reportImg3 }
-                    : require("../../../../assets/images/missing.png")
-                }
-                style={{ resizeMode: "cover", height: 100, width: 100 }}
-              />
-            }
-          />
+              <View style={{ justifyContent: "space-evenly" }}>
+                <Text style={{ fontSize: 16, marginTop: 10 }}>Additional Proof</Text>
+                <ListItem
+                  title={"Proof 1"}
+                  subtitle={
+                    <Button
+                      title={"Add Proof"}
+                      onPress={() => this.pickImage("reportImg1")}
+                      disabled={this.state.loading}
+                    />
+                  }
+                  chevron={false}
+                  leftElement={
+                    <Image
+                      source={
+                        this.state.reportImg1
+                          ? { uri: this.state.reportImg1 }
+                          : require("../../../../assets/images/missing.png")
+                      }
+                      style={{ resizeMode: "cover", height: 100, width: 100 }}
+                    />
+                  }
+                />
+                <ListItem
+                  title={"Proof 2"}
+                  subtitle={
+                    <Button
+                      title={"Add Proof"}
+                      onPress={() => this.pickImage("reportImg2")}
+                      disabled={this.state.loading}
+                    />
+                  }
+                  chevron={false}
+                  leftElement={
+                    <Image
+                      source={
+                        this.state.reportImg2
+                          ? { uri: this.state.reportImg2 }
+                          : require("../../../../assets/images/missing.png")
+                      }
+                      style={{ resizeMode: "cover", height: 100, width: 100 }}
+                    />
+                  }
+                />
+                <ListItem
+                  title={"Proof 3"}
+                  subtitle={
+                    <Button
+                      title={"Add Proof"}
+                      onPress={() => this.pickImage("reportImg3")}
+                      disabled={this.state.loading}
+                    />
+                  }
+                  chevron={false}
+                  leftElement={
+                    <Image
+                      source={
+                        this.state.reportImg3
+                          ? { uri: this.state.reportImg3 }
+                          : require("../../../../assets/images/missing.png")
+                      }
+                      style={{ resizeMode: "cover", height: 100, width: 100 }}
+                    />
+                  }
+                />
+              </View>
+            </ScrollView>
+          </View>
+
+          <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center'}}>
+            <Button
+              title={"Cancel"}
+              onPress={() =>
+                this.setState(INITIAL_STATE)
+              }
+              buttonStyle={{ borderRadius: 0, backgroundColor: '#EF1B17', flex: 1 }}
+              containerStyle={{ flex: 1 }}
+              disabled={this.state.loading}
+            />
+            <Button
+              title={"Report"}
+              onPress={this.handleReport}
+              disabled={this.state.loading}
+              containerStyle={{ flex: 1 }}
+              buttonStyle={{ borderRadius: 0, backgroundColor: 'orange', flex: 1 }}
+            />
+          </View>
         </View>
-        <Button
-          title={"Cancel"}
-          onPress={() =>
-            this.setState({
-              reportOverlayVisible: false,
-              reason: "",
-              reportImg1: "",
-              reportImg2: "",
-              reportImg3: ""
-            })
-          }
-          disabled={this.state.loading}
-        />
-        <Button
-          title={"Report"}
-          onPress={this.handleReport}
-          disabled={this.state.loading}
-        />
-      </View>
-    </Overlay>
-  );
+      </Overlay>
+    )
+  }
 
   renderItem = ({ item: { id, name, cooking_time, quantity } }) => (
     <View>
