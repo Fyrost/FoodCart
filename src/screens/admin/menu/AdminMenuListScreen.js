@@ -14,7 +14,6 @@ class AdminMenuListScreen extends Component {
 
   makeRemoteRequest = () => {
     this.setState({ loading: true });
-    console.log(this.props.navigation.getParam("tag"));
     getAdminMenu(this.props.navigation.getParam("tag", ""))
       .then(res => {
         if (res.data.success) {
@@ -67,9 +66,9 @@ class AdminMenuListScreen extends Component {
       }
       chevron={true}
       bottomDivider
-      onPress={() =>
-        this.props.navigation.push("AdminMenuView", { menuId: id })
-      }
+      onPress={() => {
+        this.props.navigation.push("AdminMenuView", { menuId: id });
+      }}
     />
   );
 

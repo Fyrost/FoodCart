@@ -86,7 +86,7 @@ export const rightCartButton = ({ navigation }) => (
       icon={{ name: "cart-arrow-down", type: "font-awesome" }}
       overlayContainerStyle={{ backgroundColor: "transparent" }}
       size={48}
-      onPress={() => navigation.navigate("Checkout")}
+      onPress={() => navigation.navigate("UserCheckout")}
       containerStyle={{ marginRight: 5 }}
       
     />
@@ -111,7 +111,7 @@ export const rightRestoCartButton = ({ navigation }) => (
     icon={{ name: "shopping-cart", type: "font-awesome" }}
     overlayContainerStyle={{ backgroundColor: "transparent" }}
     size={40}
-    onPress={() => navigation.navigate("Cart")}
+    onPress={() => navigation.navigate("UserCart")}
     containerStyle={{ marginRight: 5 }}
   />
 );

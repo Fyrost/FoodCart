@@ -30,7 +30,7 @@ class AdminMenuViewScreen extends Component {
         } else {
           this.setState({
             loading: false,
-            errpr: res.data.message
+            error: res.data.message
           });
         }
       })
@@ -61,11 +61,14 @@ class AdminMenuViewScreen extends Component {
       tag
     } = this.state.data;
     if (loading) return <ActivityIndicator size="large" />;
-    else if (error) return <Text>{error}</Text>;
-    else if (!id) return <Text>Item may have been deleted</Text>;
+    else if (error) return <Text>{`${error}\nItem may have been deleted`}</Text>;
+    else if (!this.props.navigation.getParam("menuId"))
+      return <Text>Item may have been deleted</Text>;
     return (
       <ScrollView style={{ flex: 1 }}>
         <NavigationEvents onWillFocus={this.makeRemoteRequest} />
+        {console.log(!id)}
+        {console.log(id)}
         <Card
           image={{
             uri: `http://pinoyfoodcart.com/image/menu/${image_name}`

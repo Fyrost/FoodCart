@@ -40,14 +40,12 @@ export const rightMenuDeleteButton = ({ navigation }) => (
       icon={{ name: "trash", type: "font-awesome" }}
       size={40}
       onPress={() =>
-        ConfirmAlert(
-          "Delete Item",
-          "Are you sure?",
+        ConfirmAlert("Delete Item", "Are you sure?", () =>
           deleteMenu(navigation.getParam("menuId"))
             .then(res => {
               if (res.data.success) {
                 alert("item deleted");
-                navigation.navigate("MenuList");
+                navigation.navigate("OwnerMenuList");
               }
             })
             .catch(err => {
@@ -64,7 +62,7 @@ export const rightMenuDeleteButton = ({ navigation }) => (
       icon={{ name: "edit", type: "font-awesome" }}
       size={40}
       onPress={() =>
-        navigation.navigate("MAInfo", {
+        navigation.navigate("OwnerMAInfo", {
           menuId: navigation.getParam("menuId")
         })
       }
@@ -89,7 +87,7 @@ export const rightMenuAddButton = ({ navigation }) => (
       icon={{ name: "plus", type: "font-awesome" }}
       overlayContainerStyle={{ backgroundColor: "#00CC66" }}
       size={45}
-      onPress={_.debounce(() => navigation.push("MAInfo"), 1000, {
+      onPress={_.debounce(() => navigation.push("OwnerMAInfo"), 1000, {
         leading: true,
         trailing: false
       })}

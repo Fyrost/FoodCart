@@ -264,7 +264,6 @@ class AdminReportViewScreen extends Component {
     if (loading) return <ActivityIndicator size="large" />;
     return (
       <ScrollView style={{ paddingVertical: 10 }}>
-        {console.log(order.itemlist)}
         <NavigationEvents onWillFocus={makeRemoteRequest} />
         {renderOverlay()}
         <Card wrapperStyle={{ margin: 0, padding: 0 }}>
