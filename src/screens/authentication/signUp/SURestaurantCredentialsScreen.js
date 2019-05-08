@@ -91,14 +91,11 @@ class SURestaurantCredentialsScreen extends Component {
           <ListItem
             title={"Permit 1"}
             subtitle={
-              <View>
-                <Button
-                  title={"Add Permit"}
-                  onPress={() => pickImage("permit1")}
-                  disabled={loading}
-                />
-                <Text style={{ color: "red" }}>{this.state.error}</Text>
-              </View>
+              <Button
+                title={"Add Permit"}
+                onPress={() => pickImage("permit1")}
+                disabled={loading}
+              />
             }
             chevron={false}
             leftElement={
@@ -159,7 +156,13 @@ class SURestaurantCredentialsScreen extends Component {
           style={[{ flex: 2, alignItems: "center", justifyContent: "center" }]}
         >
           <Button
-            title={!loading ? "BECOME A PARTNER" : this.state.progress? this.state.progress:'loading' }
+            title={
+              !loading
+                ? "BECOME A PARTNER"
+                : this.state.progress
+                ? this.state.progress
+                : "loading"
+            }
             buttonStyle={styles.authButton}
             containerStyle={[
               styles.authButtonSize,

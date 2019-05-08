@@ -1,8 +1,11 @@
 import React, { Component } from "react";
-import { View, Text, ScrollView } from "react-native";
+import { View, ScrollView, TextInput, Image } from "react-native";
+import { Button, Text, Overlay, ListItem } from "react-native-elements";
+import { ImagePicker } from "expo";
 import { NavigationEvents } from "react-navigation";
 import {
   getOwnerOrderDetail,
+  postOwnerReport,
   acceptOwnerOrder,
   rejectOwnerOrder,
   deliverOwnerOrder,
@@ -13,18 +16,41 @@ import {
 import { ConfirmAlert, MessageAlert } from "../../../components/Alerts";
 import ActivityLoading from "../../../components/ActivityLoading";
 import List from "../../../components/List";
-import { Button } from "react-native-elements";
 import Loading from "../../../components/Loading";
 
 class OrderViewScreen extends Component {
   state = {
+    reason: "",
+    orderId: "",
+    customerId: "",
+    reportImg1: "",
+    reportImg2: "",
+    reportImg3: "",
     orderDetail: {},
     customerDetail: {},
     paymentDetail: {},
     itemList: [],
     loading: false,
     screenLoading: false,
-    error: ""
+    error: "",
+    reportOverlayVisible: false
+  };
+
+  componentDidMount() {
+    this.setState({ orderId: this.props.navigation.getParam("id") });
+    this.props.navigation.setParams({
+      handleReportOverlayVisible: this.handleReportOverlayVisible
+    });
+  }
+
+  pickImage = async proof => {
+    ImagePicker.launchImageLibraryAsync({
+      allowsEditing: false
+    }).then(result => {
+      if (!result.cancelled) {
+        this.setState({ [proof]: result.uri });
+      }
+    });
   };
 
   makeRemoteRequest = () => {
@@ -38,8 +64,8 @@ class OrderViewScreen extends Component {
             total,
             cooking_time_total,
             payment,
-            order: { code, created_at, },
-            customer: { fname, lname, address, contact_number },
+            order: { code, created_at },
+            customer: { id, fname, lname, address, contact_number },
             itemlist
           } = res.data.data;
           const stat =
@@ -54,9 +80,10 @@ class OrderViewScreen extends Component {
               : status === "4"
               ? "rejected"
               : "cancelled";
-          console.log(res.data)
+          console.log(res.data);
           this.setState({
             loading: false,
+            customerId: id,
             orderDetail: {
               status: stat,
               code,
@@ -88,6 +115,10 @@ class OrderViewScreen extends Component {
           error: errorHandler(err)
         });
       });
+  };
+
+  handleReportOverlayVisible = () => {
+    this.setState({ reportOverlayVisible: true });
   };
 
   handleProceed = () => {
@@ -128,6 +159,43 @@ class OrderViewScreen extends Component {
       })
       .catch(err => {
         MessageAlert("Order", errorHandler(err));
+      });
+  };
+
+  handleReport = () => {
+    const {
+      orderId,
+      customerId,
+      reason,
+      reportImg1,
+      reportImg2,
+      reportImg3
+    } = this.state;
+    this.setState({ screenLoading: true, reportOverlayVisible: false });
+    postOwnerReport({
+      orderId,
+      customerId,
+      reason,
+      reportImg1,
+      reportImg2,
+      reportImg3
+    })
+      .then(res => {
+        this.setState({ screenLoading: false });
+        if (res.data.success) {
+          MessageAlert("Report", res.data.message);
+        } else {
+          let errors = ``;
+          Object.values(res.data.errors).map(value => {
+            errors += `${value[0]}\n`;
+          });
+          this.setState({ reportOverlayVisible: true });
+          MessageAlert(res.data.message, errors);
+        }
+      })
+      .catch(err => {
+        this.setState({ screenLoading: false });
+        MessageAlert("Report", errorHandler(err));
       });
   };
 
@@ -224,6 +292,122 @@ class OrderViewScreen extends Component {
     );
   };
 
+  renderReportOverlay = () => (
+    <Overlay
+      isVisible={this.state.reportOverlayVisible}
+      height={"auto"}
+      overlayContainerStyle={{ padding: 100 }}
+      borderRadius={0}
+      windowBackgroundColor={"rgba(0, 0, 0, .8)"}
+      onBackdropPress={() =>
+        this.setState({
+          reportOverlayVisible: false,
+          reason: "",
+          reportImg1: "",
+          reportImg2: "",
+          reportImg3: ""
+        })
+      }
+    >
+      <View>
+        <Text h2>Report</Text>
+        <Text h4>Why do you want to report this customer?</Text>
+        <TextInput
+          value={this.state.reason}
+          multiline={true}
+          placeholder={"Enter your reason here..."}
+          numberOfLines={5}
+          style={{ borderColor: "gray", borderWidth: 1 }}
+          onChangeText={reason => this.setState({ reason })}
+        />
+        <View style={[{ justifyContent: "space-around" }]}>
+          <Text>Additional Proof</Text>
+          <ListItem
+            title={"Proof 1"}
+            subtitle={
+              <Button
+                title={"Add Proof"}
+                onPress={() => this.pickImage("reportImg1")}
+                disabled={this.state.loading}
+              />
+            }
+            chevron={false}
+            leftElement={
+              <Image
+                source={
+                  this.state.reportImg1
+                    ? { uri: this.state.reportImg1 }
+                    : require("../../../../assets/images/missing.png")
+                }
+                style={{ resizeMode: "cover", height: 100, width: 100 }}
+              />
+            }
+          />
+          <ListItem
+            title={"Proof 2"}
+            subtitle={
+              <Button
+                title={"Add Proof"}
+                onPress={() => this.pickImage("reportImg2")}
+                disabled={this.state.loading}
+              />
+            }
+            chevron={false}
+            leftElement={
+              <Image
+                source={
+                  this.state.reportImg2
+                    ? { uri: this.state.reportImg2 }
+                    : require("../../../../assets/images/missing.png")
+                }
+                style={{ resizeMode: "cover", height: 100, width: 100 }}
+              />
+            }
+          />
+          <ListItem
+            title={"Proof 3"}
+            subtitle={
+              <Button
+                title={"Add Proof"}
+                onPress={() => this.pickImage("reportImg3")}
+                disabled={this.state.loading}
+              />
+            }
+            chevron={false}
+            leftElement={
+              <Image
+                source={
+                  this.state.reportImg3
+                    ? { uri: this.state.reportImg3 }
+                    : require("../../../../assets/images/missing.png")
+                }
+                style={{ resizeMode: "cover", height: 100, width: 100 }}
+              />
+            }
+          />
+        </View>
+        <Button
+          title={"Cancel"}
+          onPress={() =>
+            this.setState({
+              reportOverlayVisible: false,
+              reason: "",
+              reportImg1: "",
+              reportImg2: "",
+              reportImg3: ""
+            })
+          }
+          disabled={this.state.loading}
+        />
+        <Button
+          title={"Report"}
+          onPress={this.handleReport}
+          disabled={this.state.loading}
+        />
+      </View>
+    </Overlay>
+  );
+
   renderItem = ({ item: { id, name, cooking_time, quantity } }) => (
     <View>
       <View
@@ -273,9 +457,9 @@ class OrderViewScreen extends Component {
     if (error) return <Text>{error}</Text>;
     return (
       <View style={{ flex: 1 }}>
-        {console.log(this.state.paymentDetail)}
         <NavigationEvents onWillFocus={this.makeRemoteRequest} />
         <Loading loading={this.state.screenLoading} opacity={0.5} size={50} />
+        {this.renderReportOverlay()}
         <View
           style={{
             flex: 1,

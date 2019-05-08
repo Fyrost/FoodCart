@@ -102,6 +102,7 @@ export const rightOrderButton = ({ navigation }) => (
   <Button
     title={"Report"}
     buttonStyle={{ backgroundColor: "orange", marginRight: 10 }}
+    onPress={navigation.getParam("handleReportOverlayVisible")}
   />
 );
 ////OWNER CATEGORY////
