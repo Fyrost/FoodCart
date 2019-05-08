@@ -10,7 +10,7 @@ export const categoryDeletedIcon = ({ tintColor }) => (
 );
 ////Drawer
 export const OrderIcon = ({ tintColor }) => (
-  <Icon name={"file-cabinet"} type={"material-community"} color={tintColor} />
+  <Icon name={"clipboard-text-outline"} type={"material-community"} color={tintColor} />
 );
 export const MenuIcon = ({ tintColor }) => (
   <Icon
@@ -23,8 +23,11 @@ export const CategoryIcon = ({ tintColor }) => (
   <Icon name={"file-cabinet"} type={"material-community"} color={tintColor} />
 );
 export const SalesIcon = ({ tintColor }) => (
-  <Icon name={"receipt"} type={"material"} color={tintColor} />
+  <Icon name={"payment"} type={"material"} color={tintColor} />
 );
 export const ReportIcon = ({ tintColor }) => (
-  <Icon name={"user"} type={"font-awesome"} color={tintColor} />
+  <Icon name={"exclamationcircleo"} type={"antdesign"} color={tintColor} />
+);
+export const LogIcon = ({ tintColor }) => (
+  <Icon name={"file-zip-o"} type={"font-awesome"} color={tintColor} />
 );
