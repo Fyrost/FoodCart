@@ -401,7 +401,9 @@ class OrderViewScreen extends Component {
         />
         <Button
           title={"Report"}
-          onPress={this.handleReport}
+          onPress={() =>
+            ConfirmAlert(`Report User`, `Are you sure?`, this.handleReport)
+          }
           disabled={this.state.loading}
         />
       </View>
