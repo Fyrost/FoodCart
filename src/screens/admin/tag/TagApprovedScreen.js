@@ -82,7 +82,7 @@ class TagApprovedScreen extends Component {
           title={`View Item/s`}
           onPress={() => {
             this.setState({ isDetailVisible: false });
-            this.props.navigation.navigate("AdminMenuList", {
+            this.props.navigation.navigate("AdminMenuFilter", {
               tag: this.state.detail.slug
             });
           }}

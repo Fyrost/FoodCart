@@ -148,7 +148,7 @@ class AdminMenuViewScreen extends Component {
                   <TouchableHighlight
                     onPress={_.debounce(
                       () =>
-                        this.props.navigation.push("AdminMenuList", {
+                        this.props.navigation.push("AdminMenuFilter", {
                           tag: tag.slug
                         }),
                       1000,

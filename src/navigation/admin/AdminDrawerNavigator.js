@@ -162,7 +162,7 @@ const AdminOrderView = {
     headerLeft: leftBackButton({ navigation })
   })
 };
-const AdminMenuList = {
+const AdminMenuFilter = {
   screen: AdminMenuListScreen,
   navigationOptions: ({ navigation }) => ({
     title: `Tag ${navigation.getParam("tag")} List`,
@@ -185,7 +185,7 @@ export default createStackNavigator(
     AdminPartnerView,
     AdminCustomerView,
     AdminOrderView,
-    AdminMenuList,
+    AdminMenuFilter,
     AdminMenuView
   },
   {
