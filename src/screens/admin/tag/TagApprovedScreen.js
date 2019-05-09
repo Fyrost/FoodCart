@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { View } from "react-native";
-import { Button, ListItem, Text, Overlay } from "react-native-elements";
+import { Button, ListItem, Text, Overlay, Icon } from "react-native-elements";
 import { NavigationEvents } from "react-navigation";
 import _ from "lodash";
 
@@ -75,11 +75,40 @@ class TagApprovedScreen extends Component {
       onBackdropPress={() => this.setState({ isDetailVisible: false })}
     >
       <View>
-        <Text>Name: {this.state.detail.name}</Text>
-        <Text>Slug: {this.state.detail.slug}</Text>
-        <Text>Used by: {this.state.detail.usedBy}</Text>
-        <Button
+        <Icon
+          raised
+          reverse
+          name={"times"}
+          type={"font-awesome"}
+          color={"#1B73B4"}
+          size={20}
+          underlayColor={"black"}
+          containerStyle={{
+            zIndex: 99999,
+            position: "absolute",
+            right: -33  ,
+            top: -32
+          }}
+          onPress={() => this.setState({ isDetailVisible: false })}
+        />
+        <View style={{ paddingHorizontal: 20, paddingVertical: 10 }}>
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <Text>Name: </Text>
+            <Text>{this.state.detail.name}</Text>
+          </View>
+
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <Text>Slug: </Text>
+            <Text>{this.state.detail.slug}</Text>
+          </View>
+
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <Text>Used by: </Text>
+            <Text>{this.state.detail.usedBy}</Text>
+          </View>
+          <Button
           title={`View Item/s`}
+          type={'clear'}
           onPress={() => {
             this.setState({ isDetailVisible: false });
             this.props.navigation.navigate("AdminMenuList", {
@@ -87,6 +116,7 @@ class TagApprovedScreen extends Component {
             });
           }}
         />
+        </View>
       </View>
     </Overlay>
   );
