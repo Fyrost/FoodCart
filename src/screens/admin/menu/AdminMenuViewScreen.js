@@ -10,6 +10,7 @@ import _ from "lodash";
 import { Card, Divider } from "react-native-elements";
 import { NavigationEvents } from "react-navigation";
 import { getAdminMenuDetail, errorHandler } from "../../../actions";
+import ToolTipHelper from "../../../components/ToolTipHelper";
 class AdminMenuViewScreen extends Component {
   state = {
     data: {
@@ -137,6 +138,15 @@ class AdminMenuViewScreen extends Component {
 
             <View style={styles.cardRowContent}>
               <Text style={styles.restoSubtitleText}>Tags:</Text>
+              <ToolTipHelper>
+                <View
+                  style={{ flexDirection: "row", alignContent: "space-around" }}
+                >
+                  <Text style={styles.tagContainerPending}>Pending</Text>
+                  <Text style={styles.tagContainerRejected}>Rejected</Text>
+                  <Text style={styles.tagContainerAccepted}>Accepted</Text>
+                </View>
+              </ToolTipHelper>
               {tag.map((tag, index) => {
                 const tagContainer =
                   tag.status === "0"

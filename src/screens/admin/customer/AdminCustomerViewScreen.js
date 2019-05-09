@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import { View, ActivityIndicator, Text, ScrollView } from "react-native";
-import { Card } from 'react-native-elements'
+import { Divider, Card } from "react-native-elements";
 import { NavigationEvents } from "react-navigation";
 import { getAdminCustomerDetail, errorHandler } from "../../../actions";
-import logo from '../../../../assets/images/logo.png'
+import logo from "../../../../assets/images/logo.png";
 
 class AdminCustomerViewScreen extends Component {
   state = {
@@ -55,39 +55,51 @@ class AdminCustomerViewScreen extends Component {
         <Card
           image={logo}
           imageStyle={{ marginTop: 25, height: 100 }}
-          imageProps={{ resizeMode: 'contain' }}
+          imageProps={{ resizeMode: "contain" }}
         >
-        <NavigationEvents onWillFocus={this.makeRemoteRequest} />
-        
-        <View style={styles.cardRow}>
-          <Text style={styles.cardRowTitle}>First Name</Text>
-          <Text style={styles.cardRowText}>{fname}</Text>
-        </View>
+          <NavigationEvents onWillFocus={this.makeRemoteRequest} />
 
-        <View style={styles.cardRow}>
-          <Text style={styles.cardRowTitle}>Middle Name</Text>
-          <Text style={styles.cardRowText}>{mname}</Text>
-        </View>
+          <View style={styles.cardRow}>
+            <Text style={styles.cardRowTitle}>First Name</Text>
+            <Text style={styles.cardRowText}>{fname}</Text>
+          </View>
 
-        <View style={styles.cardRow}>
-          <Text style={styles.cardRowTitle}>Last Name</Text>
-          <Text style={styles.cardRowText}>{lname}</Text>
-        </View>
+          <View style={styles.cardRow}>
+            <Text style={styles.cardRowTitle}>Middle Name</Text>
+            <Text style={styles.cardRowText}>{mname}</Text>
+          </View>
 
-        <View style={styles.cardRow2}>
-          <Text style={styles.cardRowTitle}>Address</Text>
+          <View style={styles.cardRow}>
+            <Text style={styles.cardRowTitle}>Last Name</Text>
+            <Text style={styles.cardRowText}>{lname}</Text>
+          </View>
+
+          <View style={styles.cardRow2}>
+            <Text style={styles.cardRowTitle}>Address</Text>
             <Text style={styles.cardRowText}>{address}</Text>
-        </View>
+          </View>
 
-        <View style={styles.cardRow}>
-          <Text style={styles.cardRowTitle}>Contact Number</Text>
-          <Text style={styles.cardRowText}># {contact_number}</Text>
-        </View>
-        
-        <View style={styles.cardRow}>
-          <Text style={styles.cardRowTitle}>Joined</Text>
+          <View style={styles.cardRow}>
+            <Text style={styles.cardRowTitle}>Contact Number</Text>
+            <Text style={styles.cardRowText}># {contact_number}</Text>
+          </View>
+
+          <View style={styles.cardRow}>
+            <Text style={styles.cardRowTitle}>Joined</Text>
             <Text style={styles.cardRowText}>{created_at}</Text>
-        </View>
+          </View>
+        </Card>
+        <Card wrapperStyle={{ margin: 0, padding: 0 }}>
+          <View>
+            <Text h4 style={styles.cardTitle}>
+              Customer Information
+            </Text>
+          </View>
+          <Divider />
+
+          <View style={{ paddingHorizontal: 20, paddingVertical: 10 }}>
+            <Text style={styles.restoSubtitleText}>Address:</Text>
+          </View>
         </Card>
       </ScrollView>
     );
@@ -101,18 +113,18 @@ const styles = {
     flex: 1
   },
   cardTitleContent: {
-    backgroundColor: '#5999C8',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: "#5999C8",
+    alignItems: "center",
+    justifyContent: "center",
     paddingVertical: 10,
     paddingHorizontal: 15,
     height: 50
   },
   cardTitleText: {
-    color: 'white',
+    color: "white",
     fontSize: 20,
-    fontWeight: '600',
-    textAlign: 'center'
+    fontWeight: "600",
+    textAlign: "center"
   },
   cardWrapper: {
     margin: 0,
@@ -120,36 +132,36 @@ const styles = {
   },
   cardContent: {
     flex: 4,
-    justifyContent: 'space-evenly'
+    justifyContent: "space-evenly"
   },
   cardRow: {
     flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
     paddingVertical: 10,
     paddingHorizontal: 15,
-    borderColor: 'lightgrey',
+    borderColor: "lightgrey",
     borderBottomWidth: 0.8
   },
   cardRow2: {
     flex: 2,
-    justifyContent: 'space-between',
+    justifyContent: "space-between",
     paddingVertical: 10,
     paddingHorizontal: 15,
-    borderColor: 'lightgrey',
+    borderColor: "lightgrey",
     borderBottomWidth: 0.8
   },
   cardRowTitle: {
     fontSize: 16,
-    fontWeight: '500'
+    fontWeight: "500"
   },
   cardRowText: {
-    fontWeight: 'normal',
-    textAlign: 'left'
+    fontWeight: "normal",
+    textAlign: "left"
   },
   bottomSpacer: {
     flex: 1,
     height: 25
   }
-}
+};

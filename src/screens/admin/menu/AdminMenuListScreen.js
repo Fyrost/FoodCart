@@ -46,13 +46,9 @@ class AdminMenuListScreen extends Component {
     item: {
       id,
       name,
-      description,
+      resto_name,
       price,
-      image_name,
-      slug,
-      deleted_at,
       created_at,
-      updated_at
     }
   }) => (
     <ListItem
@@ -60,8 +56,8 @@ class AdminMenuListScreen extends Component {
       titleStyle={{ fontWeight: "500", fontSize: 18, color: "#1B73B4" }}
       subtitle={
         <View>
+          <Text>Restaurant: {resto_name}</Text>
           <Text>Price: ₱ {price}.00</Text>
-          <Text>Created: {created_at}</Text>
         </View>
       }
       chevron={true}
@@ -77,7 +73,7 @@ class AdminMenuListScreen extends Component {
       <View>
         <NavigationEvents onDidFocus={this.makeRemoteRequest} />
         <List
-          data={this.state.data}
+          data={data}
           renderItem={this.renderItem}
           loading={loading}
           emptyText={"No Menu Found"}

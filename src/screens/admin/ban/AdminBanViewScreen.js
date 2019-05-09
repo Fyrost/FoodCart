@@ -1,5 +1,12 @@
 import React, { Component } from "react";
-import { View, ActivityIndicator, Text, ScrollView } from "react-native";
+import {
+  View,
+  ActivityIndicator,
+  Text,
+  ScrollView,
+  TouchableNativeFeedback
+} from "react-native";
+import _ from "lodash";
 import { ListItem, Card } from "react-native-elements";
 import { NavigationEvents } from "react-navigation";
 import { getAdminBlockDetail, errorHandler } from "../../../actions";
@@ -73,6 +80,7 @@ class AdminBanViewScreen extends Component {
       onPress={() =>
         this.props.navigation.push("AdminReportView", { code: item.code })
       }
+      ItemSeparatorComponent={null}
     />
   );
 
@@ -85,13 +93,24 @@ class AdminBanViewScreen extends Component {
       <ScrollView style={{ marginBottom: 10 }}>
         <Card title={"User Information"}>
           <View style={styles.cardRow}>
-            <Text style={styles.cardRowTitle}>First Name</Text>
-            <Text style={styles.cardRowText}>{customer.fname}</Text>
-          </View>
-
-          <View style={styles.cardRow}>
-            <Text style={styles.cardRowTitle}>Middle Name</Text>
-            <Text style={styles.cardRowText}>{customer.mname}</Text>
+            <Text style={styles.cardRowTitle}>Name</Text>
+            <TouchableNativeFeedback
+              onPress={_.debounce(
+                () =>
+                  this.props.navigation.push("AdminCustomerView", {
+                    customerId: customer.id
+                  }),
+                1000,
+                {
+                  leading: true,
+                  trailing: false
+                }
+              )}
+            >
+              <Text style={[styles.cardRowText, { color: "#1B73B4" }]}>
+                {customer.fname} {customer.mname}
+              </Text>
+            </TouchableNativeFeedback>
           </View>
 
           <View style={styles.cardRow}>
@@ -107,6 +126,11 @@ class AdminBanViewScreen extends Component {
           <View style={styles.cardRow}>
             <Text style={styles.cardRowTitle}>Contact Number</Text>
             <Text style={styles.cardRowText}># {customer.contact_number}</Text>
+          </View>
+
+          <View style={styles.cardRow}>
+            <Text style={styles.cardRowTitle}>Ban Date</Text>
+            <Text style={styles.cardRowText}># {this.props.navigation.getParam("banDate")}</Text>
           </View>
 
           <View style={styles.cardRow2}>

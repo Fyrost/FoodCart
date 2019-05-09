@@ -49,7 +49,10 @@ class AdminBanListScreen extends Component {
       subtitle={`Date Banned: ${created_at}`}
       chevron={true}
       onPress={() =>
-        this.props.navigation.push("AdminBanView", { banId: ban_id })
+        this.props.navigation.push("AdminBanView", {
+          banId: ban_id,
+          banDate: created_at
+        })
       }
     />
   );

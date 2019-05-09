@@ -1,5 +1,11 @@
 import React, { Component } from "react";
-import { View, ActivityIndicator, ScrollView, TextInput } from "react-native";
+import {
+  View,
+  ActivityIndicator,
+  ScrollView,
+  TextInput,
+  TouchableNativeFeedback
+} from "react-native";
 import {
   Text,
   Button,
@@ -10,6 +16,7 @@ import {
   CheckBox,
   Overlay
 } from "react-native-elements";
+import _ from "lodash";
 import { NavigationEvents } from "react-navigation";
 import { ConfirmAlert, MessageAlert } from "../../../components/Alerts";
 import ImageViewer from "../../../components/ImageViewer";
@@ -312,7 +319,23 @@ class AdminReportViewScreen extends Component {
 
           <View style={styles.cardRowContent}>
             <Text style={styles.restoSubtitleText}>Reported By:</Text>
-            <Text style={styles.restoText}>{restaurant.name}</Text>
+            <TouchableNativeFeedback
+              onPress={_.debounce(
+                () =>
+                  this.props.navigation.push("AdminRestoView", {
+                    restoId: restaurant.id
+                  }),
+                1000,
+                {
+                  leading: true,
+                  trailing: false
+                }
+              )}
+            >
+              <Text style={[styles.restoText, { color: "#11CDEF" }]}>
+                {restaurant.name}
+              </Text>
+            </TouchableNativeFeedback>
           </View>
 
           <View style={styles.cardRowContent}>
@@ -389,9 +412,23 @@ class AdminReportViewScreen extends Component {
           <Divider />
           <View style={styles.cardRowContent}>
             <Text style={styles.restoSubtitleText}>Name:</Text>
-            <Text style={styles.restoText}>
-              {customer.fname} {customer.lname}
-            </Text>
+            <TouchableNativeFeedback
+              onPress={_.debounce(
+                () =>
+                  this.props.navigation.push("AdminCustomerView", {
+                    customerId: customer.id
+                  }),
+                1000,
+                {
+                  leading: true,
+                  trailing: false
+                }
+              )}
+            >
+              <Text style={[styles.restoText, { color: "#11CDEF" }]}>
+                {customer.fname} {customer.lname}
+              </Text>
+            </TouchableNativeFeedback>
           </View>
 
           <View style={styles.cardRowContent}>

@@ -1,11 +1,20 @@
 import React, { Component } from "react";
-import { View, SectionList, ActivityIndicator, ScrollView } from "react-native";
+import {
+  View,
+  SectionList,
+  ActivityIndicator,
+  ScrollView,
+  TouchableHighlight
+} from "react-native";
+import _ from "lodash";
 import { NavigationEvents } from "react-navigation";
 import { Text, Icon, Divider, Image } from "react-native-elements";
 import { getAdminOrderDetail, errorHandler } from "../../../actions";
+
 const formatOrder = order => {
   return order.map(section => {
     return {
+      id: section.restaurant.id,
       name: section.restaurant.name,
       contact_number: section.restaurant.contact_number,
       slug: section.restaurant.slug,
@@ -65,7 +74,7 @@ class AdminOrderViewScreen extends Component {
       );
   };
 
-  renderSectionHeader = ({ section: { name, contact_number } }) => (
+  renderSectionHeader = ({ section: { name, contact_number, id } }) => (
     <View
       style={{
         flexDirection: "row",
@@ -76,9 +85,23 @@ class AdminOrderViewScreen extends Component {
         paddingVertical: 10
       }}
     >
-      <Text style={{ fontWeight: "400", fontSize: 18, color: "white" }}>
-        {name}
-      </Text>
+      <TouchableHighlight
+        onPress={_.debounce(
+          () =>
+            this.props.navigation.push("AdminRestoView", {
+              restoId: id
+            }),
+          1000,
+          {
+            leading: true,
+            trailing: false
+          }
+        )}
+      >
+        <Text style={{ fontWeight: "400", fontSize: 18, color: "#11CDEF" }}>
+          {name}
+        </Text>
+      </TouchableHighlight>
       <View style={{ flexDirection: "row", alignItems: "center" }}>
         <Text style={{ fontWeight: "400", fontSize: 18, color: "white" }}>
           {contact_number}
@@ -246,6 +269,7 @@ class AdminOrderViewScreen extends Component {
     return (
       <View style={{ flex: 1 }}>
         <NavigationEvents onWillFocus={makeRemoteRequest} />
+        {console.log(order)}
         {this.state.code && (
           <View
             style={{
