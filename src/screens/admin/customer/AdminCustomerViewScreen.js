@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 import { View, ActivityIndicator, Text, ScrollView } from "react-native";
-import { Divider, Card } from "react-native-elements";
+import { Divider, Card, ListItem } from "react-native-elements";
 import { NavigationEvents } from "react-navigation";
 import { getAdminCustomerDetail, errorHandler } from "../../../actions";
+import List from "../../../components/List";
 import logo from "../../../../assets/images/logo.png";
 
 class AdminCustomerViewScreen extends Component {
@@ -18,7 +19,8 @@ class AdminCustomerViewScreen extends Component {
         if (res.data.success) {
           this.setState({
             loading: false,
-            data: res.data.data
+            data: res.data.data,
+            orders: res.data.orders
           });
         } else {
           this.setState({
@@ -35,6 +37,32 @@ class AdminCustomerViewScreen extends Component {
       });
   };
 
+  renderItem = ({ item }) => {
+    const subtitle =
+      item.order_status === "0"
+        ? { text: "Pending", color: "#9DA0A3" }
+        : item.order_status === "1"
+        ? { text: "Processing", color: "#11CDEF" }
+        : item.order_status === "2"
+        ? { text: "Delivering", color: "#f1c40f" }
+        : item.order_status === "3"
+        ? { text: "Completed", color: "#00CC66" }
+        : item.order_status === "4"
+        ? { text: "Rejected", color: "#EF1B17" }
+        : { text: "Cancelled", color: "orange" };
+    return (
+      <ListItem
+        title={"Order # " + item.code}
+        rightTitle={subtitle.text}
+        rightTitleStyle={{ fontWeight: "500", color: subtitle.color }}
+        subtitle={item.date}
+        chevron={true}
+        onPress={() =>
+          this.props.navigation.navigate("AdminOrderView", { id: item.id })
+        }
+      />
+    );
+  };
   render() {
     const { loading, error } = this.state;
     if (loading) return <ActivityIndicator size="large" />;
@@ -51,7 +79,7 @@ class AdminCustomerViewScreen extends Component {
       date
     } = this.state.data;
     return (
-      <ScrollView>
+      <ScrollView style={{ marginBottom: 10 }}>
         <Card
           image={logo}
           imageStyle={{ marginTop: 25, height: 100 }}
@@ -92,13 +120,19 @@ class AdminCustomerViewScreen extends Component {
         <Card wrapperStyle={{ margin: 0, padding: 0 }}>
           <View>
             <Text h4 style={styles.cardTitle}>
-              Customer Information
+              Orders
             </Text>
           </View>
           <Divider />
 
-          <View style={{ paddingHorizontal: 20, paddingVertical: 10 }}>
-            <Text style={styles.restoSubtitleText}>Address:</Text>
+          <View>
+            <List
+              data={this.state.orders}
+              renderItem={this.renderItem}
+              loading={loading}
+              emptyText={"No Order History"}
+              showsVerticalScrollIndicator={false}
+            />
           </View>
         </Card>
       </ScrollView>

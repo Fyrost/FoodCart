@@ -88,7 +88,6 @@ class OrderCompletedListScreen extends Component {
           loading={loading}
           emptyText={"No Order History"}
           showsVerticalScrollIndicator={false}
-          contentContainerStyle={{ paddingBottom: 75 }}
           refreshing={refreshing}
           onRefresh={this.handleRefresh}
         />
