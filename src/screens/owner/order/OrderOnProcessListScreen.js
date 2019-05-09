@@ -69,7 +69,7 @@ class OrderOnProcessListScreen extends Component {
         subtitleStyle={subtitle.style}
         chevron={true}
         onPress={() => this.props.navigation.navigate("OwnerOrderView", { id })}
-        bottomDivider
+        
       />
     );
   };

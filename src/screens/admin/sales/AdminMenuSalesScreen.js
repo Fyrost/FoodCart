@@ -210,7 +210,7 @@ class AdminMenuSales extends Component {
           </View>
         }
       chevron={true}
-      bottomDivider
+      
     />
   );
 

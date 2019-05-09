@@ -194,7 +194,7 @@ class RestoMenuSales extends Component {
       //     }
       //   })
       // }
-      bottomDivider
+      
     />
   );
 

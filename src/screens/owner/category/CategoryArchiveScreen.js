@@ -118,7 +118,7 @@ class CategoryArchiveScreen extends Component {
           this.makeRestoreRequest.bind(this, item.id)
         )
       }
-      bottomDivider
+      
     />
   );
 

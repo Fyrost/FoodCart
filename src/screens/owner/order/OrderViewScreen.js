@@ -195,7 +195,7 @@ class OrderViewScreen extends Component {
         }
       })
       .catch(err => {
-        this.setState({ screenLoading: false });
+        this.setState({ screenLoading: false, reportOverlayVisible: true  });
         MessageAlert("Report", errorHandler(err));
       });
   };

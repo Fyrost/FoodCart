@@ -130,43 +130,52 @@ class TagPendingScreen extends Component {
           containerStyle={{
             zIndex: 99999,
             position: "absolute",
-            right: -33  ,
+            right: -33,
             top: -32
           }}
           onPress={() => this.setState({ isDetailVisible: false })}
         />
         <View style={{ paddingHorizontal: 20, paddingVertical: 10 }}>
-          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <View style={{ flexDirection: "row", alignItems: "center" }}>
             <Text>Name: </Text>
             <Text>{this.state.detail.name}</Text>
           </View>
 
-          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <View style={{ flexDirection: "row", alignItems: "center" }}>
             <Text>Slug: </Text>
             <Text>{this.state.detail.slug}</Text>
           </View>
 
-          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <View style={{ flexDirection: "row", alignItems: "center" }}>
             <Text>Used by: </Text>
             <Text>{this.state.detail.usedBy}</Text>
           </View>
           <Button
-          title={`View Item/s`}
-          type={'clear'}
-          onPress={() => {
-            this.setState({ isDetailVisible: false });
-            this.props.navigation.navigate("AdminMenuFilter", {
-              tag: this.state.detail.slug
-            });
-          }}
-        />
+            title={`View Item/s`}
+            type={"clear"}
+            onPress={() => {
+              this.setState({ isDetailVisible: false });
+              this.props.navigation.navigate("AdminMenuFilter", {
+                tag: this.state.detail.slug
+              });
+            }}
+          />
         </View>
 
-        
-        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-evenly'}}>  
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "space-evenly"
+          }}
+        >
           <Button
             title={`Reject`}
-            buttonStyle={{ flexGrow: 1, borderRadius: 0, backgroundColor: '#EF1B17' }}
+            buttonStyle={{
+              flexGrow: 1,
+              borderRadius: 0,
+              backgroundColor: "#EF1B17"
+            }}
             onPress={() =>
               ConfirmAlert("Reject Tag", "Are you sure?", () =>
                 this.handleReject(this.state.detail.id)
@@ -176,7 +185,11 @@ class TagPendingScreen extends Component {
 
           <Button
             title={`Approve`}
-            buttonStyle={{ flexGrow: 1, borderRadius: 0, backgroundColor: '#00CC66' }}
+            buttonStyle={{
+              flexGrow: 1,
+              borderRadius: 0,
+              backgroundColor: "#00CC66"
+            }}
             onPress={() =>
               ConfirmAlert("Approve Tag", "Are you sure?", () =>
                 this.handleApprove(this.state.detail.id)
@@ -206,7 +219,6 @@ class TagPendingScreen extends Component {
           }
         })
       }
-      bottomDivider
     />
   );
 

@@ -161,7 +161,7 @@ class MenuListScreen extends Component {
           />
         </View>
       }
-      bottomDivider
+      
     />
   );
 

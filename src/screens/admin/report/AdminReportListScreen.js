@@ -95,11 +95,12 @@ class AdminReportListScreen extends Component {
           </View>
         }
         chevron={true}
-        bottomDivider
+        
         onPress={() =>
           this.props.navigation.push("AdminReportView", {
             code,
-            investigate: status === "1" ? true : false
+            investigate: status === "0" ? true : false,
+            close: status === "2" ? false : true
           })
         }
       />

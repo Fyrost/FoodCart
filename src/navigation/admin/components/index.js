@@ -7,3 +7,4 @@ export * from "./AdminSalesTabNavigator";
 export * from "./AdminTagTabNavigator";
 export * from "./AdminLogStackNavigator";
 export * from "./AdminOrderStackNavigator";
+export * from "./AdminBanStackNavigator";

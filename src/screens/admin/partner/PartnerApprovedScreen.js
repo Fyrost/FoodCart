@@ -71,7 +71,7 @@ class RestoApplyApprovedScreen extends Component {
       onPress={() =>
         this.props.navigation.navigate("AdminPartnerView", { restoId: item.id })
       }
-      bottomDivider
+      
     />
   );
 

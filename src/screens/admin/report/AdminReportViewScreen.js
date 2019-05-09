@@ -20,6 +20,7 @@ import {
   closeAdminReport,
   errorHandler
 } from "../../../actions";
+import Loading from "../../../components/Loading";
 
 const formatStatus = status =>
   status === "0" ? "Open" : status === "1" ? "Under Investigation" : "Closed";
@@ -33,6 +34,7 @@ class AdminReportViewScreen extends Component {
   state = {
     comment: "",
     ban: false,
+    banReason: "",
     ticket: {
       id: "",
       code: "",
@@ -116,7 +118,7 @@ class AdminReportViewScreen extends Component {
     this.setState({ overlayVisible: true });
   };
 
-  handleInvestigate() {
+  handleInvestigate = () => {
     this.setState({ screenLoading: true });
     investigateAdminReport(this.props.navigation.getParam("code"))
       .then(res => {
@@ -128,25 +130,35 @@ class AdminReportViewScreen extends Component {
         this.setState({ screenLoading: false });
         MessageAlert("Investigate Report", errorHandler(err));
       });
-  }
+  };
 
-  handleClose() {
-    this.setState({ screenLoading: true });
+  handleClose = () => {
+    this.setState({ screenLoading: true, overlayVisible: false });
     closeAdminReport({
       code: this.props.navigation.getParam("code"),
       comment: this.state.comment,
-      ban: this.state.ban
+      ban: this.state.ban,
+      banReason: this.state.banReason
     })
       .then(res => {
         this.setState({ screenLoading: false });
-        MessageAlert("Close Report", res.data.message);
-        if (res.data.success) this.props.navigation.pop();
+        if (res.data.success) {
+          this.props.navigation.pop();
+          MessageAlert("Close Report", res.data.message);
+        } else {
+          let errors = ``;
+          Object.values(res.data.errors).map(value => {
+            errors += `${value[0]}\n`;
+          });
+          this.setState({ overlayVisible: true });
+          MessageAlert(res.data.message, errors);
+        }
       })
       .catch(err => {
-        this.setState({ screenLoading: false });
+        this.setState({ screenLoading: false, overlayVisible: true });
         MessageAlert("Close Report", errorHandler(err));
       });
-  }
+  };
 
   renderOverlay = () => {
     const INITIAL_STATE = {
@@ -209,6 +221,25 @@ class AdminReportViewScreen extends Component {
             checked={this.state.ban}
             onPress={() => this.setState({ ban: !this.state.ban })}
           />
+          {this.state.ban && (
+            <View>
+              <Text style={{ fontSize: 16, marginTop: 15 }}>
+                Why do you want to ban this customer?
+              </Text>
+              <TextInput
+                value={this.state.banReason}
+                multiline={true}
+                placeholder={"Enter your reason here..."}
+                numberOfLines={5}
+                style={{
+                  borderColor: "gray",
+                  borderWidth: 1,
+                  paddingHorizontal: 10
+                }}
+                onChangeText={banReason => this.setState({ banReason })}
+              />
+            </View>
+          )}
           <View style={{ flex: 1, flexDirection: "row", alignItems: "center" }}>
             <Button
               title={"Cancel"}
@@ -224,13 +255,13 @@ class AdminReportViewScreen extends Component {
             <Button
               title={"Close"}
               onPress={() =>
-                this.state.ban
-                  ? ConfirmAlert(
-                      "Close Report",
-                      "Are you sure you want to ban this customer and close the report?",
-                      this.handleClose
-                    )
-                  : this.handleClose
+                ConfirmAlert(
+                  "Close Report",
+                  `Are you sure you want to ${
+                    this.state.ban ? `ban this customer and ` : ``
+                  }close the report?`,
+                  this.handleClose
+                )
               }
               disabled={this.state.loading}
               containerStyle={{ flex: 1 }}
@@ -250,21 +281,24 @@ class AdminReportViewScreen extends Component {
       title={item.name}
       rightTitle={`Price: ₱ ${item.price}.00`}
       subtitle={`Quantity: ${item.quantity}`}
-      titleStyle={{ fontWeight: "500", fontSize: 18, color: "#1B73B4" }}
-      bottomDivider
-      onPress={() =>
-        this.props.navigation.push("AdminMenuView", { menuId: `${item.id}` })
-      }
     />
   );
 
   render() {
-    const { loading, ticket, order, restaurant, customer } = this.state;
+    const {
+      loading,
+      ticket,
+      order,
+      restaurant,
+      customer,
+      screenLoading
+    } = this.state;
     const { makeRemoteRequest, renderOverlay } = this;
     if (loading) return <ActivityIndicator size="large" />;
     return (
-      <ScrollView style={{ paddingVertical: 10 }}>
+      <ScrollView style={{ paddingBottom: 15 }}>
         <NavigationEvents onWillFocus={makeRemoteRequest} />
+        <Loading loading={screenLoading} size="large" />
         {renderOverlay()}
         <Card wrapperStyle={{ margin: 0, padding: 0 }}>
           <Text h4 style={styles.cardTitle}>
@@ -342,7 +376,6 @@ class AdminReportViewScreen extends Component {
               data={order.itemlist}
               renderItem={this.renderItem}
               showsVerticalScrollIndicator={false}
-              contentContainerStyle={{ paddingBottom: 75 }}
             />
           </View>
         </Card>

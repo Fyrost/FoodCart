@@ -8,9 +8,10 @@ import {
   OrderNavigator,
   SalesNavigator,
   TagNavigator,
-  LogsNavigator
+  LogsNavigator,
+  BanNavigator
 } from "./components";
-import { leftBackButton } from "./navOptions/navButtons";
+import { leftBackButton, rightReportButton } from "./navOptions/navButtons";
 import { headerStyles } from "./navOptions/navStyles";
 import {
   partnerIcon,
@@ -20,7 +21,7 @@ import {
   customerIcon,
   salesIcon,
   reportIcon,
-  logIcon, 
+  logIcon,
   orderIcon
 } from "./navOptions/navIcons";
 import ProfileStackNavigator from "../ProfileStackNavigator";
@@ -30,6 +31,8 @@ import AdminCustomerViewScreen from "../../screens/admin/customer/AdminCustomerV
 import AdminOrderViewScreen from "../../screens/admin/order/AdminOrderViewScreen";
 import AdminMenuListScreen from "../../screens/admin/menu/AdminMenuListScreen";
 import AdminMenuViewScreen from "../../screens/admin/menu/AdminMenuViewScreen";
+import AdminReportViewScreen from "../../screens/admin/report/AdminReportViewScreen";
+import AdminBanViewScreen from "../../screens/admin/ban/AdminBanViewScreen";
 import DrawerLayout from "../../components/DrawerLayout";
 
 const Partnership = {
@@ -95,6 +98,14 @@ const Report = {
   }
 };
 
+const Ban = {
+  screen: BanNavigator,
+  navigationOptions: {
+    title: "Ban",
+    drawerIcon: ({ tintColor }) => logIcon({ tintColor })
+  }
+};
+
 const Logs = {
   screen: LogsNavigator,
   navigationOptions: {
@@ -113,6 +124,7 @@ const AdminDrawer = createDrawerNavigator(
     Order,
     Sales,
     Report,
+    Ban,
     Logs
   },
   {
@@ -176,6 +188,21 @@ const AdminMenuView = {
     headerLeft: leftBackButton({ navigation })
   })
 };
+const AdminBanView = {
+  screen: AdminBanViewScreen,
+  navigationOptions: ({ navigation }) => ({
+    title: "Ban Details",
+    headerLeft: leftBackButton({ navigation })
+  })
+};
+const AdminReportView = {
+  screen: AdminReportViewScreen,
+  navigationOptions: ({ navigation }) => ({
+    title: "Report Details",
+    headerLeft: leftBackButton({ navigation }),
+    headerRight: rightReportButton({ navigation })
+  })
+};
 
 export default createStackNavigator(
   {
@@ -186,7 +213,9 @@ export default createStackNavigator(
     AdminCustomerView,
     AdminOrderView,
     AdminMenuFilter,
-    AdminMenuView
+    AdminMenuView,
+    AdminReportView,
+    AdminBanView
   },
   {
     defaultNavigationOptions: headerStyles,

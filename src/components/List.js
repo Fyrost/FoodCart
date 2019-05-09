@@ -1,6 +1,6 @@
 import React, { Component } from "React";
 import { View, Text, FlatList, ActivityIndicator } from "react-native";
-import ActivityLoading from "./ActivityLoading"
+import ActivityLoading from "./ActivityLoading";
 class List extends Component {
   keyExtractor = (item, index) => index.toString();
 
@@ -9,7 +9,7 @@ class List extends Component {
       this.props.listFooterComponent ? (
         this.props.listFooterComponent
       ) : (
-        <ActivityLoading type={"list"} /> 
+        <ActivityLoading type={"list"} />
       )
     ) : null;
   };
@@ -19,11 +19,28 @@ class List extends Component {
       this.props.listEmptyComponent ? (
         this.props.listEmptyComponent
       ) : (
-        <View style={this.props.emptyContainerStyle || defaultStyle.emptyContainer}>
-          <Text style={this.props.emptyStyle || defaultStyle.emptyStyle }>{this.props.emptyText ? this.props.emptyText : "No Item"}</Text>
+        <View
+          style={this.props.emptyContainerStyle || defaultStyle.emptyContainer}
+        >
+          <Text style={this.props.emptyStyle || defaultStyle.emptyStyle}>
+            {this.props.emptyText ? this.props.emptyText : "No Item"}
+          </Text>
         </View>
       )
     ) : null;
+  };
+
+  renderSeparator = () => {
+    return this.props.ItemSeparatorComponent ? (
+      this.props.ItemSeparatorComponent
+    ) : (
+      <View
+        style={{
+          borderBottomWidth: 1,
+          borderBottomColor: "lightgray"
+        }}
+      />
+    );
   };
 
   render() {
@@ -35,7 +52,7 @@ class List extends Component {
       listFooterComponent,
       ...props
     } = this.props;
-    const { keyExtractor, renderFooter, renderEmpty } = this;
+    const { keyExtractor, renderFooter, renderEmpty, renderSeparator } = this;
     if (error) return <Text>{error}</Text>;
     return (
       <View>
@@ -46,6 +63,7 @@ class List extends Component {
           renderItem={renderItem}
           ListEmptyComponent={renderEmpty()}
           ListFooterComponent={renderFooter()}
+          ItemSeparatorComponent={renderSeparator}
         />
       </View>
     );
@@ -54,13 +72,13 @@ class List extends Component {
 
 export default List;
 
-const defaultStyle ={
+const defaultStyle = {
   emptyContainer: {
-    alignItems: 'center', 
+    alignItems: "center",
     marginTop: 30
   },
   emptyStyle: {
-    fontSize: 18, 
-    fontWeight: '500'
+    fontSize: 18,
+    fontWeight: "500"
   }
-}
+};

@@ -1,19 +1,19 @@
 import { createStackNavigator } from "react-navigation";
 import { leftDrawerButton } from "../navOptions/navButtons";
 import { headerStyles } from "../navOptions/navStyles";
-import AdminReportListScreen from "../../../screens/admin/report/AdminReportListScreen";
+import AdminBanListScreen from "../../../screens/admin/ban/AdminBanListScreen";
 
-const AdminReportList = {
-  screen: AdminReportListScreen,
+const AdminBanList = {
+  screen: AdminBanListScreen,
   navigationOptions: ({ navigation }) => ({
-    title: "Reported User",
+    title: "Ban List",
     headerLeft: leftDrawerButton({ navigation })
   })
 };
 
-const ReportNavigator = createStackNavigator(
-  { AdminReportList },
+const BanNavigator = createStackNavigator(
+  { AdminBanList },
   { defaultNavigationOptions: headerStyles }
 );
 
-export { ReportNavigator };
+export { BanNavigator };

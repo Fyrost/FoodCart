@@ -60,8 +60,9 @@ class AdminRestoViewScreen extends Component {
         </View>
       }
       chevron={true}
-      bottomDivider
-      onPress={() => this.props.navigation.push("AdminMenuView", { menuId: id })}
+      onPress={() =>
+        this.props.navigation.push("AdminMenuView", { menuId: id })
+      }
     />
   );
 
@@ -162,7 +163,6 @@ class AdminRestoViewScreen extends Component {
                 loading={this.state.loading}
                 emptyText={"No Menu"}
                 showsVerticalScrollIndicator={false}
-                contentContainerStyle={{ paddingBottom: 75 }}
               />
             </View>
           </View>

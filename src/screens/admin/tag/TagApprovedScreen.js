@@ -109,7 +109,7 @@ class TagApprovedScreen extends Component {
           }
         })
       }
-      bottomDivider
+      
     />
   );
 

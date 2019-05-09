@@ -111,7 +111,7 @@ class RestoApplyPendingScreen extends Component {
           pending: true
         })
       }
-      bottomDivider
+      
     />
   );
 

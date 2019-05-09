@@ -61,7 +61,7 @@ class TagRejectedScreen extends Component {
       titleStyle={{ fontWeight: "500", fontSize: 18, color: "#1B73B4" }}
       subtitle={"Rejected: " + item.created_at}
       chevron={true}
-      bottomDivider
+      
     />
   );
 

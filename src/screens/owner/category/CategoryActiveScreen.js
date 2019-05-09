@@ -208,7 +208,7 @@ class CategoryListScreen extends Component {
           layoutVisible: true
         })
       }
-      bottomDivider
+      
     />
   );
 

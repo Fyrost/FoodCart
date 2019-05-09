@@ -64,7 +64,7 @@ class OrderCompletedListScreen extends Component {
       rightTitleStyle={{ fontWeight: '500', color:subtitle.color }}
       subtitle={item.date}
       chevron={true}
-      bottomDivider
+      
       onPress={() =>
         this.props.navigation.navigate("UserOrderView", { code: item.code })
       }

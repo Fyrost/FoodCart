@@ -58,6 +58,7 @@ export const ADMIN_MENU_SALES_SEARCH = query =>
 export const ADMIN_ORDER = `admin/order`;
 export const ADMIN_ORDER_SELECT = id => `admin/order/${id}`;
 export const ADMIN_BLOCK = `admin/ban`;
+export const ADMIN_BLOCK_SELECT = id => `admin/ban/${id}`;
 export const ADMIN_REPORT = `admin/report`;
 export const ADMIN_REPORT_SELECT = code => `admin/report/${code}`;
 export const ADMIN_REPORT_INVESTIGATE = code =>

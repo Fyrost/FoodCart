@@ -42,31 +42,14 @@ class AdminBanListScreen extends Component {
     );
   };
 
-  renderItem = ({
-    item: {
-      id,
-      fname,
-      mname,
-      lname,
-      contact_number,
-      address,
-      created_at,
-      updated_at
-    }
-  }) => (
+  renderItem = ({ item: { ban_id, email, created_at } }) => (
     <ListItem
-      title={`${lname}, ${fname} ${mname}`}
+      title={email}
       titleStyle={{ fontWeight: "500", fontSize: 18, color: "#1B73B4" }}
-      subtitle={
-        <View>
-          <Text>Contact Number: {contact_number}</Text>
-          <Text>Joined: {created_at}</Text>
-        </View>
-      }
+      subtitle={`Date Banned: ${created_at}`}
       chevron={true}
-      bottomDivider
       onPress={() =>
-        this.props.navigation.push("CustomerView", { customerId: id })
+        this.props.navigation.push("AdminBanView", { banId: ban_id })
       }
     />
   );

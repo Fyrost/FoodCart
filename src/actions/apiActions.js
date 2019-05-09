@@ -502,6 +502,13 @@ export const getAdminBlockList = () => {
   });
 };
 
+export const getAdminBlockDetail = id => {
+  return Axios({
+    url: API.ADMIN_BLOCK_SELECT(id),
+    method: "get"
+  });
+};
+
 export const getAdminReportList = () => {
   return Axios({
     url: API.ADMIN_REPORT,
@@ -523,11 +530,14 @@ export const investigateAdminReport = code => {
   });
 };
 
-export const closeAdminReport = ({code, comment, ban}) => {
+export const closeAdminReport = ({ code, comment, ban, banReason }) => {
   let data = new FormData();
   data.append("report_code", code);
   data.append("report_comment", comment);
-  if (ban) data.append("report_ban", ban);
+  if (ban) {
+    data.append("report_ban", ban);
+    data.append("ban_reason", banReason);
+  }
   return Axios({
     url: API.ADMIN_REPORT_CLOSE(code),
     method: "post",

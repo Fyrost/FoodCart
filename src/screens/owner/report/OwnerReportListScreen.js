@@ -187,7 +187,7 @@ class OwnerReportListScreen extends Component {
           </View>
         }
         chevron={true}
-        bottomDivider
+        
         onPress={() =>
           this.setState({
             layoutVisible: true,

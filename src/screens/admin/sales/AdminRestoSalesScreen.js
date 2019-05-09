@@ -223,7 +223,7 @@ class AdminRestoSalesScreen extends Component {
           'trailing': false
         })
       }
-      bottomDivider
+      
     />
   );
 
