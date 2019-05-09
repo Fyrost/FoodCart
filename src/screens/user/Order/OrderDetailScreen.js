@@ -1,7 +1,8 @@
 import React, { Component } from "react";
-import { View, SectionList, ActivityIndicator, ScrollView } from "react-native";
+import { View, SectionList, ActivityIndicator, ScrollView,TouchableHighlight } from "react-native";
 import { NavigationEvents } from "react-navigation";
 import { Text, Icon, Divider, Image } from "react-native-elements";
+import _ from "lodash"
 import { getOrderDetail, errorHandler } from "../../../actions";
 const formatOrder = order => {
   return order.map(section => {
@@ -65,7 +66,7 @@ class OrderDetailScreen extends Component {
       );
   };
 
-  renderSectionHeader = ({ section: { name, contact_number } }) => (
+  renderSectionHeader = ({ section: { name, contact_number, slug } }) => (
     <View
       style={{
         flexDirection: "row",
@@ -76,9 +77,23 @@ class OrderDetailScreen extends Component {
         paddingVertical: 10
       }}
     >
+    <TouchableHighlight
+        onPress={_.debounce(
+          () =>
+            this.props.navigation.push("UserRestoMenu", {
+              slug
+            }),
+          1000,
+          {
+            leading: true,
+            trailing: false
+          }
+        )}
+      >
       <Text style={{ fontWeight: "400", fontSize: 18, color: "white" }}>
         {name}
       </Text>
+      </TouchableHighlight>
       <View style={{ flexDirection: "row", alignItems: "center" }}>
         <Text style={{ fontWeight: "400", fontSize: 18, color: "white" }}>
           {contact_number}

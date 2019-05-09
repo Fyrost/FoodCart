@@ -1,16 +1,15 @@
 import React, { Component } from "react";
-import { View, SectionList, ActivityIndicator, ScrollView } from "react-native";
 import {
-  Button,
-  Text,
-  Input,
-  Overlay,
-  Icon,
-  Divider,
-  Image
-} from "react-native-elements";
+  View,
+  SectionList,
+  ActivityIndicator,
+  ScrollView,
+  TouchableHighlight
+} from "react-native";
+import { Text, Input, Icon, Divider, Image } from "react-native-elements";
+import _ from "lodash";
 import { NavigationEvents } from "react-navigation";
-import { MessageAlert, ConfirmAlert } from "../../../components/Alerts";
+import { MessageAlert } from "../../../components/Alerts";
 import { getCheckout, postCheckout, errorHandler } from "../../../actions";
 import ActivityLoading from "../../../components/ActivityLoading";
 import Loading from "../../../components/Loading";
@@ -115,7 +114,7 @@ class CheckoutScreen extends Component {
       );
   };
 
-  renderSectionHeader = ({ section: { name } }) => (
+  renderSectionHeader = ({ section: { name, slug } }) => (
     <View
       style={{
         flexDirection: "row",
@@ -126,9 +125,23 @@ class CheckoutScreen extends Component {
         paddingVertical: 10
       }}
     >
-      <Text style={{ fontWeight: "400", fontSize: 18, color: "white" }}>
-        {name}
-      </Text>
+      <TouchableHighlight
+        onPress={_.debounce(
+          () =>
+            this.props.navigation.push("UserRestoMenu", {
+              slug
+            }),
+          1000,
+          {
+            leading: true,
+            trailing: false
+          }
+        )}
+      >
+        <Text style={{ fontWeight: "400", fontSize: 18, color: "white" }}>
+          {name}
+        </Text>
+      </TouchableHighlight>
     </View>
   );
 

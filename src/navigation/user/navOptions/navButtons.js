@@ -96,7 +96,7 @@ export const rightCheckoutButton = ({ navigation }) => (
   <Button
     title="Place order"
     onPress={()=>ConfirmAlert(
-      "Empty Cart",
+      "Place Order",
       "Are you sure",
       navigation.getParam("checkoutButton")
     )}
