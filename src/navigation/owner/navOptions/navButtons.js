@@ -96,13 +96,17 @@ export const rightMenuAddButton = ({ navigation }) => (
   </View>
 );
 ////OWNER ORDER////
-export const rightOrderButton = ({ navigation }) => (
-  <Button
-    title={"Report"}
-    buttonStyle={{ backgroundColor: "orange", marginRight: 10 }}
-    onPress={navigation.getParam("handleReportOverlayVisible")}
-  />
-);
+export const rightOrderButton = ({ navigation }) => {
+  {
+    return navigation.getParam("report", true) ? (
+      <Button
+        title={"Report"}
+        buttonStyle={{ backgroundColor: "orange", marginRight: 10 }}
+        onPress={navigation.getParam("handleReportOverlayVisible")}
+      />
+    ) : null;
+  }
+};
 ////OWNER CATEGORY////
 export const rightCategoryAddButton = ({ navigation }) => (
   <Avatar

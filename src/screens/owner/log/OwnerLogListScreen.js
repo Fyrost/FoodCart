@@ -60,6 +60,8 @@ class OwnerLogListScreen extends Component {
           contentContainerStyle={{ paddingBottom: 75 }}
           refreshing={refreshing}
           onRefresh={this.handleRefresh}
+          divider={"none"}
+          ItemSeparatorComponent={this.renderSeparator}
         />
       </View>
     );

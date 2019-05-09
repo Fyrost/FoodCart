@@ -63,7 +63,9 @@ class List extends Component {
           renderItem={renderItem}
           ListEmptyComponent={renderEmpty()}
           ListFooterComponent={renderFooter()}
-          ItemSeparatorComponent={renderSeparator}
+          ItemSeparatorComponent={
+            this.props.divider !== "none" && renderSeparator
+          }
         />
       </View>
     );
