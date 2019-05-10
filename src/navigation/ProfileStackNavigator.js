@@ -1,4 +1,5 @@
 import React from "react";
+import { View } from "react-native";
 import { Icon } from "react-native-elements";
 import { createStackNavigator, HeaderBackButton } from "react-navigation";
 import ProfileInfoScreen from "../screens/profile/ProfileInfoScreen";
@@ -34,14 +35,24 @@ const profileEditOptions = {
         ? "Update Resto Info"
         : "Update Profile",
     headerRight: (
-      <Icon
-        name="textbox-password"
-        type="material-community"
-        color="#FFF"
-        size={25}
-        containerStyle={{ marginRight: 15 }}
-        onPress={navigation.getParam("layoutVisible")}
-      />
+      <View style={{ flexDirection: "row" }}>
+        <Icon
+          name="email"
+          type="entypo"
+          color="#FFF"
+          size={25}
+          containerStyle={{ marginRight: 15 }}
+          onPress={navigation.getParam("layoutEmailVisible")}
+        />
+        <Icon
+          name="textbox-password"
+          type="material-community"
+          color="#FFF"
+          size={25}
+          containerStyle={{ marginRight: 15 }}
+          onPress={navigation.getParam("layoutVisible")}
+        />
+      </View>
     )
   })
 };

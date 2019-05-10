@@ -196,7 +196,6 @@ class AdminRestoSalesScreen extends Component {
           loading={loading}
           emptyText={"No Menu Found"}
           showsVerticalScrollIndicator={false}
-          contentContainerStyle={{ paddingBottom: 75 }}
           refreshing={refreshing}
           onRefresh={handleRefresh}
         />

@@ -54,12 +54,14 @@ class ProfileEditScreen extends Component {
     updatePasswordLoading: false,
     error: "",
     layoutVisible: false,
+    layoutEmailVisible: false,
     progress: ""
   };
 
   componentDidMount() {
     this.props.navigation.setParams({
-      layoutVisible: this.handleLayout
+      layoutVisible: this.handleLayout,
+      layoutEmailVisible: this.handleEmailLayout
     });
   }
   preRequest = () => {
@@ -164,6 +166,12 @@ class ProfileEditScreen extends Component {
       layoutVisible: true
     });
   };
+
+  handleEmailLayout = () => {
+    this.setState({
+      handleEmailLayout: true
+    })
+  }
 
   handleUpdatePassword = () => {
     const { password, passwordConfirm, passwordOld } = this.state;
@@ -665,7 +673,7 @@ class ProfileEditScreen extends Component {
         onBackdropPress={() => this.setState({ layoutVisible: false })}
       >
         <View>
-          <View style={styles.categoryOverlayContainer}>
+          <View style={[styles.categoryOverlayContainer, {}]}>
             <Text style={styles.categoryOverlayTitle} h4>
               Change Password
             </Text>

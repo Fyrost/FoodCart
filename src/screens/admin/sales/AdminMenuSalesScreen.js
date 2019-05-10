@@ -70,7 +70,7 @@ class AdminMenuSales extends Component {
     const data = this.state.fullData.filter(item => {
       return contains(item.item_name, text) || contains(item.name, text);
     });
-    this.setState({ search: text, data }, () => this.makeRemoteRequest());
+    this.setState({ search: text, data });
   };
 
   renderOverlay = () => {
@@ -152,7 +152,6 @@ class AdminMenuSales extends Component {
           </View>
         </View>
       }
-      chevron={true}
     />
   );
 
@@ -181,7 +180,6 @@ class AdminMenuSales extends Component {
           loading={loading}
           emptyText={"No Menu Found"}
           showsVerticalScrollIndicator={false}
-          contentContainerStyle={{ paddingBottom: 75 }}
           refreshing={refreshing}
           onRefresh={handleRefresh}
         />
