@@ -45,7 +45,6 @@ export default class DrawerLayout extends Component {
             />
           </ScrollView>
         </View>
-        <Divider />
         <View style={styles.drawerFooter}>
           <TouchableOpacity
             onPress={() => this.props.navigation.navigate("Profile")}
@@ -119,7 +118,9 @@ const styles = {
   drawerFooter: {
     flex: 1,
     justifyContent: "space-evenly",
-    paddingLeft: 20
+    paddingLeft: 20,
+    borderColor: 'lightgrey',
+    borderTopWidth: 0.8
   },
 
   drawerFooterContent: {

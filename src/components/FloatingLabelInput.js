@@ -10,11 +10,6 @@ class FloatingLabelInput extends Component {
     this._animatedIsFocused = new Animated.Value(this.props.value ? 1 : 0);
   }
 
-  handleShow = () =>
-    this.setState({
-      xVisible: this.props.value ? true : false
-    });
-
   handleFocus = () =>
     this.setState(
       {

@@ -5,7 +5,8 @@ import {
   SectionList,
   TouchableOpacity,
   ImageBackground,
-  ScrollView
+  ScrollView,
+  Animated
 } from "react-native";
 import { NavigationEvents } from "react-navigation";
 import {
@@ -32,6 +33,8 @@ import {
   postCart,
   errorHandler
 } from "../../../actions";
+// import console = require("console");
+// import console = require("console");
 
 const formatMenu = menu => {
   return menu.map(section => {
@@ -41,7 +44,6 @@ const formatMenu = menu => {
 
 class RestoViewScreen extends Component {
   state = {
-    cartOverlayValue: 1,
     restoName: "",
     restoAddress: "",
     restoContact: "",
@@ -60,9 +62,10 @@ class RestoViewScreen extends Component {
     menuDetailShow: false,
     menuDetail: {
       tag: []
-    }
+    },
+    cartOverlayValue: 1,
   };
-
+  
   makeRemoteRequest = () => {
     this.setState({ loading: true, menu: [] });
     const promises = [
@@ -74,7 +77,6 @@ class RestoViewScreen extends Component {
       .then(res => {
         if (res[0].data.success && res[1].data.success && res[2].data.success) {
           const { data } = res[0].data;
-          console.log(data);
           this.setState({
             loading: false,
             restoName: data.name,
@@ -287,7 +289,7 @@ class RestoViewScreen extends Component {
               justifyContent: "space-between"
             }}
           >
-            <View style={{ flex: 2 }}>
+            <View style={{ flex: 1 }}>
               <Text style={stylesResto.headerRestoName}>
                 {this.state.restoName}
               </Text>
@@ -338,134 +340,125 @@ class RestoViewScreen extends Component {
     </View>
   );
 
-  renderMenuDetail = () => (
-    <Overlay
-      fullScreen
-      isVisible={this.state.menuDetailShow}
-      onBackdropPress={() =>
-        this.setState({ menuDetailShow: false, cartOverlayValue: 1 })
-      }
-      containerStyle={{ flex: 1 }}
-    >
-      <View style={{ flex: 1 }}>
-        <Icon
-          raised
-          reverse
-          name={"times"}
-          type={"font-awesome"}
-          color={"#1B73B4"}
-          size={20}
-          underlayColor={"black"}
-          containerStyle={{
-            zIndex: 99999,
-            position: "absolute",
-            right: 0,
-            top: -2
-          }}
-          onPress={() =>
-            this.setState({ menuDetailShow: false, cartOverlayValue: 1 })
+  renderMenuDetail = ({viewStyle}) => {
+    return(
+      <Animated.View style={viewStyle}>
+        <Overlay
+          fullScreen
+          isVisible={this.state.menuDetailShow}
+          onBackdropPress={() =>
+              this.setState({ menuDetailShow: false, cartOverlayValue: 1 })
           }
-        />
-        <View style={{ flex: 1, justifyContent: "center" }}>
-          <Tile
-            imageSrc={
-              this.state.menuDetail.image_name
-                ? { uri: this.state.menuDetail.image_name }
-                : null
-            }
-            height={150}
-            overlayContainerStyle={{ backgroundColor: "transparent" }}
-            activeOpacity={1}
-            containerStyle={{ flex: 1, width: "auto", margin: 0, padding: 0 }}
-            imageContainerStyle={{ height: "100%", width: "auto" }}
-            featured
-          />
-        </View>
-        <Divider />
-        <View style={{ flex: 2 }}>
-          <View style={[stylesResto.menuOverlayRow, { flex: 2 }]}>
-            <View>
-              <Text style={{ fontSize: 24, fontWeight: "500" }}>
+          containerStyle={{ flex: 1 }}
+        >
+          <View style={{ flex: 1 }}>
+            <View style={{ flexShrink: 1, flexDirection: "row", alignItems: "center", justifyContent: "flex-end"  }}>
+              <Icon
+                name={"times"}
+                type={"font-awesome"}
+                color={"grey"}
+                size={28}
+                underlayColor={"rgba(0,0,0,0.3)"}
+                containerStyle={{ paddingBottom: 10 }}
+                onPress={() =>
+                  this.setState({ menuDetailShow: false, cartOverlayValue: 1 })
+                }
+              />
+            </View>
+            <View style={{ flex: 2, justifyContent: "center" }}>
+              <Tile
+                imageSrc={
+                  this.state.menuDetail.image_name
+                    ? { uri: this.state.menuDetail.image_name }
+                    : null
+                }
+                height={150}
+                overlayContainerStyle={{ backgroundColor: "transparent" }}
+                activeOpacity={1}
+                containerStyle={{ flex: 1, width: "auto", margin: 0, padding: 0 }}
+                imageContainerStyle={{ height: "100%", width: "auto" }}
+                featured
+              />
+            </View>
+            <Divider />
+            <View style={{ flex: 2, paddingHorizontal: 15, paddingVertical: 10, }}>
+              <Text style={{ marginTop: 10, fontSize: 24, fontWeight: "500" }}>
                 {this.state.menuDetail.name}
               </Text>
+              <View style={{ flex: 1, marginTop: 10 }}>
+                <ScrollView>
+                  <Text
+                    style={{
+                      fontWeight: "normal",
+                      color: "#3D3D3E",
+                      textAlign: "left"
+                    }}
+                  >
+                    {this.state.menuDetail.description}
+                  </Text>
+                </ScrollView>
+              </View>
             </View>
-            <View style={{ flex: 1, marginTop: 10 }}>
-              <ScrollView
-                style={{ flex: 1 }}
-                contentContainerStyle={{ alignItems: "center" }}
-              >
-                <Text
-                  style={{
-                    fontWeight: "normal",
-                    color: "#3D3D3E",
-                    textAlign: "left"
-                  }}
-                >
-                  {this.state.menuDetail.description}
+
+            <View style={stylesResto.menuOverlayRow}>
+              <View style={stylesResto.menuOverlayRowBetween}>
+                <Text style={{ fontWeight: "500" }}>Price</Text>
+                <Text style={{ fontWeight: "normal" }}>
+                  {(this.state.menuDetail.price)}{" "}
+                  PHP
                 </Text>
-              </ScrollView>
-            </View>
-          </View>
+              </View>
 
-          <View style={stylesResto.menuOverlayRow}>
-            <View style={stylesResto.menuOverlayRowBetween}>
-              <Text style={{ fontWeight: "400" }}>Price</Text>
-              <Text style={{ fontWeight: "normal" }}>
-                {Number(this.state.menuDetail.price) *
-                  Number(this.state.cartOverlayValue)}{" "}
-                PHP
-              </Text>
+              <View style={stylesResto.menuOverlayRowBetween}>
+                <Text style={{ fontWeight: "500" }}>Cooking Time</Text>
+                <Text style={{ fontWeight: "normal" }}>
+                  {this.state.menuDetail.cooking_time} Minutes
+                </Text>
+              </View>
             </View>
-
-            <View style={stylesResto.menuOverlayRowBetween}>
-              <Icon name="ios-timer" type="ionicon" />
-              <Text style={{ fontWeight: "normal" }}>
-                {this.state.menuDetail.cooking_time} Minutes
-              </Text>
+            <Divider style={{ marginBottom: 20 }} />
+            <View style={stylesResto.menuOverlayRowCart}>
+              <NumericInput
+                initValue={this.state.cartOverlayValue}
+                value={this.state.cartOverlayValue}
+                onChange={cartOverlayValue => this.setState({ cartOverlayValue })}
+                totalWidth={150}
+                totalHeight={40}
+                iconSize={25}
+                minValue={1}
+                maxValue={9999}
+                rounded
+                borderColor={"lightgrey"}
+                textColor={"#06070E"}
+                iconStyle={{ color: "white" }}
+                rightButtonBackgroundColor="#11CDEF"
+                leftButtonBackgroundColor="#11CDEF"
+              />
+              <Button
+                icon={
+                  <Icon
+                    name={"cart-plus"}
+                    type={"font-awesome"}
+                    color={"white"}
+                    size={20}
+                  />
+                }
+                buttonStyle={{ backgroundColor: "#1B73B4" }}
+                title={" ADD TO CART"}
+                titleStyle={{ color: "white" }}
+                onPress={() =>
+                  this.handleAddToCart(
+                    this.state.menuDetail.slug,
+                    this.state.cartOverlayValue
+                  )
+                }
+              />
             </View>
           </View>
-          <Divider style={{ marginBottom: 20 }} />
-          <View style={stylesResto.menuOverlayRowCart}>
-            <NumericInput
-              initValue={this.state.cartOverlayValue}
-              value={this.state.cartOverlayValue}
-              onChange={cartOverlayValue => this.setState({ cartOverlayValue })}
-              totalWidth={100}
-              totalHeight={35}
-              iconSize={25}
-              minValue={1}
-              maxValue={9999}
-              rounded
-              textColor={"#06070E"}
-              iconStyle={{ color: "white" }}
-              rightButtonBackgroundColor="#11CDEF"
-              leftButtonBackgroundColor="#11CDEF"
-            />
-            <Button
-              raised
-              icon={
-                <Icon
-                  name={"cart-plus"}
-                  type={"font-awesome"}
-                  color={"white"}
-                  size={16}
-                />
-              }
-              buttonStyle={{ backgroundColor: "#1B73B4" }}
-              title={" ADD TO CART"}
-              titleStyle={{ color: "white" }}
-              onPress={() =>
-                this.handleAddToCart(
-                  this.state.menuDetail.slug,
-                  this.state.cartOverlayValue
-                )
-              }
-            />
-          </View>
-        </View>
-      </View>
-    </Overlay>
-  );
+        </Overlay>
+      </Animated.View>
+    )
+  }
 
   renderCategoryTitle = ({ section: { title, data } }) => {
     if (!(data && data.length)) return null;
@@ -479,7 +472,7 @@ class RestoViewScreen extends Component {
           borderBottomWidth: 1
         }}
       >
-        <Text style={{ fontWeight: "300", fontSize: 16, color: "white" }}>
+        <Text style={{ fontWeight: "500", fontSize: 16, color: "white" }}>
           {title}
         </Text>
       </View>
@@ -488,8 +481,9 @@ class RestoViewScreen extends Component {
 
   renderMenu = ({
     item: { id, name, description, price, cooking_time, image_name, slug, tag }
-  }) => (
+  }) => ( 
     <TouchableOpacity
+      activeOpacity={0.5}
       disabled={this.state.screenLoading}
       style={stylesResto.menuListRow}
       onPress={() =>
@@ -515,28 +509,28 @@ class RestoViewScreen extends Component {
           alignItems: "center"
         }}
       >
-        {image_name ? (
-          <Image
-            source={{
-              uri: `http://pinoyfoodcart.com/image/menu/${image_name}`
-            }}
-            style={stylesResto.menuListPicture}
-          />
-        ) : null}
-        <View>
-          <Text style={stylesResto.menuListTitle}>{name}</Text>
-          <Text style={stylesResto.menuListText}>{price} PHP</Text>
+        <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
+          {image_name ? (
+            <Image
+              source={{
+                uri: `http://pinoyfoodcart.com/image/menu/${image_name}`
+              }}
+              style={stylesResto.menuListPicture}
+            />
+          ) : null}  
         </View>
-      </View>
-      <View style={{ flexDirection: "row", justifyContent: "flex-end" }}>
-        <Icon
-          reverse
-          name={"plus"}
-          type={"font-awesome"}
-          color={"#11CDEF"}
-          size={20}
-          onPress={() => this.handleAddToCart(slug, 1)}
-        />
+        
+        <View style={{ flex: 1, justifyContent: 'space-between' }}>
+          <View style={{ flex: 2, marginTop: 10 }}>
+            <Text style={stylesResto.menuListTitle}>{name}</Text>
+            <View style={{ flexWrap: 'wrap' }}>
+              <Text numberOfLines={4}>{description}</Text>
+            </View>
+          </View>
+          <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'flex-end' }}>
+            <Text style={stylesResto.menuListPrice}>{price} PHP</Text>
+          </View>
+        </View>
       </View>
     </TouchableOpacity>
   );
@@ -562,9 +556,8 @@ class RestoViewScreen extends Component {
     return (
       <View>
         <NavigationEvents onWillFocus={makeRemoteRequest} />
-        {console.log(this.state.rateVisible)}
         <Loading loading={screenLoading} opacity={0.5} size={50} />
-        {renderMenuDetail()}
+        {renderMenuDetail(viewStyle)}
         <SectionList
           sections={menu}
           keyExtractor={(item, index) => item + index}
@@ -634,10 +627,9 @@ const stylesResto = {
     paddingVertical: 10
   },
   menuListPicture: {
-    height: 100,
-    width: 100,
+    height: 125,
+    width: 125,
     resizeMode: "cover",
-    marginRight: 25
   },
   menuListRow: {
     flexDirection: "row",
@@ -668,5 +660,13 @@ const stylesResto = {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-evenly"
+  },
+  menuListTitle:{
+    fontSize: 16,
+    fontWeight: '500'
+  },
+  menuListPrice:{
+    fontWeight: '100',
+    fontSize: 14
   }
 };
