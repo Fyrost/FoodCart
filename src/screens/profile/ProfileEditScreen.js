@@ -34,6 +34,7 @@ class ProfileEditScreen extends Component {
   state = {
     password: { text: "" },
     passwordConfirm: { text: "" },
+    passwordOld: { text: "" },
     email: { text: "" },
     firstName: { text: "" },
     middleName: { text: "" },
@@ -165,13 +166,15 @@ class ProfileEditScreen extends Component {
   };
 
   handleUpdatePassword = () => {
-    const { password, passwordConfirm } = this.state;
+    const { password, passwordConfirm, passwordOld } = this.state;
     this.setState({
       updatePasswordLoading: true,
+      passwordOld: { ...passwordOld, error: "" },
       password: { ...password, error: "" },
       passwordConfirm: { ...passwordConfirm, error: "" }
     });
     updateUserPassword({
+      passwordOld: passwordOld.text,
       password: password.text,
       passwordConfirm: passwordConfirm.text
     })
@@ -182,8 +185,16 @@ class ProfileEditScreen extends Component {
           MessageAlert("Change Password", message);
           this.setState({ layoutVisible: false });
         } else {
-          const { user_password, user_password1 } = res.data.errors;
+          const {
+            user_old_password,
+            user_password,
+            user_password1
+          } = res.data.errors;
           this.setState({
+            passwordOld: {
+              ...passwordOld,
+              error: user_old_password ? user_old_password[0] : ""
+            },
             password: {
               ...password,
               error: user_password ? user_password[0] : ""
@@ -197,6 +208,7 @@ class ProfileEditScreen extends Component {
         this.setState({ updatePasswordLoading: false });
       })
       .catch(err => {
+        this.setState({ updatePasswordLoading: false });
         MessageAlert("Change Password", errorHandler(err));
       });
   };
@@ -283,8 +295,8 @@ class ProfileEditScreen extends Component {
         this.setState({ screenLoading: false });
       })
       .catch(err => {
-        MessageAlert("Manage Profile", errorHandler(err));
         this.setState({ screenLoading: false });
+        MessageAlert("Manage Profile", errorHandler(err));
       });
   };
 
@@ -637,6 +649,7 @@ class ProfileEditScreen extends Component {
   renderPasswordOverlay = () => {
     const {
       layoutVisible,
+      passwordOld,
       password,
       passwordConfirm,
       updatePasswordLoading
@@ -658,6 +671,13 @@ class ProfileEditScreen extends Component {
             </Text>
           </View>
           <View style={styles.horizontalPadding16}>
+            <Input
+              placeholder={"Old Password"}
+              value={passwordOld.text}
+              onChangeText={text => this.setState({ passwordOld: { text } })}
+              secureTextEntry
+            />
+            <Text style={{ color: "red" }}>{passwordOld.error}</Text>
             <Input
               placeholder={"Password"}
               value={password.text}

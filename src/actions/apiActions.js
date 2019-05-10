@@ -746,11 +746,16 @@ export const postProfile = (
   });
 };
 
-export const updateUserPassword = ({ password, passwordConfirm }) => {
+export const updateUserPassword = ({
+  password,
+  passwordConfirm,
+  passwordOld
+}) => {
   return Axios({
     url: API.USER_PASSWORD,
     method: "post",
     data: {
+      user_old_password: passwordOld,
       user_password: password,
       user_password1: passwordConfirm
     }
