@@ -20,7 +20,9 @@ class AdminCustomerViewScreen extends Component {
           this.setState({
             loading: false,
             data: res.data.data,
-            orders: res.data.orders
+            orders: res.data.orders,
+            reports: res.data.reports,
+            logs: res.data.logs
           });
         } else {
           this.setState({
@@ -37,17 +39,17 @@ class AdminCustomerViewScreen extends Component {
       });
   };
 
-  renderItem = ({ item }) => {
+  renderOrderItem = ({ item }) => {
     const subtitle =
-      item.order_status === "0"
+      item.status === "0"
         ? { text: "Pending", color: "#9DA0A3" }
-        : item.order_status === "1"
+        : item.status === "1"
         ? { text: "Processing", color: "#11CDEF" }
-        : item.order_status === "2"
+        : item.status === "2"
         ? { text: "Delivering", color: "#f1c40f" }
-        : item.order_status === "3"
+        : item.status === "3"
         ? { text: "Completed", color: "#00CC66" }
-        : item.order_status === "4"
+        : item.status === "4"
         ? { text: "Rejected", color: "#EF1B17" }
         : { text: "Cancelled", color: "orange" };
     return (
@@ -63,6 +65,62 @@ class AdminCustomerViewScreen extends Component {
       />
     );
   };
+
+  renderReportItem = ({
+    item: {
+      id,
+      reason,
+      code,
+      status,
+      proof1,
+      proof2,
+      proof3,
+      comment,
+      created_at,
+      updated_at
+    }
+  }) => {
+    const statusType =
+      status === "0"
+        ? { text: "OPEN", color: "#00CC66" }
+        : status === "1"
+        ? { text: "UNDER INVESTIGATION", color: "#11CDEF" }
+        : { text: "CLOSED", color: "#EF1B17" };
+    return (
+      <ListItem
+        title={`Ticket # ${code}`}
+        titleStyle={{ fontWeight: "500", fontSize: 18, color: "#1B73B4" }}
+        subtitle={
+          <View>
+            <Text
+              style={{
+                fontSize: 12,
+                fontWeight: "500",
+                color: statusType.color
+              }}
+            >
+              {statusType.text}
+            </Text>
+            <Text>Submitted:</Text>
+            <Text>{created_at}</Text>
+          </View>
+        }
+        chevron={true}
+        onPress={() =>
+          this.props.navigation.push("AdminReportView", {
+            code,
+            investigate: status === "0" ? true : false,
+            close: status === "2" ? false : true
+          })
+        }
+      />
+    );
+  };
+
+  renderLogsItem = ({ item: { type, description, created_at } }) => (
+    <ListItem title={description} rightTitle={created_at} subtitle={type} />
+  );
+
   render() {
     const { loading, error } = this.state;
     if (loading) return <ActivityIndicator size="large" />;
@@ -128,9 +186,47 @@ class AdminCustomerViewScreen extends Component {
           <View>
             <List
               data={this.state.orders}
-              renderItem={this.renderItem}
+              renderItem={this.renderOrderItem}
               loading={loading}
               emptyText={"No Order History"}
+              showsVerticalScrollIndicator={false}
+            />
+          </View>
+        </Card>
+        <Card wrapperStyle={{ margin: 0, padding: 0 }}>
+          <View>
+            <Text h4 style={styles.cardTitle}>
+              Ticket Reports
+            </Text>
+          </View>
+          <Divider />
+
+          <View>
+            <List
+              data={this.state.reports}
+              renderItem={this.renderReportItem}
+              loading={loading}
+              emptyText={"No Ticket"}
+              showsVerticalScrollIndicator={false}
+            />
+          </View>
+        </Card>
+
+        <Card wrapperStyle={{ margin: 0, padding: 0 }}>
+          <View>
+            <Text h4 style={styles.cardTitle}>
+              Activity Logs
+            </Text>
+          </View>
+          <Divider />
+
+          <View>
+            <List
+              data={this.state.logs}
+              renderItem={this.renderLogsItem}
+              loading={loading}
+              emptyText={"No Ticket"}
+              divider={"none"}
               showsVerticalScrollIndicator={false}
             />
           </View>

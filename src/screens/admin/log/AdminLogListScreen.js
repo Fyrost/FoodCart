@@ -59,9 +59,8 @@ class AdminLogListScreen extends Component {
           data={data}
           renderItem={this.renderItem}
           loading={loading}
-          emptyText={"No Customer Found"}
+          emptyText={"No Logs Found"}
           showsVerticalScrollIndicator={false}
-          contentContainerStyle={{ paddingBottom: 75 }}
           refreshing={refreshing}
           onRefresh={this.handleRefresh}
         />
