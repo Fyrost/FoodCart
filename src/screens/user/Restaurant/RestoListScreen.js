@@ -1,12 +1,12 @@
 import React, { Component } from "react";
 import { View, Text, Dimensions, TouchableOpacity } from "react-native";
-import { Card, Button, Icon, Divider } from "react-native-elements";
+import { Card, Button, Icon, Divider, Tile } from "react-native-elements";
 import { NavigationEvents } from "react-navigation";
 import { getRestaurantList, errorHandler } from "../../../actions";
 import List from "../../../components/List";
 import _ from "lodash";
 
-const numColumns = 2;
+const numColumns = 1;
 const formatData = (data, numColumns) => {
   let arr = Array.isArray(data)
     ? data
@@ -75,6 +75,7 @@ class RestoListScreen extends Component {
     const timeText = item.open ? "OPEN" : "CLOSE";
     return (
       <TouchableOpacity
+        activeOpacity={0.7}
         onPress={_.debounce(
           () =>
             this.props.navigation.push("UserRestoMenu", { slug: item.slug }),
@@ -94,7 +95,6 @@ class RestoListScreen extends Component {
               height: 2
             }
           }}
-          
         >
           <View style={styles.itemRowSpaceBetween}>
             <Text style={styles.itemTitle}>{item.name}</Text>
@@ -104,7 +104,7 @@ class RestoListScreen extends Component {
             <Text style={timeColor}>{item.times}</Text>
             <Text style={timeColor}>{timeText}</Text>
           </View>
-          <View style={styles.space} />
+          <View style={{ height: 5, flex: 1 }} />
           <Divider style={{ height: 1.5 }} />
           <View style={{ height: 10, flex: 1 }} />
 
@@ -187,8 +187,8 @@ const styles = {
     justifyContent: "space-between"
   },
   itemTitle: {
-    fontSize: 20,
-    fontWeight: "600"
+    fontSize: 16,
+    fontWeight: "500"
   },
   itemText: {
     fontSize: 14
