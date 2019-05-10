@@ -1,12 +1,12 @@
 import React, { Component } from "react";
-import { View, Text, Dimensions } from "react-native";
+import { View, Text, Dimensions, TouchableOpacity } from "react-native";
 import { Card, Button, Icon, Divider } from "react-native-elements";
 import { NavigationEvents } from "react-navigation";
 import { getRestaurantList, errorHandler } from "../../../actions";
 import List from "../../../components/List";
 import _ from "lodash";
 
-const numColumns = 1;
+const numColumns = 2;
 const formatData = (data, numColumns) => {
   let arr = Array.isArray(data)
     ? data
@@ -74,7 +74,14 @@ class RestoListScreen extends Component {
     const timeColor = item.open ? styles.itemGreen : styles.itemRed;
     const timeText = item.open ? "OPEN" : "CLOSE";
     return (
-      <View>
+      <TouchableOpacity
+        onPress={_.debounce(
+          () =>
+            this.props.navigation.push("UserRestoMenu", { slug: item.slug }),
+          1500,
+          { leading: true, trailing: false }
+        )}
+      >
         <Card
           image={{
             uri: `http://pinoyfoodcart.com/image/restaurant/${item.image_name}`
@@ -87,6 +94,7 @@ class RestoListScreen extends Component {
               height: 2
             }
           }}
+          
         >
           <View style={styles.itemRowSpaceBetween}>
             <Text style={styles.itemTitle}>{item.name}</Text>
@@ -108,41 +116,17 @@ class RestoListScreen extends Component {
                 {Number.parseFloat(item.rating).toFixed(2)}
               </Text>
             </View>
-            <View style={styles.itemRow}>
-              <Icon name={"dot-single"} type={"entypo"} />
-            </View>
+
             <View style={styles.itemRow}>
               <Text style={styles.itemText}>{item.eta} MINS</Text>
             </View>
-            <View style={styles.itemRow}>
-              <Icon name={"dot-single"} type={"entypo"} />
-            </View>
+
             <View style={[styles.itemRow, { justifyContent: "flex-end" }]}>
               <Text style={styles.itemText}>{item.flat_rate} PHP</Text>
             </View>
           </View>
-
-          <View style={{ height: 10, flex: 1 }} />
-          <Button
-            icon={<Icon name="eye" type={"font-awesome"} color="#ffffff" />}
-            backgroundColor={"#03A9F4"}
-            containerStyle={styles.flexContainer}
-            buttonStyle={{
-              borderRadius: 0,
-              marginLeft: 0,
-              marginRight: 0,
-              marginBottom: 0
-            }}
-            title={" View Menu"}
-            onPress={_.debounce(
-              () =>
-                this.props.navigation.push("UserRestoMenu", { slug: item.slug }),
-              1000,
-              { leading: true, trailing: false }
-            )}
-          />
         </Card>
-      </View>
+      </TouchableOpacity>
     );
   };
 

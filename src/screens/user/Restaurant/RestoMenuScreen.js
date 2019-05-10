@@ -74,7 +74,6 @@ class RestoViewScreen extends Component {
       .then(res => {
         if (res[0].data.success && res[1].data.success && res[2].data.success) {
           const { data } = res[0].data;
-          console.log(data);
           this.setState({
             loading: false,
             restoName: data.name,
@@ -348,24 +347,18 @@ class RestoViewScreen extends Component {
       containerStyle={{ flex: 1 }}
     >
       <View style={{ flex: 1 }}>
-        <Icon
-          raised
-          reverse
-          name={"times"}
-          type={"font-awesome"}
-          color={"#1B73B4"}
-          size={20}
-          underlayColor={"black"}
-          containerStyle={{
-            zIndex: 99999,
-            position: "absolute",
-            right: 0,
-            top: -2
-          }}
-          onPress={() =>
-            this.setState({ menuDetailShow: false, cartOverlayValue: 1 })
-          }
-        />
+        <View style={{ flexShrink: 1, flexDirection: "row", alignItems: "center", justifyContent: "flex-end"  }}>
+          <Icon
+            name={"times"}
+            type={"font-awesome"}
+            color={"grey"}
+            size={20}
+            underlayColor={"black"}
+            onPress={() =>
+              this.setState({ menuDetailShow: false, cartOverlayValue: 1 })
+            }
+          />
+        </View>
         <View style={{ flex: 1, justifyContent: "center" }}>
           <Tile
             imageSrc={
@@ -411,8 +404,7 @@ class RestoViewScreen extends Component {
             <View style={stylesResto.menuOverlayRowBetween}>
               <Text style={{ fontWeight: "400" }}>Price</Text>
               <Text style={{ fontWeight: "normal" }}>
-                {Number(this.state.menuDetail.price) *
-                  Number(this.state.cartOverlayValue)}{" "}
+                {(this.state.menuDetail.price)}{" "}
                 PHP
               </Text>
             </View>
@@ -430,25 +422,25 @@ class RestoViewScreen extends Component {
               initValue={this.state.cartOverlayValue}
               value={this.state.cartOverlayValue}
               onChange={cartOverlayValue => this.setState({ cartOverlayValue })}
-              totalWidth={100}
-              totalHeight={35}
+              totalWidth={150}
+              totalHeight={40}
               iconSize={25}
               minValue={1}
               maxValue={9999}
               rounded
+              borderColor={"lightgrey"}
               textColor={"#06070E"}
               iconStyle={{ color: "white" }}
               rightButtonBackgroundColor="#11CDEF"
               leftButtonBackgroundColor="#11CDEF"
             />
             <Button
-              raised
               icon={
                 <Icon
                   name={"cart-plus"}
                   type={"font-awesome"}
                   color={"white"}
-                  size={16}
+                  size={20}
                 />
               }
               buttonStyle={{ backgroundColor: "#1B73B4" }}
@@ -528,7 +520,8 @@ class RestoViewScreen extends Component {
           <Text style={stylesResto.menuListText}>{price} PHP</Text>
         </View>
       </View>
-      <View style={{ flexDirection: "row", justifyContent: "flex-end" }}>
+      
+      {/* <View style={{ flexDirection: "row", justifyContent: "flex-end" }}>
         <Icon
           reverse
           name={"plus"}
@@ -537,7 +530,7 @@ class RestoViewScreen extends Component {
           size={20}
           onPress={() => this.handleAddToCart(slug, 1)}
         />
-      </View>
+      </View> */}
     </TouchableOpacity>
   );
 
@@ -562,7 +555,6 @@ class RestoViewScreen extends Component {
     return (
       <View>
         <NavigationEvents onWillFocus={makeRemoteRequest} />
-        {console.log(this.state.rateVisible)}
         <Loading loading={screenLoading} opacity={0.5} size={50} />
         {renderMenuDetail()}
         <SectionList
