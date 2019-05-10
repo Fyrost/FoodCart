@@ -1,5 +1,5 @@
 import { createStackNavigator } from "react-navigation";
-import { leftDrawerButton } from "../navOptions/navButtons";
+import { leftDrawerButton, rightSearchButton } from "../navOptions/navButtons";
 import { headerStyles } from "../navOptions/navStyles";
 import AdminOrderListScreen from "../../../screens/admin/order/AdminOrderListScreen";
 
@@ -7,7 +7,8 @@ const AdminOrderList = {
   screen: AdminOrderListScreen,
   navigationOptions: ({ navigation }) => ({
     title: "Orders",
-    headerLeft: leftDrawerButton({ navigation })
+    headerLeft: leftDrawerButton({ navigation }),
+    headerRight: rightSearchButton({ navigation })
   })
 };
 

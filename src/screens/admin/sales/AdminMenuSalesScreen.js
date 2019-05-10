@@ -3,7 +3,7 @@ import { Text, View, Animated } from "react-native";
 import { ListItem, SearchBar, Overlay, Icon } from "react-native-elements";
 import { NavigationEvents } from "react-navigation";
 import _ from "lodash";
-
+import Search from "../../../components/Search";
 import { getAdminMenuSales, contains, errorHandler } from "../../../actions";
 import List from "../../../components/List";
 import styles from "../../styles";
@@ -27,25 +27,6 @@ class AdminMenuSales extends Component {
     toggleSearch: false,
     fullData: []
   };
-
-  componentWillMount() {
-    this._animatedIsFocused = new Animated.Value(
-      this.state.toggleSearch ? 1 : 0
-    );
-  }
-
-  componentDidMount() {
-    this.props.navigation.setParams({
-      toggleSearch: this.handleSearchVisible
-    });
-  }
-
-  componentDidUpdate() {
-    Animated.timing(this._animatedIsFocused, {
-      toValue: this.state.toggleSearch ? 1 : 0,
-      duration: 100
-    }).start();
-  }
 
   makeRemoteRequest = _.debounce(() => {
     this.setState({ loading: true });
@@ -85,62 +66,11 @@ class AdminMenuSales extends Component {
     );
   };
 
-  handleSearchVisible = () => {
-    this.setState({ toggleSearch: !this.state.toggleSearch });
-  };
-
   handleSearch = text => {
-    const data = _.filter(this.state.fullData, menu => {
-      return contains(menu, text);
+    const data = this.state.fullData.filter(item => {
+      return contains(item.item_name, text) || contains(item.name, text);
     });
     this.setState({ search: text, data }, () => this.makeRemoteRequest());
-  };
-
-  handleBackPress = () =>
-    this.setState({
-      isFocused: this.props.value ? true : false
-    });
-
-  renderHeader = () => {
-    const viewStyle = {
-      top: this._animatedIsFocused.interpolate({
-        inputRange: [0, 1],
-        outputRange: [-100, 0]
-      })
-    };
-    return (
-      <Animated.View
-        style={[
-          viewStyle,
-          {
-            flexDirection: "row",
-            justifyContent: "space-between",
-            alignItems: "center",
-            elevation: 1,
-            backgroundColor: "#FAFAFA"
-          }
-        ]}
-      >
-        <SearchBar
-          containerStyle={{
-            display: "flex",
-            flex: 1,
-            backgroundColor: "transparent",
-            borderTopWidth: 0,
-            borderBottomWidth: 0
-          }}
-          inputStyle={{ color: "#484749", backgroundColor: "transparent" }}
-          inputContainerStyle={{ backgroundColor: "transparent" }}
-          leftIconContainerStyle={{ backgroundColor: "transparent" }}
-          rightIconContainerStyle={{ backgroundColor: "transparent" }}
-          placeholder="Search Here..."
-          onChangeText={this.handleSearch}
-          value={this.state.search}
-          round
-          autoCorrect={false}
-        />
-      </Animated.View>
-    );
   };
 
   renderOverlay = () => {
@@ -190,43 +120,60 @@ class AdminMenuSales extends Component {
   renderItem = ({ item: { item_name, name, sales, orders } }) => (
     <ListItem
       title={item_name}
-      titleStyle={{ fontWeight: '500', fontSize: 18, color: '#1B73B4' }}
-        subtitle={
-          <View style={{ justifyContent: 'space-evenly' }}>
-            
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              <Text style={{ fontSize: 14, color: '#48494B' }}>Restaurant: </Text>
-              <Icon name={'store'} type={'material'} color={'#48494B'} size={14} />
-              <Text style={{ fontSize: 14, color: '#48494B' }}> {name}</Text>
-            </View>
-
-            <Text style={{ fontSize: 14, color: '#48494B' }}>Total Sales: ₱ {sales}.00</Text>
-
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              <Text style={{ fontSize: 14, color: '#48494B' }}>Total Orders: </Text>
-              <Icon name={'receipt'} type={'material'} color={'#48494B'} size={14} />
-              <Text style={{ fontSize: 14, color: '#48494B' }}> {orders}</Text>
-            </View>
+      titleStyle={{ fontWeight: "500", fontSize: 18, color: "#1B73B4" }}
+      subtitle={
+        <View style={{ justifyContent: "space-evenly" }}>
+          <View style={{ flexDirection: "row", alignItems: "center" }}>
+            <Text style={{ fontSize: 14, color: "#48494B" }}>Restaurant: </Text>
+            <Icon
+              name={"store"}
+              type={"material"}
+              color={"#48494B"}
+              size={14}
+            />
+            <Text style={{ fontSize: 14, color: "#48494B" }}> {name}</Text>
           </View>
-        }
+
+          <Text style={{ fontSize: 14, color: "#48494B" }}>
+            Total Sales: ₱ {sales}.00
+          </Text>
+
+          <View style={{ flexDirection: "row", alignItems: "center" }}>
+            <Text style={{ fontSize: 14, color: "#48494B" }}>
+              Total Orders:{" "}
+            </Text>
+            <Icon
+              name={"receipt"}
+              type={"material"}
+              color={"#48494B"}
+              size={14}
+            />
+            <Text style={{ fontSize: 14, color: "#48494B" }}> {orders}</Text>
+          </View>
+        </View>
+      }
       chevron={true}
-      
     />
   );
 
   render() {
-    const { toggleSearch, data, loading, refreshing } = this.state;
+    const { data, loading, refreshing, search } = this.state;
     const {
       makeRemoteRequest,
-      renderHeader,
       renderOverlay,
       renderItem,
-      handleRefresh
+      handleRefresh,
+      handleSearch
     } = this;
     return (
       <View style={{ flex: 1 }}>
         <NavigationEvents onDidFocus={makeRemoteRequest} />
-        {toggleSearch ? renderHeader() : null}
+        <Search
+          value={search}
+          data={data}
+          handleSearch={handleSearch}
+          {...this.props}
+        />
         {renderOverlay()}
         <List
           data={data}

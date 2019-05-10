@@ -2,7 +2,7 @@ import {
   createBottomTabNavigator,
   createStackNavigator
 } from "react-navigation";
-import { leftDrawerButton } from "../navOptions/navButtons";
+import { leftDrawerButton, rightSearchButton } from "../navOptions/navButtons";
 import { headerStyles, TabStyles } from "../navOptions/navStyles";
 import {
   partnerPendingIcon,
@@ -19,7 +19,8 @@ const AdminPartnerPending = createStackNavigator({
     navigationOptions: ({ navigation }) => ({
       ...headerStyles,
       title: "Pending Partnership",
-      headerLeft: leftDrawerButton({ navigation })
+      headerLeft: leftDrawerButton({ navigation }),
+      headerRight: rightSearchButton({ navigation })
     })
   }
 });
@@ -35,7 +36,8 @@ const AdminPartnerApproved = createStackNavigator({
     navigationOptions: ({ navigation }) => ({
       ...headerStyles,
       title: "Approved Partnership",
-      headerLeft: leftDrawerButton({ navigation })
+      headerLeft: leftDrawerButton({ navigation }),
+      headerRight: rightSearchButton({ navigation })
     })
   }
 });
@@ -51,7 +53,8 @@ const AdminPartnerRejected = createStackNavigator({
     navigationOptions: ({ navigation }) => ({
       ...headerStyles,
       title: "Rejected Partnership",
-      headerLeft: leftDrawerButton({ navigation })
+      headerLeft: leftDrawerButton({ navigation }),
+      headerRight: rightSearchButton({ navigation })
     })
   }
 });

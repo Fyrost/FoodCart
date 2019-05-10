@@ -2,9 +2,8 @@ import React, { Component } from "react";
 import { View } from "react-native";
 import { ListItem, Text } from "react-native-elements";
 import { NavigationEvents } from "react-navigation";
-import _ from "lodash";
-
-import { getAdminApplyList, errorHandler } from "../../../actions";
+import Search from "../../../components/Search";
+import { getAdminApplyList, errorHandler, contains } from "../../../actions";
 import List from "../../../components/List";
 
 class RestoApplyApprovedScreen extends Component {
@@ -13,12 +12,6 @@ class RestoApplyApprovedScreen extends Component {
     error: null,
     refreshing: false,
     loading: false
-  };
-
-  static navigationOptions = () => {
-    return {
-      title: "Approved Partnership"
-    };
   };
 
   componentDidMount() {
@@ -33,7 +26,8 @@ class RestoApplyApprovedScreen extends Component {
           this.setState({
             refreshing: false,
             loading: false,
-            data: res.data.data
+            data: res.data.data,
+            fullData: res.data.data
           });
         } else {
           this.setState({ error: res.data.message }, console.log(res.data));
@@ -48,6 +42,7 @@ class RestoApplyApprovedScreen extends Component {
         })
       );
   };
+
   handleRefresh = () => {
     this.setState(
       {
@@ -56,10 +51,18 @@ class RestoApplyApprovedScreen extends Component {
       () => this.makeRemoteRequest()
     );
   };
+
+  handleSearch = text => {
+    const data = this.state.fullData.filter(item => {
+      return contains(item.name, text) || contains(item.email, text);
+    });
+    this.setState({ search: text, data });
+  };
+
   renderItem = ({ item }) => (
     <ListItem
       title={item.name}
-      titleStyle={{ fontWeight: '500', fontSize: 18, color: '#1B73B4' }}
+      titleStyle={{ fontWeight: "500", fontSize: 18, color: "#1B73B4" }}
       subtitle={
         <View>
           <Text>Email: {item.email}</Text>
@@ -71,17 +74,22 @@ class RestoApplyApprovedScreen extends Component {
       onPress={() =>
         this.props.navigation.navigate("AdminPartnerView", { restoId: item.id })
       }
-      
     />
   );
 
   render() {
-    const { data, error, loading, refreshing } = this.state;
-    const { makeRemoteRequest, renderItem } = this;
+    const { error, data, loading, refreshing, search } = this.state;
+    const { makeRemoteRequest, handleSearch, renderItem, handleRefresh } = this;
     if (error) return <Text>{error}</Text>;
     return (
       <View>
         <NavigationEvents onDidFocus={makeRemoteRequest} />
+        <Search
+          value={search}
+          data={data}
+          handleSearch={handleSearch}
+          {...this.props}
+        />
         <List
           data={data}
           renderItem={renderItem}
@@ -90,7 +98,7 @@ class RestoApplyApprovedScreen extends Component {
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{ paddingBottom: 75 }}
           refreshing={refreshing}
-          onRefresh={this.handleRefresh}
+          onRefresh={handleRefresh}
         />
       </View>
     );

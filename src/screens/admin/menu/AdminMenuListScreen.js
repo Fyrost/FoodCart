@@ -3,7 +3,8 @@ import { View, TouchableHighlight, Text } from "react-native";
 import { NavigationEvents } from "react-navigation";
 import { ListItem } from "react-native-elements";
 import List from "../../../components/List";
-import { getAdminMenu, errorHandler } from "../../../actions";
+import Search from "../../../components/Search";
+import { getAdminMenu, errorHandler, contains } from "../../../actions";
 import styles from "../../styles";
 class AdminMenuListScreen extends Component {
   state = {
@@ -20,7 +21,8 @@ class AdminMenuListScreen extends Component {
           this.setState({
             refreshing: false,
             loading: false,
-            data: res.data.data
+            data: res.data.data,
+            fullData: res.data.data
           });
         } else {
           this.setState({ refreshing: false, loading: false });
@@ -42,15 +44,14 @@ class AdminMenuListScreen extends Component {
     );
   };
 
-  renderItem = ({
-    item: {
-      id,
-      name,
-      resto_name,
-      price,
-      created_at,
-    }
-  }) => (
+  handleSearch = text => {
+    const data = this.state.fullData.filter(item => {
+      return contains(item.name, text) || contains(item.resto_name, text);
+    });
+    this.setState({ search: text, data });
+  };
+
+  renderItem = ({ item: { id, name, resto_name, price, created_at } }) => (
     <ListItem
       title={name}
       titleStyle={{ fontWeight: "500", fontSize: 18, color: "#1B73B4" }}
@@ -68,19 +69,26 @@ class AdminMenuListScreen extends Component {
   );
 
   render() {
-    const { data, loading, refreshing } = this.state;
+    const { data, loading, refreshing, search } = this.state;
+    const { makeRemoteRequest, handleSearch, renderItem, handleRefresh } = this;
     return (
       <View>
-        <NavigationEvents onDidFocus={this.makeRemoteRequest} />
+        <NavigationEvents onDidFocus={makeRemoteRequest} />
+        <Search
+          value={search}
+          data={data}
+          handleSearch={handleSearch}
+          {...this.props}
+        />
         <List
           data={data}
-          renderItem={this.renderItem}
+          renderItem={renderItem}
           loading={loading}
           emptyText={"No Menu Found"}
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{ paddingBottom: 75 }}
           refreshing={refreshing}
-          onRefresh={this.handleRefresh}
+          onRefresh={handleRefresh}
         />
       </View>
     );

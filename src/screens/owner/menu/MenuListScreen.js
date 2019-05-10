@@ -5,6 +5,7 @@ import { NavigationEvents } from "react-navigation";
 import _ from "lodash";
 
 import { getMenuList, contains, errorHandler } from "../../../actions";
+import Search from "../../../components/Search";
 import List from "../../../components/List";
 import styles from "../../styles";
 
@@ -18,25 +19,6 @@ class MenuListScreen extends Component {
     toggleSearch: false,
     fullData: []
   };
-
-  componentWillMount() {
-    this._animatedIsFocused = new Animated.Value(
-      this.state.toggleSearch ? 1 : 0
-    );
-  }
-
-  componentDidMount() {
-    this.props.navigation.setParams({
-      toggleSearch: this.handleSearchVisible
-    });
-  }
-
-  componentDidUpdate() {
-    Animated.timing(this._animatedIsFocused, {
-      toValue: this.state.toggleSearch ? 1 : 0,
-      duration: 100
-    }).start();
-  }
 
   makeRemoteRequest = _.debounce(() => {
     this.setState({ loading: true });
@@ -76,68 +58,17 @@ class MenuListScreen extends Component {
     );
   };
 
-  handleSearchVisible = () => {
-    this.setState({ toggleSearch: !this.state.toggleSearch });
-  };
-
   handleSearch = text => {
     const data = _.filter(this.state.fullData, menu => {
-      return contains(menu, text);
+      return contains(menu.name, text);
     });
     this.setState({ search: text, data }, () => this.makeRemoteRequest());
-  };
-
-  handleBackPress = () =>
-    this.setState({
-      isFocused: this.props.value ? true : false
-    });
-
-  renderHeader = () => {
-    const viewStyle = {
-      top: this._animatedIsFocused.interpolate({
-        inputRange: [0, 1],
-        outputRange: [-100, 0]
-      })
-    };
-    return (
-      <Animated.View
-        style={[
-          viewStyle,
-          {
-            flexDirection: "row",
-            justifyContent: "space-between",
-            alignItems: "center",
-            elevation: 1,
-            backgroundColor: "#FAFAFA"
-          }
-        ]}
-      >
-        <SearchBar
-          containerStyle={{
-            display: "flex",
-            flex: 1,
-            backgroundColor: "transparent",
-            borderTopWidth: 0,
-            borderBottomWidth: 0
-          }}
-          inputStyle={{ color: "#484749", backgroundColor: "transparent" }}
-          inputContainerStyle={{ backgroundColor: "transparent" }}
-          leftIconContainerStyle={{ backgroundColor: "transparent" }}
-          rightIconContainerStyle={{ backgroundColor: "transparent" }}
-          placeholder="Search Here..."
-          onChangeText={this.handleSearch}
-          value={this.state.search}
-          round
-          autoCorrect={false}
-        />
-      </Animated.View>
-    );
   };
 
   renderItem = ({ item }) => (
     <ListItem
       title={item.name}
-      titleStyle={{ fontWeight: '500', fontSize: 16, color: '#1B73B4' }}
+      titleStyle={{ fontWeight: "500", fontSize: 16, color: "#1B73B4" }}
       subtitle={item.description}
       subtitleProps={{ numberOfLines: 2 }}
       chevron={true}
@@ -161,18 +92,23 @@ class MenuListScreen extends Component {
           />
         </View>
       }
-      
     />
   );
 
   render() {
-    const { data, error, toggleSearch, loading, refreshing } = this.state;
-    const { makeRemoteRequest, renderItem,renderHeader, handleRefresh } = this;
+    const { data, error, loading, refreshing } = this.state;
+    const { makeRemoteRequest, renderItem, handleSearch, handleRefresh } = this;
     if (error) return <Text>{error}</Text>;
     return (
       <View style={{ flex: 1 }}>
         <NavigationEvents onDidFocus={makeRemoteRequest} />
-        {toggleSearch ? renderHeader() : null}
+        <Search
+          value={this.state.search}
+          data={data}
+          handleSearch={handleSearch}
+          {...this.props}
+        />
+        {/* {toggleSearch ? renderSearch() : null} */}
         <List
           data={data}
           renderItem={renderItem}

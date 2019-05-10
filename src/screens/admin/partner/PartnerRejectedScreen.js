@@ -2,9 +2,9 @@ import React, { Component } from "react";
 import { View, FlatList, ActivityIndicator } from "react-native";
 import { ListItem, Text } from "react-native-elements";
 import { NavigationEvents } from "react-navigation";
-import _ from "lodash";
+import Search from "../../../components/Search";
 import List from "../../../components/List";
-import { getAdminApplyList, errorHandler } from "../../../actions";
+import { getAdminApplyList, errorHandler, contains } from "../../../actions";
 
 class RestoApplyRejectedScreen extends Component {
   state = {
@@ -31,7 +31,8 @@ class RestoApplyRejectedScreen extends Component {
           this.setState({
             loading: false,
             refreshing: false,
-            data: res.data.data
+            data: res.data.data,
+            fullData: res.data.data
           });
         } else {
           this.setState({
@@ -59,6 +60,13 @@ class RestoApplyRejectedScreen extends Component {
     );
   };
 
+  handleSearch = text => {
+    const data = this.state.fullData.filter(item => {
+      return contains(item.name, text) || contains(item.email, text);
+    });
+    this.setState({ search: text, data });
+  };
+
   renderItem = ({ item }) => (
     <ListItem
       title={item.name}
@@ -74,16 +82,21 @@ class RestoApplyRejectedScreen extends Component {
       onPress={() =>
         this.props.navigation.navigate("AdminPartnerView", { restoId: item.id })
       }
-      
     />
   );
 
   render() {
-    const { data, loading, refreshing } = this.state;
-    const { makeRemoteRequest, renderItem, handleRefresh } = this;
+    const { error, data, loading, refreshing, search } = this.state;
+    const { makeRemoteRequest, handleSearch, renderItem, handleRefresh } = this;
     return (
       <View>
         <NavigationEvents onDidFocus={makeRemoteRequest} />
+        <Search
+          value={search}
+          data={data}
+          handleSearch={handleSearch}
+          {...this.props}
+        />
         <List
           data={data}
           renderItem={renderItem}

@@ -2,9 +2,8 @@ import React, { Component } from "react";
 import { View } from "react-native";
 import { Button, ListItem, Text, Overlay, Icon } from "react-native-elements";
 import { NavigationEvents } from "react-navigation";
-import _ from "lodash";
-
-import { getAdminTagList, errorHandler } from "../../../actions";
+import Search from "../../../components/Search";
+import { getAdminTagList, errorHandler, contains } from "../../../actions";
 import Loading from "../../../components/Loading";
 import List from "../../../components/List";
 import styles from "../../styles";
@@ -43,7 +42,8 @@ class TagApprovedScreen extends Component {
           this.setState({
             refreshing: false,
             loading: false,
-            data: res.data.data
+            data: res.data.data,
+            fullData: res.data.data
           });
         } else {
           this.setState({ error: res.data.message });
@@ -58,6 +58,7 @@ class TagApprovedScreen extends Component {
         })
       );
   };
+
   handleRefresh = () => {
     this.setState(
       {
@@ -65,6 +66,13 @@ class TagApprovedScreen extends Component {
       },
       () => this.makeRemoteRequest()
     );
+  };
+
+  handleSearch = text => {
+    const data = this.state.fullData.filter(menu => {
+      return contains(menu.name, text) || contains(menu.slug, text);
+    });
+    this.setState({ search: text, data });
   };
 
   renderTagDetail = () => (
@@ -86,36 +94,36 @@ class TagApprovedScreen extends Component {
           containerStyle={{
             zIndex: 99999,
             position: "absolute",
-            right: -33  ,
+            right: -33,
             top: -32
           }}
           onPress={() => this.setState({ isDetailVisible: false })}
         />
         <View style={{ paddingHorizontal: 20, paddingVertical: 10 }}>
-          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <View style={{ flexDirection: "row", alignItems: "center" }}>
             <Text>Name: </Text>
             <Text>{this.state.detail.name}</Text>
           </View>
 
-          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <View style={{ flexDirection: "row", alignItems: "center" }}>
             <Text>Slug: </Text>
             <Text>{this.state.detail.slug}</Text>
           </View>
 
-          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <View style={{ flexDirection: "row", alignItems: "center" }}>
             <Text>Used by: </Text>
             <Text>{this.state.detail.usedBy}</Text>
           </View>
           <Button
-          title={`View Item/s`}
-          type={'clear'}
-          onPress={() => {
-            this.setState({ isDetailVisible: false });
-            this.props.navigation.navigate("AdminMenuFilter", {
-              tag: this.state.detail.slug
-            });
-          }}
-        />
+            title={`View Item/s`}
+            type={"clear"}
+            onPress={() => {
+              this.setState({ isDetailVisible: false });
+              this.props.navigation.navigate("AdminMenuFilter", {
+                tag: this.state.detail.slug
+              });
+            }}
+          />
         </View>
       </View>
     </Overlay>
@@ -139,23 +147,36 @@ class TagApprovedScreen extends Component {
           }
         })
       }
-      
     />
   );
 
   render() {
-    const { data, error, loading, refreshing, screenLoading } = this.state;
+    const {
+      data,
+      error,
+      loading,
+      refreshing,
+      screenLoading,
+      search
+    } = this.state;
     const {
       makeRemoteRequest,
       renderItem,
       handleRefresh,
-      renderTagDetail
+      renderTagDetail,
+      handleSearch
     } = this;
     if (error) return <Text>{error}</Text>;
     return (
       <View>
         <NavigationEvents onDidFocus={makeRemoteRequest} />
         <Loading loading={screenLoading} size="large" />
+        <Search
+          value={search}
+          data={data}
+          handleSearch={handleSearch}
+          {...this.props}
+        />
         {renderTagDetail()}
         <List
           data={data}

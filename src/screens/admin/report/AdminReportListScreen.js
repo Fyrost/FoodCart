@@ -3,7 +3,8 @@ import { View, Text, ActivityIndicator } from "react-native";
 import { ListItem, Overlay } from "react-native-elements";
 import { NavigationEvents } from "react-navigation";
 import { MessageAlert } from "../../../components/Alerts";
-import { getAdminReportList, errorHandler } from "../../../actions";
+import Search from "../../../components/Search";
+import { getAdminReportList, errorHandler, contains } from "../../../actions";
 import List from "../../../components/List";
 
 class AdminReportListScreen extends Component {
@@ -33,6 +34,7 @@ class AdminReportListScreen extends Component {
       .then(res => {
         this.setState({
           data: res.data.data,
+          fullData: res.data.data,
           loading: false,
           refreshing: false
         });
@@ -44,6 +46,13 @@ class AdminReportListScreen extends Component {
           refreshing: false
         });
       });
+  };
+
+  handleSearch = text => {
+    const data = this.state.fullData.filter(item => {
+      return contains(item.code, text);
+    });
+    this.setState({ search: text, data });
   };
 
   handleRefresh = () => {
@@ -95,7 +104,6 @@ class AdminReportListScreen extends Component {
           </View>
         }
         chevron={true}
-        
         onPress={() =>
           this.props.navigation.push("AdminReportView", {
             code,
@@ -108,21 +116,27 @@ class AdminReportListScreen extends Component {
   };
 
   render() {
-    const { data, loading, refreshing, error } = this.state;
-
+    const { error, data, loading, refreshing, search } = this.state;
+    const { makeRemoteRequest, handleSearch, renderItem, handleRefresh } = this;
     if (error) return <Text>{error}</Text>;
     return (
       <View>
-        <NavigationEvents onDidFocus={this.makeRemoteRequest} />
+        <NavigationEvents onDidFocus={makeRemoteRequest} />
+        <Search
+          value={search}
+          data={data}
+          handleSearch={handleSearch}
+          {...this.props}
+        />
         <List
           data={data}
-          renderItem={this.renderItem}
+          renderItem={renderItem}
           loading={loading}
           emptyText={"No Customer Found"}
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{ paddingBottom: 75 }}
           refreshing={refreshing}
-          onRefresh={this.handleRefresh}
+          onRefresh={handleRefresh}
         />
       </View>
     );

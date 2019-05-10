@@ -4,8 +4,9 @@ import { NavigationEvents } from "react-navigation";
 import { ListItem } from "react-native-elements";
 import List from "../../../components/List";
 import { MessageAlert } from "../../../components/Alerts";
-import { getAdminResto, errorHandler } from "../../../actions";
-import _ from 'lodash'
+import Search from "../../../components/Search";
+import { getAdminResto, errorHandler, contains } from "../../../actions";
+import _ from "lodash";
 import styles from "../../styles";
 class AdminRestoListScreen extends Component {
   state = {
@@ -22,7 +23,8 @@ class AdminRestoListScreen extends Component {
           this.setState({
             refreshing: false,
             loading: false,
-            data: res.data.data
+            data: res.data.data,
+            fullData: res.data.data
           });
         } else {
           this.setState({
@@ -47,6 +49,28 @@ class AdminRestoListScreen extends Component {
       },
       () => this.makeRemoteRequest()
     );
+  };
+
+  handleSearch = text => {
+    const data = this.state.fullData.filter(item => {
+      return (
+        contains(
+          `${item.owner_fname} ${item.owner_mname} ${item.owner_lname}`,
+          text
+        ) ||
+        contains(
+          `${item.owner_lname}, ${item.owner_fname} ${item.owner_mname}`,
+          text
+        ) ||
+        contains(`${item.owner_fname} ${item.owner_lname}`, text) ||
+        contains(`${item.owner_lname} ${item.owner_fname}`, text) ||
+        contains(item.owner_fname, text) ||
+        contains(item.owner_mname, text) ||
+        contains(item.owner_lname, text) ||
+        contains(item.name, text)
+      );
+    });
+    this.setState({ search: text, data });
   };
 
   renderItem = ({
@@ -82,23 +106,29 @@ class AdminRestoListScreen extends Component {
         </View>
       }
       chevron={true}
-      
-      onPress={
-         _.debounce(() =>
-        this.props.navigation.push("AdminRestoView", { restoId: id }), 1000,{
-          'leading': true,
-          'trailing': false
-        })
-      }
+      onPress={_.debounce(
+        () => this.props.navigation.push("AdminRestoView", { restoId: id }),
+        1000,
+        {
+          leading: true,
+          trailing: false
+        }
+      )}
     />
   );
 
   render() {
-    const { data, loading, refreshing } = this.state;
-    const { makeRemoteRequest, renderItem, handleRefresh } =this
+    const { data, loading, refreshing, search } = this.state;
+    const { makeRemoteRequest, handleSearch, renderItem, handleRefresh } = this;
     return (
       <View>
         <NavigationEvents onDidFocus={makeRemoteRequest} />
+        <Search
+          value={search}
+          data={data}
+          handleSearch={handleSearch}
+          {...this.props}
+        />
         <List
           data={data}
           renderItem={renderItem}

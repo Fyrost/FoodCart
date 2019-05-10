@@ -3,11 +3,12 @@ import { View } from "react-native";
 import { NavigationEvents } from "react-navigation";
 import { ListItem } from "react-native-elements";
 import List from "../../../components/List";
-import { getAdminOrderList, errorHandler } from "../../../actions";
+import Search from "../../../components/Search";
+import { getAdminOrderList, errorHandler, contains } from "../../../actions";
 
 class OrderCompletedListScreen extends Component {
   state = {
-    order: [],
+    data: [],
     loading: false,
     refreshing: false,
     screenLoading: false,
@@ -23,7 +24,8 @@ class OrderCompletedListScreen extends Component {
           this.setState({
             loading: false,
             refreshing: false,
-            order: data
+            data,
+            fullData: data
           });
         } else {
           this.setState({
@@ -41,6 +43,7 @@ class OrderCompletedListScreen extends Component {
         })
       );
   };
+
   handleRefresh = () => {
     this.setState(
       {
@@ -49,6 +52,22 @@ class OrderCompletedListScreen extends Component {
       () => this.makeRemoteRequest()
     );
   };
+
+  handleSearch = text => {
+    const data = this.state.fullData.filter(item => {
+      return (
+        contains(item.code, text) ||
+        contains(item.order_status === "0" ? "Pending" : "", text) ||
+        contains(item.order_status === "1" ? "Processing" : "", text) ||
+        contains(item.order_status === "2" ? "Delivering" : "", text) ||
+        contains(item.order_status === "3" ? "Completed" : "", text) ||
+        contains(item.order_status === "4" ? "Rejected" : "", text) ||
+        contains(item.order_status === "5" ? "Cancelled" : "", text)
+      );
+    });
+    this.setState({ search: text, data });
+  };
+
   renderItem = ({ item }) => {
     const subtitle =
       item.order_status === "0"
@@ -69,7 +88,6 @@ class OrderCompletedListScreen extends Component {
         rightTitleStyle={{ fontWeight: "500", color: subtitle.color }}
         subtitle={item.date}
         chevron={true}
-        
         onPress={() =>
           this.props.navigation.navigate("AdminOrderView", { id: item.id })
         }
@@ -78,18 +96,25 @@ class OrderCompletedListScreen extends Component {
   };
 
   render() {
-    const { order, loading, refreshing } = this.state;
+    const { data, loading, refreshing, search } = this.state;
+    const { makeRemoteRequest, handleSearch, renderItem, handleRefresh } = this;
     return (
       <View>
-        <NavigationEvents onWillFocus={this.makeRemoteRequest} />
+        <NavigationEvents onWillFocus={makeRemoteRequest} />
+        <Search
+          value={search}
+          data={data}
+          handleSearch={handleSearch}
+          {...this.props}
+        />
         <List
-          data={order}
-          renderItem={this.renderItem}
+          data={data}
+          renderItem={renderItem}
           loading={loading}
           emptyText={"No Order History"}
           showsVerticalScrollIndicator={false}
           refreshing={refreshing}
-          onRefresh={this.handleRefresh}
+          onRefresh={handleRefresh}
         />
       </View>
     );

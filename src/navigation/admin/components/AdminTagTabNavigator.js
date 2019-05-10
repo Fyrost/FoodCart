@@ -2,7 +2,7 @@ import {
   createBottomTabNavigator,
   createStackNavigator
 } from "react-navigation";
-import { leftDrawerButton } from "../navOptions/navButtons";
+import { leftDrawerButton, rightSearchButton } from "../navOptions/navButtons";
 import { headerStyles, TabStyles } from "../navOptions/navStyles";
 import {
   tagPendingIcon,
@@ -19,7 +19,8 @@ const AdminTagPending = createStackNavigator({
     navigationOptions: ({ navigation }) => ({
       ...headerStyles,
       title: "Pending Tag",
-      headerLeft: leftDrawerButton({ navigation })
+      headerLeft: leftDrawerButton({ navigation }),
+      headerRight: rightSearchButton({ navigation })
     })
   }
 });
@@ -35,7 +36,8 @@ const AdminTagApproved = createStackNavigator({
     navigationOptions: ({ navigation }) => ({
       ...headerStyles,
       title: "Approved Tag",
-      headerLeft: leftDrawerButton({ navigation })
+      headerLeft: leftDrawerButton({ navigation }),
+      headerRight: rightSearchButton({ navigation })
     })
   }
 });
@@ -51,7 +53,8 @@ const AdminTagRejected = createStackNavigator({
     navigationOptions: ({ navigation }) => ({
       ...headerStyles,
       title: "Rejected Tag",
-      headerLeft: leftDrawerButton({ navigation })
+      headerLeft: leftDrawerButton({ navigation }),
+      headerRight: rightSearchButton({ navigation })
     })
   }
 });

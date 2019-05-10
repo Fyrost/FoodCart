@@ -2,13 +2,13 @@ import React, { Component } from "react";
 import { View, ActivityIndicator, Alert } from "react-native";
 import { Button, ListItem, Text, Overlay, Icon } from "react-native-elements";
 import { NavigationEvents } from "react-navigation";
-import _ from "lodash";
-
+import Search from "../../../components/Search";
 import {
   getAdminTagList,
   approveTag,
   rejectTag,
-  errorHandler
+  errorHandler,
+  contains
 } from "../../../actions";
 import { ConfirmAlert } from "../../../components/Alerts";
 import Loading from "../../../components/Loading";
@@ -42,7 +42,8 @@ class TagPendingScreen extends Component {
           this.setState({
             refreshing: false,
             loading: false,
-            data: res.data.data
+            data: res.data.data,
+            fullData: res.data.data
           });
         } else {
           this.setState({ error: res.data.message });
@@ -65,6 +66,13 @@ class TagPendingScreen extends Component {
       },
       () => this.makeRemoteRequest()
     );
+  };
+
+  handleSearch = text => {
+    const data = this.state.fullData.filter(menu => {
+      return contains(menu.name, text) || contains(menu.slug, text);
+    });
+    this.setState({ search: text, data });
   };
 
   handleApprove = id => {
@@ -223,18 +231,32 @@ class TagPendingScreen extends Component {
   );
 
   render() {
-    const { data, error, loading, refreshing, screenLoading } = this.state;
+    const {
+      data,
+      error,
+      loading,
+      refreshing,
+      screenLoading,
+      search
+    } = this.state;
     const {
       makeRemoteRequest,
       renderItem,
       handleRefresh,
-      renderTagDetail
+      renderTagDetail,
+      handleSearch
     } = this;
     if (error) return <Text>{error}</Text>;
     return (
       <View>
         <NavigationEvents onDidFocus={makeRemoteRequest} />
         <Loading loading={screenLoading} size="large" />
+        <Search
+          value={search}
+          data={data}
+          handleSearch={handleSearch}
+          {...this.props}
+        />
         {renderTagDetail()}
         <List
           data={data}

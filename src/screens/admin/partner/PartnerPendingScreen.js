@@ -1,15 +1,15 @@
 import React, { Component } from "react";
 import { View } from "react-native";
 import { ListItem, Text } from "react-native-elements";
-import {  MessageAlert } from "../../../components/Alerts";
+import { MessageAlert } from "../../../components/Alerts";
 import { NavigationEvents } from "react-navigation";
-import _ from "lodash";
-
+import Search from "../../../components/Search";
 import {
   getAdminApplyList,
   approveApply,
   rejectApply,
-  errorHandler
+  errorHandler,
+  contains
 } from "../../../actions";
 import List from "../../../components/List";
 import styles from "../../styles";
@@ -20,12 +20,6 @@ class RestoApplyPendingScreen extends Component {
     error: null,
     loading: false,
     refreshing: false
-  };
-
-  static navigationOptions = () => {
-    return {
-      title: "Pending Partnership"
-    };
   };
 
   componentDidMount() {
@@ -40,7 +34,8 @@ class RestoApplyPendingScreen extends Component {
           this.setState({
             loading: false,
             refreshing: false,
-            data: res.data.data
+            data: res.data.data,
+            fullData: res.data.data
           });
         } else {
           this.setState({ error: res.data.message });
@@ -63,6 +58,13 @@ class RestoApplyPendingScreen extends Component {
       },
       () => this.makeRemoteRequest()
     );
+  };
+
+  handleSearch = text => {
+    const data = this.state.fullData.filter(item => {
+      return contains(item.name, text) || contains(item.email, text);
+    });
+    this.setState({ search: text, data });
   };
 
   handleApprove = id => {
@@ -111,17 +113,22 @@ class RestoApplyPendingScreen extends Component {
           pending: true
         })
       }
-      
     />
   );
 
   render() {
-    const { data, error, loading, refreshing } = this.state;
-    const { makeRemoteRequest, renderItem } = this;
+    const { error, data, loading, refreshing, search } = this.state;
+    const { makeRemoteRequest, handleSearch, renderItem, handleRefresh } = this;
     if (error) return <Text>{error}</Text>;
     return (
       <View style={{ flex: 1 }}>
         <NavigationEvents onDidFocus={makeRemoteRequest} />
+        <Search
+          value={search}
+          data={data}
+          handleSearch={handleSearch}
+          {...this.props}
+        />
         <List
           data={data}
           renderItem={renderItem}
@@ -130,7 +137,7 @@ class RestoApplyPendingScreen extends Component {
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{ paddingBottom: 75 }}
           refreshing={refreshing}
-          onRefresh={this.handleRefresh}
+          onRefresh={handleRefresh}
         />
       </View>
     );

@@ -3,7 +3,7 @@ import { Text, View, Animated } from "react-native";
 import { ListItem, SearchBar, Overlay, Icon } from "react-native-elements";
 import { NavigationEvents } from "react-navigation";
 import _ from "lodash";
-
+import Search from "../../../components/Search";
 import { getAdminRestoSales, contains, errorHandler } from "../../../actions";
 import List from "../../../components/List";
 
@@ -27,25 +27,6 @@ class AdminRestoSalesScreen extends Component {
     fullData: []
   };
 
-  componentWillMount() {
-    this._animatedIsFocused = new Animated.Value(
-      this.state.toggleSearch ? 1 : 0
-    );
-  }
-
-  componentDidMount() {
-    this.props.navigation.setParams({
-      toggleSearch: this.handleSearchVisible
-    });
-  }
-
-  componentDidUpdate() {
-    Animated.timing(this._animatedIsFocused, {
-      toValue: this.state.toggleSearch ? 1 : 0,
-      duration: 100
-    }).start();
-  }
-
   makeRemoteRequest = _.debounce(() => {
     this.setState({ loading: true });
     getAdminRestoSales(this.state.search)
@@ -59,10 +40,10 @@ class AdminRestoSalesScreen extends Component {
             fullData: data
           });
         } else {
-          this.setState({ 
+          this.setState({
             error: res.data.message,
             refreshing: false,
-            loading: false 
+            loading: false
           });
         }
       })
@@ -84,62 +65,11 @@ class AdminRestoSalesScreen extends Component {
     );
   };
 
-  handleSearchVisible = () => {
-    this.setState({ toggleSearch: !this.state.toggleSearch });
-  };
-
   handleSearch = text => {
-    const data = _.filter(this.state.fullData, menu => {
-      return contains(menu, text);
+    const data = this.state.fullData.filter(menu => {
+      return contains(menu.name, text);
     });
-    this.setState({ search: text, data }, () => this.makeRemoteRequest());
-  };
-
-  handleBackPress = () =>
-    this.setState({
-      isFocused: this.props.value ? true : false
-    });
-
-  renderHeader = () => {
-    const viewStyle = {
-      top: this._animatedIsFocused.interpolate({
-        inputRange: [0, 1],
-        outputRange: [-100, 0]
-      })
-    };
-    return (
-      <Animated.View
-        style={[
-          viewStyle,
-          {
-            flexDirection: "row",
-            justifyContent: "space-between",
-            alignItems: "center",
-            elevation: 1,
-            backgroundColor: "#FAFAFA"
-          }
-        ]}
-      >
-        <SearchBar
-          containerStyle={{
-            display: "flex",
-            flex: 1,
-            backgroundColor: "transparent",
-            borderTopWidth: 0,
-            borderBottomWidth: 0
-          }}
-          inputStyle={{ color: "#484749", backgroundColor: "transparent" }}
-          inputContainerStyle={{ backgroundColor: "transparent" }}
-          leftIconContainerStyle={{ backgroundColor: "transparent" }}
-          rightIconContainerStyle={{ backgroundColor: "transparent" }}
-          placeholder="Search Here..."
-          onChangeText={this.handleSearch}
-          value={this.state.search}
-          round
-          autoCorrect={false}
-        />
-      </Animated.View>
-    );
+    this.setState({ search: text, data });
   };
 
   renderOverlay = () => {
@@ -191,49 +121,74 @@ class AdminRestoSalesScreen extends Component {
   }) => (
     <ListItem
       title={name}
-      titleStyle={{ fontSize: 18, fontWeight: '500', color: '#1B73B4'  }}
+      titleStyle={{ fontSize: 18, fontWeight: "500", color: "#1B73B4" }}
       subtitle={
-        <View style={{ justifyContent: 'space-evenly' }}>
-          <Text style={{ fontSize: 14, color: '#48494B' }}>Total Sales: ₱ {total_sales}.00</Text>
-          
-          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            <Text style={{ fontSize: 14, color: '#48494B' }}>Total Transaction: </Text>
-            <Icon name={'receipt'} type={'material'} color={'#48494B'} size={14}/>
-            <Text style={{ fontSize: 14, color: '#48494B' }}> {total_transaction}</Text>
+        <View style={{ justifyContent: "space-evenly" }}>
+          <Text style={{ fontSize: 14, color: "#48494B" }}>
+            Total Sales: ₱ {total_sales}.00
+          </Text>
+
+          <View style={{ flexDirection: "row", alignItems: "center" }}>
+            <Text style={{ fontSize: 14, color: "#48494B" }}>
+              Total Transaction:{" "}
+            </Text>
+            <Icon
+              name={"receipt"}
+              type={"material"}
+              color={"#48494B"}
+              size={14}
+            />
+            <Text style={{ fontSize: 14, color: "#48494B" }}>
+              {" "}
+              {total_transaction}
+            </Text>
           </View>
 
-          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            <Text style={{ fontSize: 14, color: '#48494B' }}>Web Orders: </Text>
-            <Icon name={'globe'} type={'entypo'} color={'#48494B'} size={14}/>
-            <Text style={{ fontSize: 14, color: '#48494B' }}> {web_order}</Text>
+          <View style={{ flexDirection: "row", alignItems: "center" }}>
+            <Text style={{ fontSize: 14, color: "#48494B" }}>Web Orders: </Text>
+            <Icon name={"globe"} type={"entypo"} color={"#48494B"} size={14} />
+            <Text style={{ fontSize: 14, color: "#48494B" }}> {web_order}</Text>
           </View>
 
-          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            <Text style={{ fontSize: 14, color: '#48494B' }}>Application Orders: </Text>
-            <Icon name={'mobile'} type={'entypo'} color={'#48494B'} size={14}/>
-            <Text style={{ fontSize: 14, color: '#48494B' }}> {app_order}</Text>
-          </View> 
+          <View style={{ flexDirection: "row", alignItems: "center" }}>
+            <Text style={{ fontSize: 14, color: "#48494B" }}>
+              Application Orders:{" "}
+            </Text>
+            <Icon name={"mobile"} type={"entypo"} color={"#48494B"} size={14} />
+            <Text style={{ fontSize: 14, color: "#48494B" }}> {app_order}</Text>
+          </View>
         </View>
       }
       chevron={true}
-      onPress={
-        _.debounce(() =>
-        this.props.navigation.push("AdminRestoView", { restoId: id }), 500,{
-          'leading': true,
-          'trailing': false
-        })
-      }
-      
+      onPress={_.debounce(
+        () => this.props.navigation.push("AdminRestoView", { restoId: id }),
+        500,
+        {
+          leading: true,
+          trailing: false
+        }
+      )}
     />
   );
 
   render() {
-    const { toggleSearch, data, loading, refreshing } = this.state;
-    const { makeRemoteRequest, renderHeader, renderOverlay, renderItem, handleRefresh } = this;
+    const { data, loading, refreshing, search } = this.state;
+    const {
+      makeRemoteRequest,
+      renderOverlay,
+      renderItem,
+      handleRefresh,
+      handleSearch
+    } = this;
     return (
       <View style={{ flex: 1 }}>
         <NavigationEvents onDidFocus={makeRemoteRequest} />
-        {toggleSearch ? renderHeader() : null}
+        <Search
+          value={search}
+          data={data}
+          handleSearch={handleSearch}
+          {...this.props}
+        />
         {renderOverlay()}
         <List
           data={data}

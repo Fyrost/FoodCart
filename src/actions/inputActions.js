@@ -66,9 +66,16 @@ import {
   MSG_RESTO_IMAGE_EMPTY
 } from "../constants/validator";
 
-export const contains = (data, query) => {
-  const { name } = data;
-  if (name.includes(query)) {
+export const contains = (item, query) => {
+  if (item.toLowerCase().includes(query.toLowerCase())) {
+    return true;
+  }
+  return false;
+};
+
+export const containsEmail = (data, query) => {
+  const { email } = data;
+  if (email.includes(query)) {
     return true;
   }
   return false;
