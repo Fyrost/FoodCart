@@ -123,10 +123,11 @@ class TagPendingScreen extends Component {
     <Overlay
       isVisible={this.state.isDetailVisible}
       width="auto"
-      height="auto"
+      height="45%"
+      containerStyle={{ padding: 5 }}
       onBackdropPress={() => this.setState({ isDetailVisible: false })}
     >
-      <View>
+      <View style={{ flexGrow: 1 }}>
         <Icon
           raised
           reverse
@@ -143,23 +144,24 @@ class TagPendingScreen extends Component {
           }}
           onPress={() => this.setState({ isDetailVisible: false })}
         />
-        <View style={{ paddingHorizontal: 20, paddingVertical: 10 }}>
-          <View style={{ flexDirection: "row", alignItems: "center" }}>
-            <Text>Name: </Text>
-            <Text>{this.state.detail.name}</Text>
+        <View style={{ flex: 3, justifyContent: 'space-evenly', paddingHorizontal: 20, paddingVertical: 10 }}>
+          <View style={{ flexDirection: "row", justifyContent: 'space-between', alignItems: "center" }}>
+            <Text style={{ fontSize: 16, fontWeight: '500' }}>Name: </Text>
+            <Text style={{ fontSize: 16, fontWeight: 'normal' }}>{this.state.detail.name}</Text>
           </View>
 
-          <View style={{ flexDirection: "row", alignItems: "center" }}>
-            <Text>Slug: </Text>
-            <Text>{this.state.detail.slug}</Text>
+          <View style={{ flexDirection: "row", justifyContent: 'space-between', alignItems: "center" }}>
+            <Text style={{ fontSize: 16, fontWeight: '500' }}>Slug: </Text>
+            <Text style={{ fontSize: 16, fontWeight: 'normal' }}>{this.state.detail.slug}</Text>
           </View>
 
-          <View style={{ flexDirection: "row", alignItems: "center" }}>
-            <Text>Used by: </Text>
-            <Text>{this.state.detail.usedBy}</Text>
+          <View style={{ flexDirection: "row", justifyContent: 'space-between', alignItems: "center" }}>
+            <Text style={{ fontSize: 16, fontWeight: '500' }}>Used by: </Text>
+            <Text style={{ fontSize: 16, fontWeight: 'normal' }}>{this.state.detail.usedBy}</Text>
           </View>
           <Button
             title={`View Item/s`}
+            titleStyle={{ fontSize: 18 }}
             type={"clear"}
             onPress={() => {
               this.setState({ isDetailVisible: false });
