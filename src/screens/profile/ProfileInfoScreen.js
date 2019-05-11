@@ -2,17 +2,34 @@ import React, { Component } from "react";
 import {
   View,
   ScrollView,
-  Text,
   ActivityIndicator,
-  AsyncStorage
+  AsyncStorage,
+  TextInput
 } from "react-native";
-import { Image, Card, withTheme } from "react-native-elements";
+import { 
+  Overlay, 
+  Card, 
+  Button,
+  Input,
+  Text,
+  Icon 
+} from "react-native-elements";
 import { NavigationEvents } from "react-navigation";
-import { getProfile, errorHandler } from "../../actions";
-import missing from "../../../assets/images/missing.png";
+import { 
+  getProfile, 
+  errorHandler,
+  updateUserPassword,
+  inputHandler 
+} from "../../actions";
 import logo from "../../../assets/images/logo.png"
+import KeyboardShift from "../../components/KeyboardShift";
+import Loading from "../../components/Loading";
+import { MessageAlert, ConfirmAlert } from "../../components/Alerts";
 class ProfileInfoScreen extends Component {
   state = {
+    password: { text: "" },
+    passwordConfirm: { text: "" },
+    passwordOld: { text: "" },
     email: { text: "" },
     firstName: { text: "" },
     middleName: { text: "" },
@@ -26,6 +43,10 @@ class ProfileInfoScreen extends Component {
     openTime: { text: "" },
     closeTime: { text: "" },
     accessLevel: "",
+    layoutVisible: false,
+    layoutEmailVisible: false,
+    screenLoading: false,
+    updatePasswordLoading: false,
     loading: false,
     error: ""
   };
@@ -116,6 +137,222 @@ class ProfileInfoScreen extends Component {
       });
   };
 
+  handleLayout = () => {
+    this.setState({
+      layoutVisible: true
+    });
+  };
+
+  handleEmailLayout = () => {
+    this.setState({
+      layoutEmailVisible: true
+    })
+  }
+
+  handleUpdatePassword = () => {
+    const { password, passwordConfirm, passwordOld } = this.state;
+    this.setState({
+      updatePasswordLoading: true,
+      passwordOld: { ...passwordOld, error: "" },
+      password: { ...password, error: "" },
+      passwordConfirm: { ...passwordConfirm, error: "" }
+    });
+    updateUserPassword({
+      passwordOld: passwordOld.text,
+      password: password.text,
+      passwordConfirm: passwordConfirm.text
+    })
+      .then(res => {
+        const { success, message } = res.data;
+
+        if (success) {
+          MessageAlert("Change Password", message);
+          this.setState({ layoutVisible: false });
+        } else {
+          const {
+            user_old_password,
+            user_password,
+            user_password1
+          } = res.data.errors;
+          this.setState({
+            passwordOld: {
+              ...passwordOld,
+              error: user_old_password ? user_old_password[0] : ""
+            },
+            password: {
+              ...password,
+              error: user_password ? user_password[0] : ""
+            },
+            passwordConfirm: {
+              ...passwordConfirm,
+              error: user_password1 ? user_password1[0] : ""
+            }
+          });
+        }
+        this.setState({ updatePasswordLoading: false });
+      })
+      .catch(err => {
+        this.setState({ updatePasswordLoading: false });
+        MessageAlert("Change Password", errorHandler(err));
+      });
+  };
+
+  renderEmailOverlay = () => {
+    const {
+      layoutEmailVisible,
+      passwordOld,
+      password,
+      passwordConfirm,
+      updatePasswordLoading
+    } = this.state;
+    return (
+      <Overlay
+        isVisible={layoutEmailVisible}
+        height={"auto"}
+        overlayContainerStyle={{ padding: 100 }}
+        borderRadius={0}
+        windowBackgroundColor={"rgba(0, 0, 0, .8)"}
+        containerStyle={styles.flex1}
+        onBackdropPress={() => this.setState({ layoutEmailVisible: false })}
+      >
+        <View>
+          <Icon
+            raised
+            reverse
+            name={"times"}
+            type={"font-awesome"}
+            color={"#1B73B4"}
+            size={20}
+            underlayColor={"black"}
+            containerStyle={{
+              zIndex: 99999,
+              position: "absolute",
+              right: -28,
+              top: -33
+            }}
+            onPress={() => this.setState({ layoutVisible: false })}
+          />
+          <ScrollView>
+            <Text style={{ fontSize: 18, fontWeight: '500',color: '#1B73B4', marginTop: 15 }}>Request Change Email</Text>
+            <Text style={{ fontSize: 16, marginTop: 15 }}>New Email Address</Text>
+            <TextInput
+              placeholder={"Enter your new email address here"}
+              style={{ borderColor: "gray", borderWidth: 1, paddingHorizontal: 10 }}
+            />
+            <Text>Error</Text>
+            <Text style={{ fontSize: 16, marginTop: 15 }}>Reason for changing email address</Text>
+            <TextInput
+              multiline={true}
+              placeholder={"Enter your reason here..."}
+              numberOfLines={5}
+              style={{ borderColor: "gray", borderWidth: 1, paddingHorizontal: 10 }}
+            />
+            <Text>Error</Text>
+            <Button
+              clear
+              title={"Submit Request"}
+            />
+          </ScrollView>
+        </View>
+      </Overlay>
+    );
+  };
+
+  renderPasswordOverlay = () => {
+    const {
+      layoutVisible,
+      passwordOld,
+      password,
+      passwordConfirm,
+      updatePasswordLoading
+    } = this.state;
+    return (
+      <Overlay
+        isVisible={layoutVisible}
+        height={"auto"}
+        overlayContainerStyle={{ padding: 100 }}
+        borderRadius={0}
+        windowBackgroundColor={"rgba(0, 0, 0, .8)"}
+        containerStyle={styles.flexContainer}
+        onBackdropPress={() => this.setState({ layoutVisible: false })}
+      >
+        <View>
+          <Icon
+            raised
+            reverse
+            name={"times"}
+            type={"font-awesome"}
+            color={"#1B73B4"}
+            size={20}
+            underlayColor={"black"}
+            containerStyle={{
+              zIndex: 99999,
+              position: "absolute",
+              right: -28,
+              top: -33
+            }}
+            onPress={() => this.setState({ layoutVisible: false })}
+          />
+          <View style={{ paddingHorizontal: 10, justifyContent: 'space-evenly', alignItems: 'center' }}>
+            <Text style={{ fontSize: 20, fontWeight: '500' }}> 
+              Change Password
+            </Text>
+            <Input
+              placeholder={"Old Password"}
+              value={passwordOld.text}
+              onChangeText={text => this.setState({ passwordOld: { text } })}
+              secureTextEntry
+            />
+            <Text style={{ color: "red" }}>{passwordOld.error}</Text>
+            <Input
+              placeholder={"New Password"}
+              value={password.text}
+              onChangeText={text => this.setState({ password: { text } })}
+              onBlur={() =>
+                this.setState({
+                  password: inputHandler({ password }, "password")
+                })
+              }
+              secureTextEntry
+            />
+            <Text style={{ color: "red" }}>{password.error}</Text>
+            <Input
+              placeholder={"Re-Type New Password"}
+              value={passwordConfirm.text}
+              onChangeText={text =>
+                this.setState({ passwordConfirm: { text } })
+              }
+              onBlur={() =>
+                this.setState({
+                  passwordConfirm: inputHandler(
+                    { password, confirmPassword: passwordConfirm },
+                    "confirmPassword"
+                  )
+                })
+              }
+              secureTextEntry
+            />
+            <Text style={{ color: "red" }}>{passwordConfirm.error}</Text>
+          </View>
+          <Button
+            title={"UPDATE"}
+            type="clear"
+            onPress={() =>
+              ConfirmAlert(
+                "Change Password",
+                "Do you want to Change your Password?",
+                this.handleUpdatePassword
+              )
+            }
+            loading={updatePasswordLoading}
+            disabled={updatePasswordLoading}
+            containerStyle={styles.categoryOverlayButton}
+          />
+          </View>
+      </Overlay>
+    );
+  };
+
   renderUserProfile = () => {
     const {
       email,
@@ -160,6 +397,28 @@ class ProfileInfoScreen extends Component {
           <Text style={styles.cardRowTitle}>Contact Number</Text>
           <Text style={styles.cardRowText}># {contact.text}</Text>
         </View>
+
+        <Button
+            title={' Request Change Email'}
+            icon={{
+              name: 'email',
+              type: 'entypo',
+              color: 'white',
+            }}
+            buttonStyle={{ backgroundColor: '#5999C8', borderRadius: 0 }}
+            onPress={ ()=> this.handleEmailLayout()}
+          />
+
+          <Button
+            title={' Change Password'}
+            icon={{
+              name: 'textbox-password',
+              type: 'material-community',
+              color: 'white',
+            }}
+            buttonStyle={{ backgroundColor: '#5999C8', marginTop: 3, borderRadius: 0 }}
+            onPress={ ()=> this.handleLayout()}
+          />
       </Card>
     );
   };
@@ -229,6 +488,18 @@ class ProfileInfoScreen extends Component {
               <Text style={styles.cardRowTitle}>Contact Number</Text>
               <Text style={styles.cardRowText}># {contact.text}</Text>
             </View>
+
+            <Button
+              title={' Edit Restaurant Information'}
+              icon={{
+                name: 'edit',
+                type: 'font-awesome',
+                color: 'white',
+              }}
+              buttonStyle={{ backgroundColor: '#5999C8', borderRadius: 0 }}
+              onPress={()=> this.props.navigation.navigate('ProfileEdit')}
+            />
+
           </View>
         </Card>
 
@@ -266,6 +537,29 @@ class ProfileInfoScreen extends Component {
               <Text style={styles.cardRowText}>{email.text}</Text>
             </View>
           </View>
+
+          <Button
+            title={' Request Change Email'}
+            icon={{
+              name: 'email',
+              type: 'entypo',
+              color: 'white',
+            }}
+            buttonStyle={{ backgroundColor: '#5999C8', borderRadius: 0 }}
+            onPress={ ()=> this.handleEmailLayout()}
+          />
+
+          <Button
+            title={' Change Password'}
+            icon={{
+              name: 'textbox-password',
+              type: 'material-community',
+              color: 'white',
+            }}
+            buttonStyle={{ backgroundColor: '#5999C8', marginTop: 3, borderRadius: 0 }}
+            onPress={ ()=> this.handleLayout()}
+          />
+
         </Card>
         <View style={styles.bottomSpacer} />
       </ScrollView>
@@ -316,6 +610,28 @@ class ProfileInfoScreen extends Component {
           <Text style={styles.cardRowTitle}>Contact Number</Text>
           <Text style={styles.cardRowText}># {contact.text}</Text>
         </View>
+
+        <Button
+            title={' Request Change Email'}
+            icon={{
+              name: 'email',
+              type: 'entypo',
+              color: 'white',
+            }}
+            buttonStyle={{ backgroundColor: '#5999C8', borderRadius: 0 }}
+            onPress={ ()=> this.handleEmailLayout()}
+          />
+
+          <Button
+            title={' Change Password'}
+            icon={{
+              name: 'textbox-password',
+              type: 'material-community',
+              color: 'white',
+            }}
+            buttonStyle={{ backgroundColor: '#5999C8', marginTop: 3, borderRadius: 0 }}
+            onPress={ ()=> this.handleLayout()}
+          />
       </Card>
     );
   };
@@ -333,6 +649,8 @@ class ProfileInfoScreen extends Component {
     return (
       <ScrollView style={{ flex: 1 }}>
         <NavigationEvents onWillFocus={preRequest} />
+        {this.renderPasswordOverlay()}
+        {this.renderEmailOverlay()}
         {accessLevel == "3"
           ? renderAdminProfile()
           : accessLevel == "2"
@@ -350,7 +668,7 @@ const styles = {
     flex: 1
   },
   cardTitleContent: {
-    backgroundColor: "#5999C8",
+    backgroundColor: "#1B73B4",
     alignItems: "center",
     justifyContent: "center",
     paddingVertical: 10,
@@ -400,5 +718,5 @@ const styles = {
   bottomSpacer: {
     flex: 1,
     height: 25
-  }
+  },
 };

@@ -66,7 +66,6 @@ class ProfileEditScreen extends Component {
   }
   preRequest = () => {
     this.setState({ loading: true });
-
     AsyncStorage.getItem("accessLevel").then(value => {
       this.props.navigation.setParams({ accessLevel: value });
       this.setState(
@@ -654,9 +653,95 @@ class ProfileEditScreen extends Component {
       </KeyboardShift>
     );
   };
+  
   renderPasswordOverlay = () => {
     const {
       layoutVisible,
+      passwordOld,
+      password,
+      passwordConfirm,
+      updatePasswordLoading
+    } = this.state;
+    return (
+      <Overlay
+        isVisible={layoutVisible}
+        height={"auto"}
+        overlayContainerStyle={{ padding: 100 }}
+        borderRadius={0}
+        windowBackgroundColor={"rgba(0, 0, 0, .8)"}
+        containerStyle={styles.flexContainer}
+        onBackdropPress={() => this.setState({ layoutVisible: false })}
+      >
+        <View>
+          <View style={[styles.categoryOverlayContainer, {}]}>
+            <Text style={styles.categoryOverlayTitle} h4>
+              Change Password
+            </Text>
+          </View>
+          <View style={styles.horizontalPadding16}>
+            <Input
+              placeholder={"Old Password"}
+              value={passwordOld.text}
+              onChangeText={text => this.setState({ passwordOld: { text } })}
+              secureTextEntry
+            />
+            <Text style={{ color: "red" }}>{passwordOld.error}</Text>
+            <Input
+              placeholder={"Password"}
+              value={password.text}
+              onChangeText={text => this.setState({ password: { text } })}
+              onBlur={() =>
+                this.setState({
+                  password: inputHandler({ password }, "password")
+                })
+              }
+              secureTextEntry
+            />
+            <Text style={{ color: "red" }}>{password.error}</Text>
+            <Input
+              placeholder={"Re-type Password"}
+              value={passwordConfirm.text}
+              onChangeText={text =>
+                this.setState({ passwordConfirm: { text } })
+              }
+              onBlur={() =>
+                this.setState({
+                  passwordConfirm: inputHandler(
+                    { password, confirmPassword: passwordConfirm },
+                    "confirmPassword"
+                  )
+                })
+              }
+              secureTextEntry
+            />
+            <Text style={{ color: "red" }}>{passwordConfirm.error}</Text>
+          </View>
+          <View
+            style={[styles.flexContainerRow, styles.categoryOverlayContainer]}
+          >
+            <Button
+              title={"UPDATE"}
+              type="clear"
+              onPress={() =>
+                ConfirmAlert(
+                  "Change Password",
+                  "Do you want to Change your Password?",
+                  this.handleUpdatePassword
+                )
+              }
+              loading={updatePasswordLoading}
+              disabled={updatePasswordLoading}
+              containerStyle={styles.categoryOverlayButton}
+            />
+          </View>
+        </View>
+      </Overlay>
+    );
+  };
+
+  renderEmailOverlay = () => {
+    const {
+      layoutEmailVisible,
       passwordOld,
       password,
       passwordConfirm,
@@ -747,8 +832,8 @@ class ProfileEditScreen extends Component {
         <NavigationEvents onWillFocus={this.preRequest} />
         <Loading loading={this.state.screenLoading} opacity={0.5} size={50} />
         {this.renderPasswordOverlay()}
-        <View style={[styles.ownerFormBody, styles.horizontalPadding16]}>
-          <ScrollView style={styles.flexContainer}>
+        <View style={styles.ownerFormBody}>
+          <ScrollView style={styles.flexContainer} contentContainerStyle={styles.horizontalPadding16}>
             {this.state.accessLevel == "3"
               ? this.renderAdminProfile()
               : this.state.accessLevel == "2"
@@ -759,7 +844,7 @@ class ProfileEditScreen extends Component {
         <Button
           title="UPDATE"
           containerStyle={{ flex: 1, justifyContent: "center" }}
-          buttonStyle={{ flex: 1 }}
+          buttonStyle={{ flex: 1, backgroundColor: '#1B73B4' }}
           onPress={() =>
             ConfirmAlert(
               "Update Profile",
