@@ -8,3 +8,4 @@ export * from "./AdminTagTabNavigator";
 export * from "./AdminLogStackNavigator";
 export * from "./AdminOrderStackNavigator";
 export * from "./AdminBanStackNavigator";
+export * from "./AdminRequestStackNavigator";

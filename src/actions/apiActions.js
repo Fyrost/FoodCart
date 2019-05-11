@@ -552,6 +552,13 @@ export const getLogList = () => {
   });
 };
 
+export const getRequestList = () => {
+  return Axios({
+    url: API.ADMIN_REQUEST,
+    method: "get"
+  });
+};
+
 export const getRestaurantList = () => {
   return Axios({
     url: API.CUSTOMER_RESTAURANT,
