@@ -6,7 +6,6 @@ import {
   TouchableOpacity,
   ImageBackground,
   ScrollView,
-  Animated
 } from "react-native";
 import { NavigationEvents } from "react-navigation";
 import {
@@ -339,9 +338,9 @@ class RestoViewScreen extends Component {
     </View>
   );
 
-  renderMenuDetail = ({viewStyle}) => {
+  renderMenuDetail = () => {
     return(
-      <Animated.View style={viewStyle}>
+      <View>
         <Overlay
           fullScreen
           isVisible={this.state.menuDetailShow}
@@ -455,7 +454,7 @@ class RestoViewScreen extends Component {
             </View>
           </View>
         </Overlay>
-      </Animated.View>
+      </View>
     )
   }
 
@@ -519,7 +518,7 @@ class RestoViewScreen extends Component {
           ) : null}  
         </View>
         
-        <View style={{ flex: 1, justifyContent: 'space-between' }}>
+        <View style={{ flex: 2, justifyContent: 'space-between' }}>
           <View style={{ flex: 2, marginTop: 10 }}>
             <Text style={stylesResto.menuListTitle}>{name}</Text>
             <View style={{ flexWrap: 'wrap' }}>
@@ -556,7 +555,7 @@ class RestoViewScreen extends Component {
       <View>
         <NavigationEvents onWillFocus={makeRemoteRequest} />
         <Loading loading={screenLoading} opacity={0.5} size={50} />
-        {renderMenuDetail(viewStyle)}
+        {renderMenuDetail()}
         <SectionList
           sections={menu}
           keyExtractor={(item, index) => item + index}
