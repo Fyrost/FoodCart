@@ -33,8 +33,7 @@ import {
   postCart,
   errorHandler
 } from "../../../actions";
-// import console = require("console");
-// import console = require("console");
+
 
 const formatMenu = menu => {
   return menu.map(section => {

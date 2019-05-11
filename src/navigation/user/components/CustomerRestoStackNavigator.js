@@ -1,7 +1,8 @@
 import { createStackNavigator } from "react-navigation";
 import {
   leftDrawerButton,
-  rightRestoCartButton
+  rightRestoCartButton,
+  rightMenuButton
 } from "../navOptions/navButtons";
 import { headerStyles } from "../navOptions/navStyles";
 import RestoListScreen from "../../../screens/user/Restaurant/RestoListScreen";
@@ -11,7 +12,7 @@ const UserRestoList = {
   navigationOptions: ({ navigation }) => ({
     title: "Restaurant List",
     headerLeft: leftDrawerButton({ navigation }),
-    headerRight: rightRestoCartButton({ navigation })
+    headerRight: rightMenuButton({ navigation })
   })
 };
 

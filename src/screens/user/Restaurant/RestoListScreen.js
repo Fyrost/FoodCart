@@ -1,9 +1,11 @@
 import React, { Component } from "react";
 import { View, Text, Dimensions, TouchableOpacity } from "react-native";
-import { Card, Button, Icon, Divider, Tile } from "react-native-elements";
+import { Card, Icon, Divider } from "react-native-elements";
 import { NavigationEvents } from "react-navigation";
-import { getRestaurantList, errorHandler } from "../../../actions";
 import List from "../../../components/List";
+import Search from "../../../components/Search";
+import { getRestaurantList, errorHandler, contains } from "../../../actions";
+
 import _ from "lodash";
 
 const numColumns = 1;
@@ -26,7 +28,7 @@ const formatData = (data, numColumns) => {
 
 class RestoListScreen extends Component {
   state = {
-    resto: {},
+    resto: [],
     loading: false,
     refreshing: false
   };
@@ -40,7 +42,8 @@ class RestoListScreen extends Component {
           this.setState({
             loading: false,
             refreshing: false,
-            resto: data
+            resto: data,
+            fullData: data
           });
         } else {
           this.setState({
@@ -65,6 +68,13 @@ class RestoListScreen extends Component {
       },
       () => this.makeRemoteRequest()
     );
+  };
+
+  handleSearch = text => {
+    const resto = this.state.fullData.filter(item => {
+      return contains(item.name, text) || contains(item.slug, text);
+    });
+    this.setState({ search: text, resto });
   };
 
   renderItem = ({ item }) => {
@@ -131,11 +141,17 @@ class RestoListScreen extends Component {
   };
 
   render() {
-    const { resto, loading, refreshing } = this.state;
-    const { makeRemoteRequest, renderItem, handleRefresh } = this;
+    const { resto, loading, refreshing, search } = this.state;
+    const { makeRemoteRequest, renderItem, handleRefresh, handleSearch } = this;
     return (
       <View style={{ flex: 1, backgroundColor: "#F9F9F9" }}>
         <NavigationEvents onWillFocus={makeRemoteRequest} />
+        <Search
+          value={search}
+          data={resto}
+          handleSearch={handleSearch}
+          {...this.props}
+        />
         <List
           data={formatData(resto, numColumns)}
           renderItem={renderItem}

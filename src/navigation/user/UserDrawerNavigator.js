@@ -5,7 +5,12 @@ import {
   OrderNavigator,
   RestoNavigator
 } from "./components";
-import { leftBackButton, rightRestoCartButton } from "./navOptions/navButtons";
+import {
+  leftBackButton,
+  rightRestoCartButton,
+  rightSearchButton,
+  rightMenuButton
+} from "./navOptions/navButtons";
 import { headerStyles } from "./navOptions/navStyles";
 import { HomeIcon, OrderIcon, RestoIcon } from "./navOptions/navIcons";
 import ProfileStackNavigator from "../ProfileStackNavigator";
@@ -87,7 +92,6 @@ const UserOrderView = {
     headerLeft: leftBackButton({ navigation })
   })
 };
-
 
 export default createStackNavigator(
   {

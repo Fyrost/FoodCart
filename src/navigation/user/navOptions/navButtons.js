@@ -62,7 +62,7 @@ export const rightCartButton = ({ navigation }) => (
       flexDirection: "row",
       alignItems: "center",
       justifyContent: "space-between",
-      display: navigation.getParam("isCartEmpty")?'none':'flex'
+      display: navigation.getParam("isCartEmpty") ? "none" : "flex"
     }}
   >
     <Avatar
@@ -88,18 +88,19 @@ export const rightCartButton = ({ navigation }) => (
       size={48}
       onPress={() => navigation.navigate("UserCheckout")}
       containerStyle={{ marginRight: 5 }}
-      
     />
   </View>
 );
 export const rightCheckoutButton = ({ navigation }) => (
   <Button
     title="Place order"
-    onPress={()=>ConfirmAlert(
-      "Place Order",
-      "Are you sure",
-      navigation.getParam("checkoutButton")
-    )}
+    onPress={() =>
+      ConfirmAlert(
+        "Place Order",
+        "Are you sure",
+        navigation.getParam("checkoutButton")
+      )
+    }
     containerStyle={{ marginRight: 5 }}
   />
 );
@@ -114,4 +115,17 @@ export const rightRestoCartButton = ({ navigation }) => (
     onPress={() => navigation.navigate("UserCart")}
     containerStyle={{ marginRight: 5 }}
   />
+);
+
+export const rightMenuButton = ({ navigation }) => (
+  <View
+    style={{
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "space-between"
+    }}
+  >
+    {rightSearchButton({ navigation })}
+    {rightRestoCartButton({ navigation })}
+  </View>
 );
