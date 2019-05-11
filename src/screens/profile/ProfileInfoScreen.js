@@ -499,15 +499,26 @@ class ProfileInfoScreen extends Component {
         </View>
 
         <Button
-          title={" Request Change Email"}
+          title={' Edit Profile Information'}
           icon={{
-            name: "email",
-            type: "entypo",
-            color: "white"
+            name: 'edit',
+            type: 'font-awesome',
+            color: 'white',
           }}
-          buttonStyle={{ backgroundColor: "#5999C8", borderRadius: 0 }}
-          onPress={() => this.handleEmailLayout()}
+          buttonStyle={{ backgroundColor: '#5999C8', borderRadius: 0 }}
+          onPress={()=> this.props.navigation.navigate('ProfileEdit')}
         />
+
+        <Button
+            title={' Request Change Email'}
+            icon={{
+              name: 'email',
+              type: 'entypo',
+              color: 'white',
+            }}
+            buttonStyle={{ backgroundColor: '#5999C8', marginTop: 3, borderRadius: 0 }}
+            onPress={ ()=> this.handleEmailLayout()}
+          />
 
         <Button
           title={" Change Password"}
@@ -718,15 +729,26 @@ class ProfileInfoScreen extends Component {
         </View>
 
         <Button
-          title={" Request Change Email"}
+          title={' Edit Profile Information'}
           icon={{
-            name: "email",
-            type: "entypo",
-            color: "white"
+            name: 'edit',
+            type: 'font-awesome',
+            color: 'white',
           }}
-          buttonStyle={{ backgroundColor: "#5999C8", borderRadius: 0 }}
-          onPress={() => this.handleEmailLayout()}
+          buttonStyle={{ backgroundColor: '#5999C8', borderRadius: 0 }}
+          onPress={()=> this.props.navigation.navigate('ProfileEdit')}
         />
+
+        <Button
+            title={' Request Change Email'}
+            icon={{
+              name: 'email',
+              type: 'entypo',
+              color: 'white',
+            }}
+            buttonStyle={{ backgroundColor: '#5999C8', marginTop: 3, borderRadius: 0 }}
+            onPress={ ()=> this.handleEmailLayout()}
+          />
 
         <Button
           title={" Change Password"}

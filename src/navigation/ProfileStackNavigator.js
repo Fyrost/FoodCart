@@ -14,16 +14,6 @@ const profileInfoOptions = {
         onPress={() => navigation.dismiss()}
       />
     ),
-    headerRight: (
-      <Icon
-        name="edit"
-        type="font-awesome"
-        color="#FFF"
-        size={25}
-        containerStyle={{ marginRight: 15, justifyContent: "center" }}
-        onPress={() => navigation.navigate("ProfileEdit")}
-      />
-    )
   })
 };
 
@@ -34,26 +24,6 @@ const profileEditOptions = {
       navigation.getParam("accessLevel") == "2"
         ? "Update Resto Info"
         : "Update Profile",
-    headerRight: (
-      <View style={{ flexDirection: "row" }}>
-        <Icon
-          name="email"
-          type="entypo"
-          color="#FFF"
-          size={25}
-          containerStyle={{ marginRight: 15 }}
-          onPress={navigation.getParam("layoutEmailVisible")}
-        />
-        <Icon
-          name="textbox-password"
-          type="material-community"
-          color="#FFF"
-          size={25}
-          containerStyle={{ marginRight: 15 }}
-          onPress={navigation.getParam("layoutVisible")}
-        />
-      </View>
-    )
   })
 };
 
