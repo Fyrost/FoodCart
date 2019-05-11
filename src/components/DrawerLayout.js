@@ -14,6 +14,7 @@ export default class DrawerLayout extends Component {
 
   makeRequestLeave = () => {
     this.setState({ loading: true });
+    this.props.navigation.closeDrawer();
     logoutUser().then(() => {
       AsyncStorage.clear();
       delete Axios.defaults.headers.common["Authorization"];
@@ -29,7 +30,12 @@ export default class DrawerLayout extends Component {
         <View style={styles.drawerHeader}>
           <Image
             source={logo}
-            style={{ height: 150, width: 150, resizeMode: "cover", tintColor:'white' }}
+            style={{
+              height: 150,
+              width: 150,
+              resizeMode: "cover",
+              tintColor: "white"
+            }}
           />
         </View>
         <View style={styles.drawerContent}>
@@ -47,7 +53,10 @@ export default class DrawerLayout extends Component {
         </View>
         <View style={styles.drawerFooter}>
           <TouchableOpacity
-            onPress={() => this.props.navigation.navigate("Profile")}
+            onPress={() => {
+              this.props.navigation.closeDrawer();
+              this.props.navigation.navigate("Profile");
+            }}
           >
             <View style={[styles.flexContainerRow, styles.drawerFooterContent]}>
               <Icon
@@ -119,7 +128,7 @@ const styles = {
     flex: 1,
     justifyContent: "space-evenly",
     paddingLeft: 20,
-    borderColor: 'lightgrey',
+    borderColor: "lightgrey",
     borderTopWidth: 0.8
   },
 
