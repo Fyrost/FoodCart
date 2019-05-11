@@ -65,6 +65,7 @@ export const ADMIN_REPORT_INVESTIGATE = code =>
   `admin/report/${code}/investigate`;
 export const ADMIN_REPORT_CLOSE = code => `admin/report/${code}/close`;
 export const ADMIN_LOGS = `admin/logs`;
+export const ADMIN_REQUEST = `admin/request`;
 export const ADMIN_PROFILE = `admin/profile`;
 
 export const CUSTOMER_RESTAURANT = `restaurant`;

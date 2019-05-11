@@ -9,7 +9,8 @@ import {
   SalesNavigator,
   TagNavigator,
   LogsNavigator,
-  BanNavigator
+  BanNavigator,
+  RequestNavigator
 } from "./components";
 import { leftBackButton, rightReportButton } from "./navOptions/navButtons";
 import { headerStyles } from "./navOptions/navStyles";
@@ -114,6 +115,14 @@ const Logs = {
   }
 };
 
+const Request = {
+  screen: RequestNavigator,
+  navigationOptions: {
+    title: "Request",
+    drawerIcon: ({ tintColor }) => logIcon({ tintColor })
+  }
+};
+
 const AdminDrawer = createDrawerNavigator(
   {
     Partnership,
@@ -125,7 +134,8 @@ const AdminDrawer = createDrawerNavigator(
     Sales,
     Report,
     Ban,
-    Logs
+    Logs,
+    Request
   },
   {
     initialRouteName: "Partnership",
