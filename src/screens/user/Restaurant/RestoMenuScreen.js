@@ -339,9 +339,9 @@ class RestoViewScreen extends Component {
     </View>
   );
 
-  renderMenuDetail = ({viewStyle}) => {
+  renderMenuDetail = () => {
     return(
-      <Animated.View style={viewStyle}>
+      <View >
         <Overlay
           fullScreen
           isVisible={this.state.menuDetailShow}
@@ -455,7 +455,7 @@ class RestoViewScreen extends Component {
             </View>
           </View>
         </Overlay>
-      </Animated.View>
+      </View>
     )
   }
 
@@ -556,7 +556,7 @@ class RestoViewScreen extends Component {
       <View>
         <NavigationEvents onWillFocus={makeRemoteRequest} />
         <Loading loading={screenLoading} opacity={0.5} size={50} />
-        {renderMenuDetail(viewStyle)}
+        {renderMenuDetail()}
         <SectionList
           sections={menu}
           keyExtractor={(item, index) => item + index}

@@ -6,22 +6,23 @@ import {
   AsyncStorage,
   TextInput
 } from "react-native";
-import { 
-  Overlay, 
-  Card, 
+import {
+  Overlay,
+  Card,
   Button,
   Input,
   Text,
-  Icon 
+  Icon
 } from "react-native-elements";
 import { NavigationEvents } from "react-navigation";
-import { 
-  getProfile, 
+import {
+  getProfile,
   errorHandler,
+  postEmailChangeRequest,
   updateUserPassword,
-  inputHandler 
+  inputHandler
 } from "../../actions";
-import logo from "../../../assets/images/logo.png"
+import logo from "../../../assets/images/logo.png";
 import KeyboardShift from "../../components/KeyboardShift";
 import Loading from "../../components/Loading";
 import { MessageAlert, ConfirmAlert } from "../../components/Alerts";
@@ -42,8 +43,10 @@ class ProfileInfoScreen extends Component {
     eta: { text: "" },
     openTime: { text: "" },
     closeTime: { text: "" },
+    newEmail: { text: "" },
+    reason: { text: "" },
     accessLevel: "",
-    layoutVisible: false,
+    layoutPasswordVisible: false,
     layoutEmailVisible: false,
     screenLoading: false,
     updatePasswordLoading: false,
@@ -137,22 +140,65 @@ class ProfileInfoScreen extends Component {
       });
   };
 
-  handleLayout = () => {
+  handleLayout = () =>
     this.setState({
-      layoutVisible: true
+      layoutPasswordVisible: true
     });
-  };
 
-  handleEmailLayout = () => {
+  handleEmailLayout = () =>
     this.setState({
       layoutEmailVisible: true
+    });
+
+  handleRequestEmail = () => {
+    const { newEmail, reason } = this.state;
+    this.setState({
+      layoutEmailVisible: false,
+      screenLoading: true,
+      newEmail: { ...newEmail, error: "" },
+      reason: { ...reason, error: "" }
+    });
+    postEmailChangeRequest({
+      newEmail: newEmail.text,
+      reason: reason.text
     })
-  }
+      .then(res => {
+        const { success, message } = res.data;
+
+        if (success) {
+          this.setState({
+            screenLoading: false,
+            newEmail: { text: "", error: "" },
+            reason: { text: "", error: "" }
+          });
+        } else {
+          const { request_new_email, request_reason } = res.data.errors;
+          this.setState({
+            newEmail: {
+              ...newEmail,
+              error: request_new_email ? request_new_email[0] : ""
+            },
+            reason: {
+              ...reason,
+              error: request_reason ? request_reason[0] : ""
+            },
+            screenLoading: false,
+            layoutEmailVisible: true
+          });
+        }
+        MessageAlert("Request Email Change", message);
+      })
+      .catch(err => {
+        this.setState({ screenLoading: false, layoutEmailVisible: true });
+        MessageAlert("Request Email Change", errorHandler(err));
+      });
+  };
 
   handleUpdatePassword = () => {
     const { password, passwordConfirm, passwordOld } = this.state;
     this.setState({
-      updatePasswordLoading: true,
+      layoutPasswordVisible: false,
+      screenLoading: true,
       passwordOld: { ...passwordOld, error: "" },
       password: { ...password, error: "" },
       passwordConfirm: { ...passwordConfirm, error: "" }
@@ -166,8 +212,12 @@ class ProfileInfoScreen extends Component {
         const { success, message } = res.data;
 
         if (success) {
-          MessageAlert("Change Password", message);
-          this.setState({ layoutVisible: false });
+          this.setState({
+            screenLoading: false,
+            passwordOld: { text: "", error: "" },
+            password: { text: "", error: "" },
+            passwordConfirm: { text: "", error: "" }
+          });
         } else {
           const {
             user_old_password,
@@ -186,25 +236,26 @@ class ProfileInfoScreen extends Component {
             passwordConfirm: {
               ...passwordConfirm,
               error: user_password1 ? user_password1[0] : ""
-            }
+            },
+            screenLoading: false,
+            layoutPasswordVisible: true
           });
         }
-        this.setState({ updatePasswordLoading: false });
+        MessageAlert("Change Password", message);
       })
       .catch(err => {
-        this.setState({ updatePasswordLoading: false });
+        this.setState({ screenLoading: false, layoutPasswordVisible: true });
         MessageAlert("Change Password", errorHandler(err));
       });
   };
 
   renderEmailOverlay = () => {
-    const {
-      layoutEmailVisible,
-      passwordOld,
-      password,
-      passwordConfirm,
-      updatePasswordLoading
-    } = this.state;
+    const { newEmail, reason, layoutEmailVisible } = this.state;
+    const INITIAL_STATE = {
+      layoutEmailVisible: false,
+      newEmail: { text: "", error: "" },
+      reason: { text: "", error: "" }
+    };
     return (
       <Overlay
         isVisible={layoutEmailVisible}
@@ -213,7 +264,7 @@ class ProfileInfoScreen extends Component {
         borderRadius={0}
         windowBackgroundColor={"rgba(0, 0, 0, .8)"}
         containerStyle={styles.flex1}
-        onBackdropPress={() => this.setState({ layoutEmailVisible: false })}
+        onBackdropPress={() => this.setState(INITIAL_STATE)}
       >
         <View>
           <Icon
@@ -230,27 +281,64 @@ class ProfileInfoScreen extends Component {
               right: -28,
               top: -33
             }}
-            onPress={() => this.setState({ layoutVisible: false })}
+            onPress={() => this.setState(INITIAL_STATE)}
           />
           <ScrollView>
-            <Text style={{ fontSize: 18, fontWeight: '500',color: '#1B73B4', marginTop: 15 }}>Request Change Email</Text>
-            <Text style={{ fontSize: 16, marginTop: 15 }}>New Email Address</Text>
+            <Text
+              style={{
+                fontSize: 18,
+                fontWeight: "500",
+                color: "#1B73B4",
+                marginTop: 15
+              }}
+            >
+              Request Change Email
+            </Text>
+            <Text style={{ fontSize: 16, marginTop: 15 }}>
+              New Email Address
+            </Text>
             <TextInput
               placeholder={"Enter your new email address here"}
-              style={{ borderColor: "gray", borderWidth: 1, paddingHorizontal: 10 }}
+              value={newEmail.text}
+              onChangeText={text => this.setState({ newEmail: { text } })}
+              onBlur={() =>
+                this.setState({
+                  newEmail: inputHandler({ email: newEmail }, "email")
+                })
+              }
+              style={{
+                borderColor: "gray",
+                borderWidth: 1,
+                paddingHorizontal: 10
+              }}
             />
-            <Text>Error</Text>
-            <Text style={{ fontSize: 16, marginTop: 15 }}>Reason for changing email address</Text>
+            <Text style={{ color: "red" }}>{newEmail.error}</Text>
+            <Text style={{ fontSize: 16, marginTop: 15 }}>
+              Reason for changing email address
+            </Text>
             <TextInput
               multiline={true}
               placeholder={"Enter your reason here..."}
               numberOfLines={5}
-              style={{ borderColor: "gray", borderWidth: 1, paddingHorizontal: 10 }}
+              value={reason.text}
+              onChangeText={text => this.setState({ reason: { text } })}
+              style={{
+                borderColor: "gray",
+                borderWidth: 1,
+                paddingHorizontal: 10
+              }}
             />
-            <Text>Error</Text>
+            <Text style={{ color: "red" }}>{reason.error}</Text>
             <Button
               clear
               title={"Submit Request"}
+              onPress={() =>
+                ConfirmAlert(
+                  "Change Password",
+                  "Do you want to Change your Password?",
+                  this.handleRequestEmail
+                )
+              }
             />
           </ScrollView>
         </View>
@@ -260,21 +348,29 @@ class ProfileInfoScreen extends Component {
 
   renderPasswordOverlay = () => {
     const {
-      layoutVisible,
+      layoutPasswordVisible,
       passwordOld,
       password,
       passwordConfirm,
       updatePasswordLoading
     } = this.state;
+
+    const INITIAL_STATE = {
+      layoutPasswordVisible: false,
+      passwordOld: { text: "", error: "" },
+      password: { text: "", error: "" },
+      passwordConfirm: { text: "", error: "" },
+      updatePasswordLoading
+    };
     return (
       <Overlay
-        isVisible={layoutVisible}
+        isVisible={layoutPasswordVisible}
         height={"auto"}
         overlayContainerStyle={{ padding: 100 }}
         borderRadius={0}
         windowBackgroundColor={"rgba(0, 0, 0, .8)"}
         containerStyle={styles.flexContainer}
-        onBackdropPress={() => this.setState({ layoutVisible: false })}
+        onBackdropPress={() => this.setState(INITIAL_STATE)}
       >
         <View>
           <Icon
@@ -291,10 +387,16 @@ class ProfileInfoScreen extends Component {
               right: -28,
               top: -33
             }}
-            onPress={() => this.setState({ layoutVisible: false })}
+            onPress={() => this.setState(INITIAL_STATE)}
           />
-          <View style={{ paddingHorizontal: 10, justifyContent: 'space-evenly', alignItems: 'center' }}>
-            <Text style={{ fontSize: 20, fontWeight: '500' }}> 
+          <View
+            style={{
+              paddingHorizontal: 10,
+              justifyContent: "space-evenly",
+              alignItems: "center"
+            }}
+          >
+            <Text style={{ fontSize: 20, fontWeight: "500" }}>
               Change Password
             </Text>
             <Input
@@ -344,11 +446,9 @@ class ProfileInfoScreen extends Component {
                 this.handleUpdatePassword
               )
             }
-            loading={updatePasswordLoading}
-            disabled={updatePasswordLoading}
             containerStyle={styles.categoryOverlayButton}
           />
-          </View>
+        </View>
       </Overlay>
     );
   };
@@ -399,26 +499,30 @@ class ProfileInfoScreen extends Component {
         </View>
 
         <Button
-            title={' Request Change Email'}
-            icon={{
-              name: 'email',
-              type: 'entypo',
-              color: 'white',
-            }}
-            buttonStyle={{ backgroundColor: '#5999C8', borderRadius: 0 }}
-            onPress={ ()=> this.handleEmailLayout()}
-          />
+          title={" Request Change Email"}
+          icon={{
+            name: "email",
+            type: "entypo",
+            color: "white"
+          }}
+          buttonStyle={{ backgroundColor: "#5999C8", borderRadius: 0 }}
+          onPress={() => this.handleEmailLayout()}
+        />
 
-          <Button
-            title={' Change Password'}
-            icon={{
-              name: 'textbox-password',
-              type: 'material-community',
-              color: 'white',
-            }}
-            buttonStyle={{ backgroundColor: '#5999C8', marginTop: 3, borderRadius: 0 }}
-            onPress={ ()=> this.handleLayout()}
-          />
+        <Button
+          title={" Change Password"}
+          icon={{
+            name: "textbox-password",
+            type: "material-community",
+            color: "white"
+          }}
+          buttonStyle={{
+            backgroundColor: "#5999C8",
+            marginTop: 3,
+            borderRadius: 0
+          }}
+          onPress={() => this.handleLayout()}
+        />
       </Card>
     );
   };
@@ -490,16 +594,15 @@ class ProfileInfoScreen extends Component {
             </View>
 
             <Button
-              title={' Edit Restaurant Information'}
+              title={" Edit Restaurant Information"}
               icon={{
-                name: 'edit',
-                type: 'font-awesome',
-                color: 'white',
+                name: "edit",
+                type: "font-awesome",
+                color: "white"
               }}
-              buttonStyle={{ backgroundColor: '#5999C8', borderRadius: 0 }}
-              onPress={()=> this.props.navigation.navigate('ProfileEdit')}
+              buttonStyle={{ backgroundColor: "#5999C8", borderRadius: 0 }}
+              onPress={() => this.props.navigation.navigate("ProfileEdit")}
             />
-
           </View>
         </Card>
 
@@ -539,27 +642,30 @@ class ProfileInfoScreen extends Component {
           </View>
 
           <Button
-            title={' Request Change Email'}
+            title={" Request Change Email"}
             icon={{
-              name: 'email',
-              type: 'entypo',
-              color: 'white',
+              name: "email",
+              type: "entypo",
+              color: "white"
             }}
-            buttonStyle={{ backgroundColor: '#5999C8', borderRadius: 0 }}
-            onPress={ ()=> this.handleEmailLayout()}
+            buttonStyle={{ backgroundColor: "#5999C8", borderRadius: 0 }}
+            onPress={() => this.handleEmailLayout()}
           />
 
           <Button
-            title={' Change Password'}
+            title={" Change Password"}
             icon={{
-              name: 'textbox-password',
-              type: 'material-community',
-              color: 'white',
+              name: "textbox-password",
+              type: "material-community",
+              color: "white"
             }}
-            buttonStyle={{ backgroundColor: '#5999C8', marginTop: 3, borderRadius: 0 }}
-            onPress={ ()=> this.handleLayout()}
+            buttonStyle={{
+              backgroundColor: "#5999C8",
+              marginTop: 3,
+              borderRadius: 0
+            }}
+            onPress={() => this.handleLayout()}
           />
-
         </Card>
         <View style={styles.bottomSpacer} />
       </ScrollView>
@@ -612,32 +718,36 @@ class ProfileInfoScreen extends Component {
         </View>
 
         <Button
-            title={' Request Change Email'}
-            icon={{
-              name: 'email',
-              type: 'entypo',
-              color: 'white',
-            }}
-            buttonStyle={{ backgroundColor: '#5999C8', borderRadius: 0 }}
-            onPress={ ()=> this.handleEmailLayout()}
-          />
+          title={" Request Change Email"}
+          icon={{
+            name: "email",
+            type: "entypo",
+            color: "white"
+          }}
+          buttonStyle={{ backgroundColor: "#5999C8", borderRadius: 0 }}
+          onPress={() => this.handleEmailLayout()}
+        />
 
-          <Button
-            title={' Change Password'}
-            icon={{
-              name: 'textbox-password',
-              type: 'material-community',
-              color: 'white',
-            }}
-            buttonStyle={{ backgroundColor: '#5999C8', marginTop: 3, borderRadius: 0 }}
-            onPress={ ()=> this.handleLayout()}
-          />
+        <Button
+          title={" Change Password"}
+          icon={{
+            name: "textbox-password",
+            type: "material-community",
+            color: "white"
+          }}
+          buttonStyle={{
+            backgroundColor: "#5999C8",
+            marginTop: 3,
+            borderRadius: 0
+          }}
+          onPress={() => this.handleLayout()}
+        />
       </Card>
     );
   };
 
   render() {
-    const { loading, error, accessLevel } = this.state;
+    const { loading, error, accessLevel, screenLoading } = this.state;
     const {
       preRequest,
       renderAdminProfile,
@@ -649,6 +759,7 @@ class ProfileInfoScreen extends Component {
     return (
       <ScrollView style={{ flex: 1 }}>
         <NavigationEvents onWillFocus={preRequest} />
+        <Loading loading={screenLoading} size={"large"} />
         {this.renderPasswordOverlay()}
         {this.renderEmailOverlay()}
         {accessLevel == "3"
@@ -718,5 +829,5 @@ const styles = {
   bottomSpacer: {
     flex: 1,
     height: 25
-  },
+  }
 };

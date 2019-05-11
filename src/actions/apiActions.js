@@ -753,6 +753,17 @@ export const postProfile = (
   });
 };
 
+export const postEmailChangeRequest = ({ newEmail, reason }) => {
+  return Axios({
+    url: API.USER_REQUEST,
+    method: "post",
+    data: {
+      request_new_email: newEmail,
+      request_reason: reason
+    }
+  });
+};
+
 export const updateUserPassword = ({
   password,
   passwordConfirm,
