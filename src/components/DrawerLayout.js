@@ -4,7 +4,7 @@ import { View, ScrollView, TouchableOpacity, AsyncStorage } from "react-native";
 import { Image, Text, Divider, Icon, Button } from "react-native-elements";
 import Axios from "axios";
 import { ConfirmAlert } from "../components/Alerts";
-import { logoutUser } from "../actions";
+import { logoutUser, errorHandler } from "../actions";
 import logo from "../../assets/images/logo2.png";
 import Loading from "../components/Loading";
 export default class DrawerLayout extends Component {
@@ -15,12 +15,19 @@ export default class DrawerLayout extends Component {
   makeRequestLeave = () => {
     this.setState({ loading: true });
     this.props.navigation.closeDrawer();
-    logoutUser().then(() => {
-      AsyncStorage.clear();
-      delete Axios.defaults.headers.common["Authorization"];
-      this.setState({ loading: false });
-      this.props.navigation.navigate("Auth");
-    });
+    logoutUser()
+      .then(() => {
+        AsyncStorage.clear();
+        delete Axios.defaults.headers.common["Authorization"];
+        this.setState({ loading: false });
+        this.props.navigation.navigate("Auth");
+      })
+      .catch(err => {
+        AsyncStorage.clear();
+        delete Axios.defaults.headers.common["Authorization"];
+        this.setState({ loading: false });
+        this.props.navigation.navigate("Auth");
+      });
   };
 
   render() {

@@ -10,7 +10,8 @@ import {
   TagNavigator,
   LogsNavigator,
   BanNavigator,
-  RequestNavigator
+  RequestNavigator,
+  UsersNavigator
 } from "./components";
 import { leftBackButton, rightReportButton } from "./navOptions/navButtons";
 import { headerStyles } from "./navOptions/navStyles";
@@ -76,6 +77,14 @@ const Customer = {
   }
 };
 
+const Users = {
+  screen: UsersNavigator,
+  navigationOptions: {
+    title: "Users",
+    drawerIcon: ({ tintColor }) => customerIcon({ tintColor })
+  }
+};
+
 const Order = {
   screen: OrderNavigator,
   navigationOptions: {
@@ -126,10 +135,11 @@ const Request = {
 const AdminDrawer = createDrawerNavigator(
   {
     Partnership,
-    Tag,
     Resto,
-    Menu,
     Customer,
+    Users,
+    Tag,
+    Menu,
     Order,
     Sales,
     Report,

@@ -9,3 +9,4 @@ export * from "./AdminLogStackNavigator";
 export * from "./AdminOrderStackNavigator";
 export * from "./AdminBanStackNavigator";
 export * from "./AdminRequestStackNavigator";
+export * from "./AdminUsersStackNavigator";

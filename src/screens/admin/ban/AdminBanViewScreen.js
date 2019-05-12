@@ -108,14 +108,9 @@ class AdminBanViewScreen extends Component {
               )}
             >
               <Text style={[styles.cardRowText, { color: "#1B73B4" }]}>
-                {customer.fname} {customer.mname}
+                {customer.fname} {customer.mname} {customer.lname}
               </Text>
             </TouchableNativeFeedback>
-          </View>
-
-          <View style={styles.cardRow}>
-            <Text style={styles.cardRowTitle}>Last Name</Text>
-            <Text style={styles.cardRowText}>{customer.lname}</Text>
           </View>
 
           <View style={styles.cardRow2}>
@@ -130,7 +125,9 @@ class AdminBanViewScreen extends Component {
 
           <View style={styles.cardRow}>
             <Text style={styles.cardRowTitle}>Ban Date</Text>
-            <Text style={styles.cardRowText}># {this.props.navigation.getParam("banDate")}</Text>
+            <Text style={styles.cardRowText}>
+              # {this.props.navigation.getParam("banDate")}
+            </Text>
           </View>
 
           <View style={styles.cardRow2}>

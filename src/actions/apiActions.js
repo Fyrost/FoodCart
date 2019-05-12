@@ -559,6 +559,27 @@ export const getRequestList = () => {
   });
 };
 
+export const acceptRequest = id => {
+  return Axios({
+    url: API.ADMIN_REQUEST_ACCEPT(id),
+    method: "get"
+  });
+};
+
+export const rejectRequest = id => {
+  return Axios({
+    url: API.ADMIN_REQUEST_REJECT(id),
+    method: "get"
+  });
+};
+
+export const getAdminUsersList = () => {
+  return Axios({
+    url: API.ADMIN_USERS,
+    method: "get"
+  });
+};
+
 export const getRestaurantList = () => {
   return Axios({
     url: API.CUSTOMER_RESTAURANT,

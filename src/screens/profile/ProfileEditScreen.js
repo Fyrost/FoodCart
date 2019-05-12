@@ -63,6 +63,7 @@ class ProfileEditScreen extends Component {
       layoutVisible: this.handleLayout,
       layoutEmailVisible: this.handleEmailLayout
     });
+    this.preRequest()
   }
   preRequest = () => {
     this.setState({ loading: true });

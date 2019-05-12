@@ -53,7 +53,9 @@ class ProfileInfoScreen extends Component {
     loading: false,
     error: ""
   };
-
+  componentDidMount() {
+    this.preRequest();
+  }
   preRequest = () => {
     this.setState({ loading: true });
     AsyncStorage.getItem("accessLevel").then(value => {
@@ -62,7 +64,7 @@ class ProfileInfoScreen extends Component {
           loading: false,
           accessLevel: value
         },
-        this.makeRemoteRequest
+        () => this.makeRemoteRequest()
       );
     });
   };
@@ -499,26 +501,30 @@ class ProfileInfoScreen extends Component {
         </View>
 
         <Button
-          title={' Edit Profile Information'}
+          title={" Edit Profile Information"}
           icon={{
-            name: 'edit',
-            type: 'font-awesome',
-            color: 'white',
+            name: "edit",
+            type: "font-awesome",
+            color: "white"
           }}
-          buttonStyle={{ backgroundColor: '#5999C8', borderRadius: 0 }}
-          onPress={()=> this.props.navigation.navigate('ProfileEdit')}
+          buttonStyle={{ backgroundColor: "#5999C8", borderRadius: 0 }}
+          onPress={() => this.props.navigation.navigate("ProfileEdit")}
         />
 
         <Button
-            title={' Request Change Email'}
-            icon={{
-              name: 'email',
-              type: 'entypo',
-              color: 'white',
-            }}
-            buttonStyle={{ backgroundColor: '#5999C8', marginTop: 3, borderRadius: 0 }}
-            onPress={ ()=> this.handleEmailLayout()}
-          />
+          title={" Request Change Email"}
+          icon={{
+            name: "email",
+            type: "entypo",
+            color: "white"
+          }}
+          buttonStyle={{
+            backgroundColor: "#5999C8",
+            marginTop: 3,
+            borderRadius: 0
+          }}
+          onPress={() => this.handleEmailLayout()}
+        />
 
         <Button
           title={" Change Password"}
@@ -729,26 +735,15 @@ class ProfileInfoScreen extends Component {
         </View>
 
         <Button
-          title={' Edit Profile Information'}
+          title={" Edit Profile Information"}
           icon={{
-            name: 'edit',
-            type: 'font-awesome',
-            color: 'white',
+            name: "edit",
+            type: "font-awesome",
+            color: "white"
           }}
-          buttonStyle={{ backgroundColor: '#5999C8', borderRadius: 0 }}
-          onPress={()=> this.props.navigation.navigate('ProfileEdit')}
+          buttonStyle={{ backgroundColor: "#5999C8", borderRadius: 0 }}
+          onPress={() => this.props.navigation.navigate("ProfileEdit")}
         />
-
-        <Button
-            title={' Request Change Email'}
-            icon={{
-              name: 'email',
-              type: 'entypo',
-              color: 'white',
-            }}
-            buttonStyle={{ backgroundColor: '#5999C8', marginTop: 3, borderRadius: 0 }}
-            onPress={ ()=> this.handleEmailLayout()}
-          />
 
         <Button
           title={" Change Password"}
@@ -780,7 +775,7 @@ class ProfileInfoScreen extends Component {
     else if (error) return <Text>{error}</Text>;
     return (
       <ScrollView style={{ flex: 1 }}>
-        <NavigationEvents onWillFocus={preRequest} />
+        <NavigationEvents onDidFocus={preRequest} />
         <Loading loading={screenLoading} size={"large"} />
         {this.renderPasswordOverlay()}
         {this.renderEmailOverlay()}
