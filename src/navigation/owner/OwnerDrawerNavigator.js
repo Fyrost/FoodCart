@@ -4,8 +4,7 @@ import {
   MenuNavigator,
   OrderNavigator,
   SalesNavigator,
-  ReportNavigator,
-  LogsNavigator
+  ReportNavigator
 } from "./components";
 import {
   leftBackButton,
@@ -25,6 +24,7 @@ import {
 import ProfileStackNavigator from "../ProfileStackNavigator";
 import MenuViewScreen from "../../screens/owner/menu/MenuViewScreen";
 import OrderViewScreen from "../../screens/owner/order/OrderViewScreen";
+import OwnerLogListScreen from "../../screens/owner/log/OwnerLogListScreen";
 import DrawerLayout from "../../components/DrawerLayout";
 
 const Order = {
@@ -67,13 +67,13 @@ const Report = {
   }
 };
 
-const Logs = {
-  screen: LogsNavigator,
-  navigationOptions: {
-    drawerLabel: "Activity Logs",
-    drawerIcon: ({ tintColor }) => LogIcon({ tintColor })
-  }
-};
+// const Logs = {
+//   screen: LogsNavigator,
+//   navigationOptions: {
+//     drawerLabel: "Activity Logs",
+//     drawerIcon: ({ tintColor }) => LogIcon({ tintColor })
+//   }
+// };
 
 const OwnerDrawer = createDrawerNavigator(
   {
@@ -81,8 +81,8 @@ const OwnerDrawer = createDrawerNavigator(
     Menu,
     Category,
     Sales,
-    Report,
-    Logs
+    Report
+    // Logs
   },
   {
     initialRouteName: "Order",
@@ -119,13 +119,21 @@ const OwnerOrderView = {
     headerRight: rightOrderButton({ navigation })
   })
 };
+const OwnerLogList = {
+  screen: OwnerLogListScreen,
+  navigationOptions: ({ navigation }) => ({
+    title: "My Activities",
+    headerLeft: leftBackButton({ navigation })
+  })
+};
 
 export default createStackNavigator(
   {
     OwnerDrawer,
     Profile,
     OwnerMenuView,
-    OwnerOrderView
+    OwnerOrderView,
+    OwnerLogList
   },
   {
     defaultNavigationOptions: headerStyles,

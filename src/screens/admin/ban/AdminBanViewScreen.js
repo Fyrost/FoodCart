@@ -7,10 +7,12 @@ import {
   TouchableNativeFeedback
 } from "react-native";
 import _ from "lodash";
-import { ListItem, Card } from "react-native-elements";
+import { ListItem, Card, Button } from "react-native-elements";
 import { NavigationEvents } from "react-navigation";
-import { getAdminBlockDetail, errorHandler } from "../../../actions";
+import { MessageAlert, ConfirmAlert } from "../../../components/Alerts";
+import { getAdminBlockDetail, liftBlock, errorHandler } from "../../../actions";
 import List from "../../../components/List";
+import Loading from "../../../components/Loading";
 
 class AdminBanViewScreen extends Component {
   state = {
@@ -39,7 +41,8 @@ class AdminBanViewScreen extends Component {
       updated_at: ""
     },
     reports: [],
-    loading: false
+    loading: false,
+    screenLoading: false
   };
   componentWillMount() {
     this.makeRemoteRequest();
@@ -58,17 +61,28 @@ class AdminBanViewScreen extends Component {
             reports
           });
         } else {
-          this.setState({
-            loading: false,
-            errpr: res.data.message
-          });
+          this.setState({ loading: false });
+          MessageAlert("Ban Detail", res.data.message);
         }
       })
       .catch(err => {
-        this.setState({
-          loading: false,
-          error: errorHandler(err)
-        });
+        this.setState({ loading: false });
+        MessageAlert("Ban Detail", errorHandler(err));
+      });
+  };
+
+  handleLift = () => {
+    this.setState({ screenLoading: true });
+    liftBlock(this.state.user.id)
+      .then(res => {
+        const { message } = res.data;
+        this.setState({ screenLoading: false });
+        MessageAlert("Lift Ban", message);
+        this.props.navigation.pop();
+      })
+      .catch(err => {
+        this.setState({ screenLoading: false });
+        MessageAlert("Lift Ban", errorHandler(err));
       });
   };
 
@@ -85,12 +99,19 @@ class AdminBanViewScreen extends Component {
   );
 
   render() {
-    const { loading, error } = this.state;
+    const { loading, error, screenLoading } = this.state;
     if (loading) return <ActivityIndicator size="large" />;
     else if (error) return <Text>{error}</Text>;
     const { ban, user, customer, reports } = this.state;
     return (
       <ScrollView style={{ marginBottom: 10 }}>
+        <Loading loading={screenLoading} size={"large"} />
+        <Button
+          title={"Lift Ban"}
+          onPress={() =>
+            ConfirmAlert("Lift Ban", "Are you sure?", this.handleLift)
+          }
+        />
         <Card title={"User Information"}>
           <View style={styles.cardRow}>
             <Text style={styles.cardRowTitle}>Name</Text>

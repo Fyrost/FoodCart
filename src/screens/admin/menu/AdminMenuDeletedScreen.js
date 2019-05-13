@@ -1,49 +1,41 @@
 import React, { Component } from "react";
-import { View } from "react-native";
-import { ListItem, Text } from "react-native-elements";
+import { View, TouchableHighlight, Text } from "react-native";
 import { NavigationEvents } from "react-navigation";
-import Search from "../../../components/Search";
-import { getAdminTagList, errorHandler, contains } from "../../../actions";
-
+import { ListItem } from "react-native-elements";
 import List from "../../../components/List";
-
-class TagRejectedScreen extends Component {
+import Search from "../../../components/Search";
+import { getAdminMenu, errorHandler, contains } from "../../../actions";
+import styles from "../../styles";
+class AdminMenuDeletedScreen extends Component {
   state = {
     data: [],
     refreshing: false,
     loading: false
   };
 
-  componentDidMount() {
-    this.makeRemoteRequest();
-  }
-
   makeRemoteRequest = () => {
     this.setState({ loading: true });
-    getAdminTagList("rejected")
+    getAdminMenu({
+      tag: this.props.navigation.getParam("tag", ""),
+      filter: "deleted"
+    })
       .then(res => {
         if (res.data.success) {
           this.setState({
-            loading: false,
             refreshing: false,
+            loading: false,
             data: res.data.data,
             fullData: res.data.data
           });
         } else {
-          this.setState({
-            error: res.data.message,
-            refreshing: false,
-            loading: false
-          });
+          this.setState({ refreshing: false, loading: false });
+          alert(res.data.message);
         }
       })
-      .catch(err =>
-        this.setState({
-          loading: false,
-          refreshing: false,
-          error: errorHandler(err)
-        })
-      );
+      .catch(err => {
+        this.setState({ refreshing: false, loading: false });
+        alert(errorHandler(err));
+      });
   };
 
   handleRefresh = () => {
@@ -56,24 +48,28 @@ class TagRejectedScreen extends Component {
   };
 
   handleSearch = text => {
-    const data = this.state.fullData.filter(menu => {
-      return contains(menu.name, text) || contains(menu.slug, text);
+    const data = this.state.fullData.filter(item => {
+      return contains(item.name, text) || contains(item.resto_name, text);
     });
     this.setState({ search: text, data });
   };
 
-  renderItem = ({ item }) => (
+  renderItem = ({ item: { id, name, resto_name, price, created_at } }) => (
     <ListItem
-      title={item.name}
+      title={name}
       titleStyle={{ fontWeight: "500", fontSize: 18, color: "#1B73B4" }}
-      subtitle={"Rejected: " + item.created_at}
+      subtitle={
+        <View>
+          <Text>Restaurant: {resto_name}</Text>
+          <Text>Price: ₱ {price}.00</Text>
+        </View>
+      }
     />
   );
 
   render() {
-    const { data, error, loading, refreshing, search } = this.state;
-    const { makeRemoteRequest, renderItem, handleRefresh, handleSearch } = this;
-    if (error) return <Text>{error}</Text>;
+    const { data, loading, refreshing, search } = this.state;
+    const { makeRemoteRequest, handleSearch, renderItem, handleRefresh } = this;
     return (
       <View>
         <NavigationEvents onDidFocus={makeRemoteRequest} />
@@ -87,9 +83,7 @@ class TagRejectedScreen extends Component {
           data={data}
           renderItem={renderItem}
           loading={loading}
-          emptyContainerStyle={{ alignItems: "center", marginTop: 30 }}
-          emptyStyle={{ fontSize: 18, fontWeight: "500" }}
-          emptyText={"No Rejected Tag"}
+          emptyText={"No Menu Found"}
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{ paddingBottom: 75 }}
           refreshing={refreshing}
@@ -100,4 +94,4 @@ class TagRejectedScreen extends Component {
   }
 }
 
-export default TagRejectedScreen;
+export default AdminMenuDeletedScreen;

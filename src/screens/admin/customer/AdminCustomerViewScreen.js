@@ -55,6 +55,7 @@ class AdminCustomerViewScreen extends Component {
     return (
       <ListItem
         title={"Order # " + item.code}
+        titleStyle={{ fontWeight: "500", fontSize: 18, color: "#1B73B4" }}
         rightTitle={subtitle.text}
         rightTitleStyle={{ fontWeight: "500", color: subtitle.color }}
         subtitle={item.date}
@@ -82,29 +83,16 @@ class AdminCustomerViewScreen extends Component {
   }) => {
     const statusType =
       status === "0"
-        ? { text: "OPEN", color: "#00CC66" }
+        ? { text: "Open", color: "#00CC66" }
         : status === "1"
-        ? { text: "UNDER INVESTIGATION", color: "#11CDEF" }
-        : { text: "CLOSED", color: "#EF1B17" };
+        ? { text: "Under Investigation", color: "#11CDEF" }
+        : { text: "Closed", color: "#EF1B17" };
     return (
       <ListItem
         title={`Ticket # ${code}`}
         titleStyle={{ fontWeight: "500", fontSize: 18, color: "#1B73B4" }}
-        subtitle={
-          <View>
-            <Text
-              style={{
-                fontSize: 12,
-                fontWeight: "500",
-                color: statusType.color
-              }}
-            >
-              {statusType.text}
-            </Text>
-            <Text>Submitted:</Text>
-            <Text>{created_at}</Text>
-          </View>
-        }
+        rightTitle={statusType.text}
+        rightTitleStyle={{ fontWeight: "500", color: statusType.color }}
         chevron={true}
         onPress={() =>
           this.props.navigation.push("AdminReportView", {
@@ -137,7 +125,8 @@ class AdminCustomerViewScreen extends Component {
       date
     } = this.state.data;
     return (
-      <ScrollView style={{ marginBottom: 10 }}>
+      <ScrollView style={{ marginBottom: 15 }}>
+
         <Card
           image={logo}
           imageStyle={{ marginTop: 25, height: 100 }}
@@ -178,7 +167,7 @@ class AdminCustomerViewScreen extends Component {
         <Card wrapperStyle={{ margin: 0, padding: 0 }}>
           <View>
             <Text h4 style={styles.cardTitle}>
-              Orders
+              Orders (Latest 5)
             </Text>
           </View>
           <Divider />
@@ -196,7 +185,7 @@ class AdminCustomerViewScreen extends Component {
         <Card wrapperStyle={{ margin: 0, padding: 0 }}>
           <View>
             <Text h4 style={styles.cardTitle}>
-              Ticket Reports
+              Ticket Reports(Latest 5)
             </Text>
           </View>
           <Divider />
@@ -215,7 +204,7 @@ class AdminCustomerViewScreen extends Component {
         <Card wrapperStyle={{ margin: 0, padding: 0 }}>
           <View>
             <Text h4 style={styles.cardTitle}>
-              Activity Logs
+              Activity Logs (Latest 5)
             </Text>
           </View>
           <Divider />

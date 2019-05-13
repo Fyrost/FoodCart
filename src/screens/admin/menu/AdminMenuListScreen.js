@@ -15,7 +15,10 @@ class AdminMenuListScreen extends Component {
 
   makeRemoteRequest = () => {
     this.setState({ loading: true });
-    getAdminMenu(this.props.navigation.getParam("tag", ""))
+    getAdminMenu({
+      tag: this.props.navigation.getParam("tag", ""),
+      filter: "active"
+    })
       .then(res => {
         if (res.data.success) {
           this.setState({

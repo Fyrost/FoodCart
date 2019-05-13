@@ -30,6 +30,17 @@ export default class DrawerLayout extends Component {
       });
   };
 
+  yourActivity = () => {
+    AsyncStorage.getItem("accessLevel").then(res => {
+      this.props.navigation.closeDrawer();
+      if (res == "2") {
+        this.props.navigation.navigate("OwnerLogList");
+      } else {
+        this.props.navigation.navigate("AdminActivityList");
+      }
+    });
+  };
+
   render() {
     return (
       <View style={styles.flexContainer}>
@@ -47,7 +58,7 @@ export default class DrawerLayout extends Component {
         </View>
         <View style={styles.drawerContent}>
           <ScrollView>
-            {this.props.userButton ? this.props.userButton() : null}
+            {this.props.userButton && this.props.userButton()}
             <DrawerItems
               activeTintColor={"white"}
               inactiveTintColor={"black"}
@@ -74,6 +85,20 @@ export default class DrawerLayout extends Component {
               <Text style={styles.drawerFooterProfile}>Profile</Text>
             </View>
           </TouchableOpacity>
+          {!this.props.userButton && (
+            <TouchableOpacity onPress={this.yourActivity}>
+              <View
+                style={[styles.flexContainerRow, styles.drawerFooterContent]}
+              >
+                <Icon
+                  name={"user-circle-o"}
+                  type={"font-awesome"}
+                  color={"#48494B"}
+                />
+                <Text style={styles.drawerFooterProfile}>My Activity</Text>
+              </View>
+            </TouchableOpacity>
+          )}
           <TouchableOpacity
             onPress={() => {
               ConfirmAlert("Log out", "Do you want to logout?", () =>
@@ -104,7 +129,7 @@ const styles = {
     flexDirection: "row"
   },
   drawerHeader: {
-    flex: 3,
+    flex: 2,
     backgroundColor: "#11CDEF",
     justifyContent: "center",
     alignItems: "center"
@@ -132,14 +157,16 @@ const styles = {
   },
 
   drawerFooter: {
-    flex: 1,
-    justifyContent: "space-evenly",
+    // flex: 1,
+    // justifyContent: "space-evenly",
+    paddingVertical: 5,
     paddingLeft: 20,
     borderColor: "lightgrey",
     borderTopWidth: 0.8
   },
 
   drawerFooterContent: {
+    paddingVertical: 10,
     alignItems: "center"
   },
 

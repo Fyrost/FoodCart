@@ -13,7 +13,11 @@ import {
   RequestNavigator,
   UsersNavigator
 } from "./components";
-import { leftBackButton, rightReportButton } from "./navOptions/navButtons";
+import {
+  leftBackButton,
+  rightReportButton,
+  rightSearchButton
+} from "./navOptions/navButtons";
 import { headerStyles } from "./navOptions/navStyles";
 import {
   partnerIcon,
@@ -35,6 +39,7 @@ import AdminMenuListScreen from "../../screens/admin/menu/AdminMenuListScreen";
 import AdminMenuViewScreen from "../../screens/admin/menu/AdminMenuViewScreen";
 import AdminReportViewScreen from "../../screens/admin/report/AdminReportViewScreen";
 import AdminBanViewScreen from "../../screens/admin/ban/AdminBanViewScreen";
+import AdminLogListScreen from "../../screens/admin/log/AdminLogListScreen";
 import DrawerLayout from "../../components/DrawerLayout";
 
 const Partnership = {
@@ -223,6 +228,14 @@ const AdminReportView = {
     headerRight: rightReportButton({ navigation })
   })
 };
+const AdminActivityList = {
+  screen: AdminLogListScreen,
+  navigationOptions: ({ navigation }) => ({
+    title: "My Activity",
+    headerLeft: leftBackButton({ navigation }),
+    headerRight: rightSearchButton({ navigation })
+  })
+};
 
 export default createStackNavigator(
   {
@@ -235,7 +248,8 @@ export default createStackNavigator(
     AdminMenuFilter,
     AdminMenuView,
     AdminReportView,
-    AdminBanView
+    AdminBanView,
+    AdminActivityList
   },
   {
     defaultNavigationOptions: headerStyles,

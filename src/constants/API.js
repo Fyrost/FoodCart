@@ -22,7 +22,8 @@ export const ADMIN_PARTNERSHIP_APPROVE = id => `admin/partnership/${id}/accept`;
 export const ADMIN_PARTNERSHIP_REJECT = id => `admin/partnership/${id}/reject`;
 export const ADMIN_RESTAURANT = `admin/restaurant`;
 export const ADMIN_RESTAURANT_SELECT = id => `admin/restaurant/${id}`;
-export const ADMIN_MENU = tag => `admin/menu?tag=${tag}`;
+export const ADMIN_MENU = ({ tag, filter }) =>
+  `admin/menu?tag=${tag}&filter=${filter}`;
 export const ADMIN_MENU_SELECT = id => `admin/menu/${id}`;
 export const ADMIN_CUSTOMER = `admin/customer`;
 export const ADMIN_CUSTOMER_SELECT = id => `admin/customer/${id}`;
@@ -34,12 +35,14 @@ export const ADMIN_ORDER = `admin/order`;
 export const ADMIN_ORDER_SELECT = id => `admin/order/${id}`;
 export const ADMIN_BLOCK = `admin/ban`;
 export const ADMIN_BLOCK_SELECT = id => `admin/ban/${id}`;
+export const ADMIN_BLOCK_LIFT = id => `admin/ban/${id}/lift`;
 export const ADMIN_REPORT = `admin/report`;
 export const ADMIN_REPORT_SELECT = code => `admin/report/${code}`;
 export const ADMIN_REPORT_INVESTIGATE = code =>
   `admin/report/${code}/investigate`;
 export const ADMIN_REPORT_CLOSE = code => `admin/report/${code}/close`;
 export const ADMIN_LOGS = `admin/logs`;
+export const ADMIN_LOGS_TABLE = `admin/logs/table`;
 export const ADMIN_REQUEST = `admin/request`;
 export const ADMIN_REQUEST_ACCEPT = id => `admin/request/${id}/accept`;
 export const ADMIN_REQUEST_REJECT = id => `admin/request/${id}/reject`;

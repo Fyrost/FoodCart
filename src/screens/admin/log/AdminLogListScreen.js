@@ -64,7 +64,6 @@ class AdminLogListScreen extends Component {
       rightTitle={created_at}
       subtitle={
         <View>
-          <Text>User id: {user_id}</Text>
           <Text>{type}</Text>
         </View>
       }
@@ -76,7 +75,7 @@ class AdminLogListScreen extends Component {
     const { makeRemoteRequest, handleSearch, renderItem, handleRefresh } = this;
     return (
       <View>
-        <NavigationEvents onDidFocus={makeRemoteRequest} />
+        <NavigationEvents onWillFocus={makeRemoteRequest} />
         <Search
           value={search}
           data={data}

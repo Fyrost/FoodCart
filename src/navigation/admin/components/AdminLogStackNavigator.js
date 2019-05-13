@@ -1,7 +1,7 @@
 import { createStackNavigator } from "react-navigation";
 import { leftDrawerButton, rightSearchButton } from "../navOptions/navButtons";
 import { headerStyles } from "../navOptions/navStyles";
-import AdminLogListScreen from "../../../screens/admin/log/AdminLogListScreen";
+import AdminLogListScreen from "../../../screens/admin/log/AdminAllLogListScreen";
 
 const AdminLogList = {
   screen: AdminLogListScreen,

@@ -1,13 +1,12 @@
 import React, { Component } from "react";
-import { View, Text, ActivityIndicator } from "react-native";
-import { ListItem, Overlay } from "react-native-elements";
+import { View, Text } from "react-native";
 import { NavigationEvents } from "react-navigation";
-import { MessageAlert } from "../../../components/Alerts";
-import Search from "../../../components/Search";
-import { getAdminUsersList, errorHandler, contains } from "../../../actions";
+import { ListItem } from "react-native-elements";
 import List from "../../../components/List";
+import Search from "../../../components/Search";
+import { getAllLogList, errorHandler, contains } from "../../../actions";
 
-class AdminUsersListScreen extends Component {
+class AdminLogListScreen extends Component {
   state = {
     data: [],
     loading: false,
@@ -16,7 +15,7 @@ class AdminUsersListScreen extends Component {
 
   makeRemoteRequest = () => {
     this.setState({ loading: true });
-    getAdminUsersList()
+    getAllLogList()
       .then(res => {
         if (res.data.success) {
           this.setState({
@@ -27,12 +26,12 @@ class AdminUsersListScreen extends Component {
           });
         } else {
           this.setState({ refreshing: false, loading: false });
-          MessageAlert("User List", res.data.message);
+          alert(res.data.message);
         }
       })
       .catch(err => {
         this.setState({ refreshing: false, loading: false });
-        MessageAlert("User List", errorHandler(err));
+        alert(errorHandler(err));
       });
   };
 
@@ -47,49 +46,30 @@ class AdminUsersListScreen extends Component {
 
   handleSearch = text => {
     const data = this.state.fullData.filter(item => {
-      return contains(item.email, text);
+      return (
+        contains(`${item.id}`, text) ||
+        contains(item.user_id, text) ||
+        contains(item.type, text) ||
+        contains(item.description, text)
+      );
     });
     this.setState({ search: text, data });
   };
 
   renderItem = ({
-    item: {
-      email,
-      access_level,
-      email_verified_at,
-      created_at,
-      customer_id,
-      restaurant_id
-    }
-  }) => {
-    const navigate = {
-      screen: customer_id ? "AdminCustomerView" : "AdminRestoView",
-      param: customer_id
-        ? { customerId: customer_id }
-        : { restoId: restaurant_id }
-    };
-    return (
-      <ListItem
-        title={email}
-        subtitle={created_at}
-        rightTitle={
-          access_level === "1"
-            ? "Customer"
-            : access_level === "2"
-            ? "Owner"
-            : "Administrator"
-        }
-        rightSubtitle={email_verified_at ? "verified" : "not verified"}
-        chevron={access_level !== "3"}
-        onPress={
-          access_level === "3"
-            ? null
-            : () =>
-                this.props.navigation.navigate(navigate.screen, navigate.param)
-        }
-      />
-    );
-  };
+    item: { id, user_id, type, description, origin, created_at }
+  }) => (
+    <ListItem
+      title={description}
+      rightTitle={created_at}
+      subtitle={
+        <View>
+          <Text>User id: {user_id}</Text>
+          <Text>{type}</Text>
+        </View>
+      }
+    />
+  );
 
   render() {
     const { data, loading, refreshing, search } = this.state;
@@ -107,7 +87,7 @@ class AdminUsersListScreen extends Component {
           data={data}
           renderItem={renderItem}
           loading={loading}
-          emptyText={search ? `'${search}' was not found` : "No Users Found"}
+          emptyText={search ? `'${search}' was not found` : "No Logs Found"}
           showsVerticalScrollIndicator={false}
           refreshing={refreshing}
           onRefresh={handleRefresh}
@@ -117,4 +97,4 @@ class AdminUsersListScreen extends Component {
   }
 }
 
-export default AdminUsersListScreen;
+export default AdminLogListScreen;

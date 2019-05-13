@@ -439,9 +439,9 @@ export const getAdminRestoDetail = id => {
   });
 };
 
-export const getAdminMenu = tag => {
+export const getAdminMenu = ({ tag, filter }) => {
   return Axios({
-    url: API.ADMIN_MENU(tag ? tag : ""),
+    url: API.ADMIN_MENU({ tag: tag ? tag : "", filter: filter ? filter : "" }),
     method: "get"
   });
 };
@@ -502,9 +502,27 @@ export const getAdminBlockList = () => {
   });
 };
 
+export const postBlock = ({ reason, id }) => {
+  return Axios({
+    url: API.ADMIN_BLOCK,
+    method: "post",
+    data: {
+      user_id: id,
+      ban_reason: reason
+    }
+  });
+};
+
 export const getAdminBlockDetail = id => {
   return Axios({
     url: API.ADMIN_BLOCK_SELECT(id),
+    method: "get"
+  });
+};
+
+export const liftBlock = id => {
+  return Axios({
+    url: API.ADMIN_BLOCK_LIFT(id),
     method: "get"
   });
 };
@@ -548,6 +566,13 @@ export const closeAdminReport = ({ code, comment, ban, banReason }) => {
 export const getLogList = () => {
   return Axios({
     url: API.ADMIN_LOGS,
+    method: "get"
+  });
+};
+
+export const getAllLogList = () => {
+  return Axios({
+    url: API.ADMIN_LOGS_TABLE,
     method: "get"
   });
 };

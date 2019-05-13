@@ -1,15 +1,33 @@
 import React, { Component } from "react";
-import { View, ActivityIndicator, Text, ScrollView } from "react-native";
-import { Card, Divider, ListItem } from "react-native-elements";
+import {
+  TextInput,
+  View,
+  ActivityIndicator,
+  Text,
+  ScrollView
+} from "react-native";
+import {
+  Button,
+  Card,
+  Divider,
+  ListItem,
+  Icon,
+  Overlay
+} from "react-native-elements";
 import { NavigationEvents } from "react-navigation";
-import { getAdminRestoDetail, errorHandler } from "../../../actions";
+import { MessageAlert, ConfirmAlert } from "../../../components/Alerts";
+import { getAdminRestoDetail, postBlock, errorHandler } from "../../../actions";
 import List from "../../../components/List";
+import Loading from "../../../components/Loading";
 class AdminRestoViewScreen extends Component {
   state = {
     data: {},
     menu: [],
     loading: false,
-    error: ""
+    error: "",
+    banOverlayVisible: false,
+    reason: { text: "", error: "" },
+    screenLoading: false
   };
 
   makeRemoteRequest = () => {
@@ -20,7 +38,8 @@ class AdminRestoViewScreen extends Component {
           this.setState({
             loading: false,
             data: res.data.data.restaurant,
-            menu: res.data.menu
+            menu: res.data.menu,
+            id: res.data.user_id
           });
         } else {
           this.setState({
@@ -35,6 +54,120 @@ class AdminRestoViewScreen extends Component {
           error: errorHandler(err)
         });
       });
+  };
+
+  handleBan = () => {
+    const { reason, id } = this.state;
+    this.setState({ screenLoading: true, banOverlayVisible: false });
+    postBlock({ reason: reason.text, id })
+      .then(res => {
+        const { success, message } = res.data;
+        this.setState({ screenLoading: false });
+        if (success) {
+          MessageAlert("Ban Restaurant", message);
+          this.props.navigation.pop();
+        } else {
+          const { ban_reason } = res.data.errors;
+          this.setState({
+            banOverlayVisible: true,
+            reason: {
+              ...this.state.reason,
+              error: ban_reason ? ban_reason[0] : ""
+            }
+          });
+        }
+      })
+      .catch(err => {
+        this.setState({ screenLoading: false, banOverlayVisible: true });
+        MessageAlert("Ban Restaurant", errorHandler(err));
+      });
+  };
+
+  renderBanOverlay = () => {
+    const INITIAL_STATE = {
+      banOverlayVisible: false,
+      reason: ""
+    };
+    return (
+      <Overlay
+        fullScreen
+        isVisible={this.state.banOverlayVisible}
+        borderRadius={0}
+        containerStyle={{ flex: 1 }}
+        overlayStyle={{ margin: 0, padding: 0 }}
+        windowBackgroundColor={"rgba(0, 0, 0, .8)"}
+        onBackdropPress={() => this.setState(INITIAL_STATE)}
+      >
+        <View style={{ flex: 1 }}>
+          <Icon
+            raised
+            reverse
+            name={"times"}
+            type={"font-awesome"}
+            color={"#1B73B4"}
+            size={20}
+            underlayColor={"black"}
+            containerStyle={{
+              zIndex: 99999,
+              position: "absolute",
+              right: 10,
+              top: 7
+            }}
+            onPress={() => this.setState(INITIAL_STATE)}
+          />
+          <View style={{ flex: 12 }}>
+            <ScrollView contentContainerStyle={{ paddingHorizontal: 20 }}>
+              <Text h3 h3Style={{ color: "#1B73B4", marginTop: 15 }}>
+                Report
+              </Text>
+              <Text style={{ fontSize: 16, marginTop: 15 }}>
+                Why do you want to ban this restaurant?
+              </Text>
+              <TextInput
+                value={this.state.reason.text}
+                multiline={true}
+                placeholder={"Enter your reason here..."}
+                numberOfLines={5}
+                style={{
+                  borderColor: "gray",
+                  borderWidth: 1,
+                  paddingHorizontal: 10
+                }}
+                onChangeText={text => this.setState({ reason: { text } })}
+              />
+              <Text style={{ color: "red" }}>{this.state.reason.error}</Text>
+            </ScrollView>
+          </View>
+
+          <View style={{ flex: 1, flexDirection: "row", alignItems: "center" }}>
+            <Button
+              title={"Cancel"}
+              onPress={() => this.setState(INITIAL_STATE)}
+              buttonStyle={{
+                borderRadius: 0,
+                backgroundColor: "#EF1B17",
+                flex: 1
+              }}
+              containerStyle={{ flex: 1 }}
+              disabled={this.state.loading}
+            />
+            <Button
+              title={"Ban"}
+              onPress={() =>
+                ConfirmAlert("Ban Restaurant", "Are you sure?", this.handleBan)
+              }
+              disabled={this.state.loading}
+              containerStyle={{ flex: 1 }}
+              buttonStyle={{
+                borderRadius: 0,
+                backgroundColor: "orange",
+                flex: 1
+              }}
+            />
+          </View>
+        </View>
+      </Overlay>
+    );
   };
 
   renderItem = ({
@@ -68,8 +201,8 @@ class AdminRestoViewScreen extends Component {
 
   render() {
     const contactType = String(contact_number).length < 11 ? "(Tel)" : "(Cell)";
-    const { loading, error } = this.state;
-    const { makeRemoteRequest } = this;
+    const { loading, error, screenLoading, banOverlayVisible } = this.state;
+    const { makeRemoteRequest, renderBanOverlay } = this;
     if (loading) return <ActivityIndicator size="large" />;
     else if (error) return <Text>{error}</Text>;
     const {
@@ -94,7 +227,14 @@ class AdminRestoViewScreen extends Component {
     } = this.state.data;
     return (
       <ScrollView style={{ flex: 1 }}>
+        {console.log(this.state.id)}
         <NavigationEvents onWillFocus={makeRemoteRequest} />
+        <Loading loading={screenLoading} size={"large"} />
+        {banOverlayVisible && renderBanOverlay()}
+        <Button
+          title={"Lift Ban"}
+          onPress={() => this.setState({ banOverlayVisible: true })}
+        />
         <Card
           image={{
             uri: `http://pinoyfoodcart.com/image/restaurant/${image_name}`
