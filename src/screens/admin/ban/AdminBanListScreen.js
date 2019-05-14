@@ -51,7 +51,9 @@ class AdminBanListScreen extends Component {
     this.setState({ search: text, data });
   };
 
-  renderItem = ({ item: { ban_id, email, created_at } }) => (
+  renderItem = ({
+    item: { ban_id, email, created_at, restaurant_id, reason }
+  }) => (
     <ListItem
       title={email}
       titleStyle={{ fontWeight: "500", fontSize: 18, color: "#1B73B4" }}
@@ -60,7 +62,9 @@ class AdminBanListScreen extends Component {
       onPress={() =>
         this.props.navigation.push("AdminBanView", {
           banId: ban_id,
-          banDate: created_at
+          banDate: created_at,
+          restoId: restaurant_id,
+          reason: reason
         })
       }
     />

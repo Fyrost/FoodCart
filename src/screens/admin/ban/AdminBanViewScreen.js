@@ -10,7 +10,12 @@ import _ from "lodash";
 import { ListItem, Card, Button } from "react-native-elements";
 import { NavigationEvents } from "react-navigation";
 import { MessageAlert, ConfirmAlert } from "../../../components/Alerts";
-import { getAdminBlockDetail, liftBlock, errorHandler } from "../../../actions";
+import {
+  getAdminBlockDetail,
+  getAdminRestoDetail,
+  liftBlock,
+  errorHandler
+} from "../../../actions";
 import List from "../../../components/List";
 import Loading from "../../../components/Loading";
 
@@ -40,35 +45,73 @@ class AdminBanViewScreen extends Component {
       created_at: "",
       updated_at: ""
     },
+    restaurant: {
+      id: "",
+      owner_fname: "",
+      owner_mname: "",
+      owner_lname: ""
+    },
     reports: [],
     loading: false,
     screenLoading: false
   };
   componentWillMount() {
-    this.makeRemoteRequest();
+    this.setState(
+      {
+        restaurant: { id: this.props.navigation.getParam("restoId", null) }
+      },
+      this.makeRemoteRequest
+    );
   }
   makeRemoteRequest = () => {
     this.setState({ loading: true });
-    getAdminBlockDetail(this.props.navigation.getParam("banId"))
-      .then(res => {
-        if (res.data.success) {
-          const { ban, user, customer, reports } = res.data.data;
+    if (this.state.restaurant.id) {
+      getAdminRestoDetail(this.state.restaurant.id)
+        .then(res => {
+          if (res.data.success) {
+            this.setState({
+              loading: false,
+              restaurant: res.data.data.restaurant,
+              menu: res.data.menu,
+              user: {
+                id: res.data.user_id
+              }
+            });
+          } else {
+            this.setState({
+              loading: false,
+              error: res.data.message
+            });
+          }
+        })
+        .catch(err => {
           this.setState({
             loading: false,
-            ban,
-            user,
-            customer,
-            reports
+            error: errorHandler(err)
           });
-        } else {
+        });
+    } else {
+      getAdminBlockDetail(this.props.navigation.getParam("banId"))
+        .then(res => {
+          if (res.data.success) {
+            const { ban, user, customer, reports } = res.data.data;
+            this.setState({
+              loading: false,
+              ban,
+              user,
+              customer,
+              reports
+            });
+          } else {
+            this.setState({ loading: false });
+            MessageAlert("Ban Detail", res.data.message);
+          }
+        })
+        .catch(err => {
           this.setState({ loading: false });
-          MessageAlert("Ban Detail", res.data.message);
-        }
-      })
-      .catch(err => {
-        this.setState({ loading: false });
-        MessageAlert("Ban Detail", errorHandler(err));
-      });
+          MessageAlert("Ban Detail", errorHandler(err));
+        });
+    }
   };
 
   handleLift = () => {
@@ -102,7 +145,23 @@ class AdminBanViewScreen extends Component {
     const { loading, error, screenLoading } = this.state;
     if (loading) return <ActivityIndicator size="large" />;
     else if (error) return <Text>{error}</Text>;
-    const { ban, user, customer, reports } = this.state;
+    const { restaurant, user, customer, reports } = this.state;
+    const nav = restaurant.id
+      ? {
+          screen: "AdminRestoView",
+          param: { restoId: restaurant.id }
+        }
+      : {
+          screen: "AdminCustomerView",
+          param: { customerId: customer.id }
+        };
+    const name = restaurant.id
+      ? restaurant.name
+      : `${customer.fname} ${customer.lname}`;
+    const address = restaurant.id ? restaurant.address : customer.address;
+    const contact_number = restaurant.id
+      ? restaurant.contact_number
+      : customer.contact_number;
     return (
       <ScrollView style={{ marginBottom: 10 }}>
         <Loading loading={screenLoading} size={"large"} />
@@ -117,10 +176,7 @@ class AdminBanViewScreen extends Component {
             <Text style={styles.cardRowTitle}>Name</Text>
             <TouchableNativeFeedback
               onPress={_.debounce(
-                () =>
-                  this.props.navigation.push("AdminCustomerView", {
-                    customerId: customer.id
-                  }),
+                () => this.props.navigation.push(nav.screen, nav.param),
                 1000,
                 {
                   leading: true,
@@ -129,19 +185,28 @@ class AdminBanViewScreen extends Component {
               )}
             >
               <Text style={[styles.cardRowText, { color: "#1B73B4" }]}>
-                {customer.fname} {customer.mname} {customer.lname}
+                {name}
               </Text>
             </TouchableNativeFeedback>
           </View>
 
+          {restaurant.id && (
+            <View style={styles.cardRow}>
+              <Text style={styles.cardRowTitle}>Owner Name</Text>
+              <Text style={styles.cardRowText}>
+                {`${restaurant.owner_fname} ${restaurant.owner_lname}`}
+              </Text>
+            </View>
+          )}
+
           <View style={styles.cardRow2}>
             <Text style={styles.cardRowTitle}>Address</Text>
-            <Text style={styles.cardRowText}>{customer.address}</Text>
+            <Text style={styles.cardRowText}>{address}</Text>
           </View>
 
           <View style={styles.cardRow}>
             <Text style={styles.cardRowTitle}>Contact Number</Text>
-            <Text style={styles.cardRowText}># {customer.contact_number}</Text>
+            <Text style={styles.cardRowText}># {contact_number}</Text>
           </View>
 
           <View style={styles.cardRow}>
@@ -153,18 +218,22 @@ class AdminBanViewScreen extends Component {
 
           <View style={styles.cardRow2}>
             <Text style={styles.cardRowTitle}>Ban Reason</Text>
-            <Text style={styles.cardRowText}>{ban.reason}</Text>
+            <Text style={styles.cardRowText}>
+              {this.props.navigation.getParam("reason")}
+            </Text>
           </View>
         </Card>
-        <Card title={"Related Reports"}>
-          <List
-            data={reports}
-            renderItem={this.renderItem}
-            loading={loading}
-            emptyText={"No Customer Found"}
-            showsVerticalScrollIndicator={false}
-          />
-        </Card>
+        {!restaurant.id && (
+          <Card title={"Related Reports"}>
+            <List
+              data={reports}
+              renderItem={this.renderItem}
+              loading={loading}
+              emptyText={"No Customer Found"}
+              showsVerticalScrollIndicator={false}
+            />
+          </Card>
+        )}
       </ScrollView>
     );
   }

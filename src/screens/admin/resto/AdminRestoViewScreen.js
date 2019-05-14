@@ -1,17 +1,12 @@
 import React, { Component } from "react";
-import {
-  TextInput,
-  View,
-  ActivityIndicator,
-  Text,
-  ScrollView
-} from "react-native";
+import { TextInput, View, ActivityIndicator, ScrollView } from "react-native";
 import {
   Button,
   Card,
   Divider,
   ListItem,
   Icon,
+  Text,
   Overlay
 } from "react-native-elements";
 import { NavigationEvents } from "react-navigation";
@@ -39,6 +34,7 @@ class AdminRestoViewScreen extends Component {
             loading: false,
             data: res.data.data.restaurant,
             menu: res.data.menu,
+            banned: res.data.data.banned,
             id: res.data.user_id
           });
         } else {
@@ -201,7 +197,13 @@ class AdminRestoViewScreen extends Component {
 
   render() {
     const contactType = String(contact_number).length < 11 ? "(Tel)" : "(Cell)";
-    const { loading, error, screenLoading, banOverlayVisible } = this.state;
+    const {
+      loading,
+      error,
+      screenLoading,
+      banOverlayVisible,
+      banned
+    } = this.state;
     const { makeRemoteRequest, renderBanOverlay } = this;
     if (loading) return <ActivityIndicator size="large" />;
     else if (error) return <Text>{error}</Text>;
@@ -231,10 +233,16 @@ class AdminRestoViewScreen extends Component {
         <NavigationEvents onWillFocus={makeRemoteRequest} />
         <Loading loading={screenLoading} size={"large"} />
         {banOverlayVisible && renderBanOverlay()}
-        <Button
-          title={"Lift Ban"}
-          onPress={() => this.setState({ banOverlayVisible: true })}
-        />
+        {banned ? (
+          <Text style={{ textAlign: "center", color: "red" }} h2>
+            Banned
+          </Text>
+        ) : (
+          <Button
+            title={"Ban"}
+            onPress={() => this.setState({ banOverlayVisible: true })}
+          />
+        )}
         <Card
           image={{
             uri: `http://pinoyfoodcart.com/image/restaurant/${image_name}`

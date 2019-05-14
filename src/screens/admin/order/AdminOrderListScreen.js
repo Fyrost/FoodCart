@@ -86,7 +86,8 @@ class OrderCompletedListScreen extends Component {
         title={"Order # " + item.code}
         rightTitle={subtitle.text}
         rightTitleStyle={{ fontWeight: "500", color: subtitle.color }}
-        subtitle={item.date}
+        subtitle={`${item.fname} ${item.lname}`}
+        rightSubtitle={item.created_at}
         chevron={true}
         onPress={() =>
           this.props.navigation.navigate("AdminOrderView", { id: item.id })

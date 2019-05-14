@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { View, ActivityIndicator, Text, ScrollView } from "react-native";
-import { Divider, Card, ListItem } from "react-native-elements";
+import { View, ActivityIndicator, ScrollView } from "react-native";
+import { Divider, Card, ListItem, Text } from "react-native-elements";
 import { NavigationEvents } from "react-navigation";
 import { getAdminCustomerDetail, errorHandler } from "../../../actions";
 import List from "../../../components/List";
@@ -22,7 +22,8 @@ class AdminCustomerViewScreen extends Component {
             data: res.data.data,
             orders: res.data.orders,
             reports: res.data.reports,
-            logs: res.data.logs
+            logs: res.data.logs,
+            banned: res.data.data.banned
           });
         } else {
           this.setState({
@@ -110,7 +111,7 @@ class AdminCustomerViewScreen extends Component {
   );
 
   render() {
-    const { loading, error } = this.state;
+    const { loading, error, banned } = this.state;
     if (loading) return <ActivityIndicator size="large" />;
     else if (error) return <Text>{error}</Text>;
     const {
@@ -126,7 +127,11 @@ class AdminCustomerViewScreen extends Component {
     } = this.state.data;
     return (
       <ScrollView style={{ marginBottom: 15 }}>
-
+        {banned && (
+          <Text style={{ textAlign: "center", color: "red" }} h2>
+            Banned
+          </Text>
+        )}
         <Card
           image={logo}
           imageStyle={{ marginTop: 25, height: 100 }}

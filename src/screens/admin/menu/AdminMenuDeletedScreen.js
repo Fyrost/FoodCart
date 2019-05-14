@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, TouchableHighlight, Text } from "react-native";
+import { View, Text } from "react-native";
 import { NavigationEvents } from "react-navigation";
 import { ListItem } from "react-native-elements";
 import List from "../../../components/List";
