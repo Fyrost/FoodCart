@@ -12,6 +12,9 @@ class AdminLogListScreen extends Component {
     loading: false,
     refreshing: false
   };
+  componentWillMount() {
+    this.makeRemoteRequest();
+  }
 
   makeRemoteRequest = () => {
     this.setState({ loading: true });

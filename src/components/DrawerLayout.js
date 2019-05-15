@@ -4,13 +4,20 @@ import { View, ScrollView, TouchableOpacity, AsyncStorage } from "react-native";
 import { Image, Text, Divider, Icon, Button } from "react-native-elements";
 import Axios from "axios";
 import { ConfirmAlert } from "../components/Alerts";
-import { logoutUser, errorHandler } from "../actions";
+import { logoutUser, getNotification, errorHandler } from "../actions";
 import logo from "../../assets/images/logo2.png";
 import Loading from "../components/Loading";
 export default class DrawerLayout extends Component {
   state = {
-    loading: false
+    loading: false,
+    accessLevel: ""
   };
+
+  componentWillMount() {
+    AsyncStorage.getItem("accessLevel").then(res => {
+      this.setState({ accessLevel: res });
+    });
+  }
 
   makeRequestLeave = () => {
     this.setState({ loading: true });
@@ -31,14 +38,12 @@ export default class DrawerLayout extends Component {
   };
 
   yourActivity = () => {
-    AsyncStorage.getItem("accessLevel").then(res => {
-      this.props.navigation.closeDrawer();
-      if (res == "2") {
-        this.props.navigation.navigate("OwnerLogList");
-      } else {
-        this.props.navigation.navigate("AdminActivityList");
-      }
-    });
+    this.props.navigation.closeDrawer();
+    if (this.state.accessLevel === "2") {
+      this.props.navigation.navigate("OwnerLogList");
+    } else {
+      this.props.navigation.navigate("AdminActivityList");
+    }
   };
 
   render() {
@@ -57,8 +62,8 @@ export default class DrawerLayout extends Component {
           />
         </View>
         <View style={styles.drawerContent}>
+          {this.props.userButton && this.props.userButton()}
           <ScrollView>
-            {this.props.userButton && this.props.userButton()}
             <DrawerItems
               activeTintColor={"white"}
               inactiveTintColor={"black"}

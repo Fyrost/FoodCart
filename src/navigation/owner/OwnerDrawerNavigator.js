@@ -1,3 +1,6 @@
+import React from "react";
+import { View } from "react-native";
+import { Text } from "react-native-elements";
 import { createDrawerNavigator, createStackNavigator } from "react-navigation";
 import {
   CategoryNavigator,
@@ -20,6 +23,8 @@ import {
   ReportIcon,
   LogIcon
 } from "./navOptions/navIcons";
+import { getNotifOrders } from "../../actions";
+import BadgeCounter from "../../components/BadgeCounter";
 // import OwnerScreen from "../screens/owner/OwnerScreen";
 import ProfileStackNavigator from "../ProfileStackNavigator";
 import MenuViewScreen from "../../screens/owner/menu/MenuViewScreen";
@@ -31,7 +36,22 @@ const Order = {
   screen: OrderNavigator,
   navigationOptions: {
     drawerLabel: "Order",
-    drawerIcon: ({ tintColor }) => OrderIcon({ tintColor })
+    drawerIcon: ({ tintColor }) => OrderIcon({ tintColor }),
+    drawerLabel: (
+      <View
+        style={{
+          flex: 1,
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent: "space-between"
+        }}
+      >
+        <Text h5 style={{ margin: 16, fontWeight: "bold" }}>
+          Orders
+        </Text>
+        <BadgeCounter promise={getNotifOrders} />
+      </View>
+    )
   }
 };
 

@@ -48,6 +48,9 @@ export const ADMIN_REQUEST_ACCEPT = id => `admin/request/${id}/accept`;
 export const ADMIN_REQUEST_REJECT = id => `admin/request/${id}/reject`;
 export const ADMIN_USERS = `admin/users`;
 export const ADMIN_PROFILE = `admin/profile`;
+export const ADMIN_NOTIFICATION_PARTNER = `admin/notification/partnership`;
+export const ADMIN_NOTIFICATION_TAGS = `admin/notification/tags`;
+export const ADMIN_NOTIFICATION_REPORTS = `admin/notification/reports`;
 
 export const OWNER_MENU = `owner/menu`;
 export const OWNER_RESTO_INFO = `owner/info`;
@@ -73,6 +76,7 @@ export const OWNER_REPORT = `owner/report`;
 export const OWNER_REPORT_SELECT = code => `owner/report/${code}`;
 export const OWNER_LOGS = `owner/logs`;
 export const OWNER_PROFILE = `owner/profile`;
+export const OWNER_NOTIFICATION_ORDERS = `owner/notification/orders`
 
 export const CUSTOMER_RESTAURANT = `restaurant`;
 export const CUSTOMER_RESTAURANT_SELECT = slug => `restaurant/${slug}`;

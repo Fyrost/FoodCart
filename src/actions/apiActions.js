@@ -376,6 +376,13 @@ export const getOwnerLogList = () => {
   });
 };
 
+export const getNotifOrders = () => {
+  return Axios({
+    url: API.OWNER_NOTIFICATION_ORDERS,
+    method: "get"
+  });
+};
+
 export const getAdminTagList = filter => {
   return Axios({
     url: API.ADMIN_TAG_FILTER(filter),
@@ -601,6 +608,27 @@ export const rejectRequest = id => {
 export const getAdminUsersList = () => {
   return Axios({
     url: API.ADMIN_USERS,
+    method: "get"
+  });
+};
+
+export const getNotifPartner = () => {
+  return Axios({
+    url: API.ADMIN_NOTIFICATION_PARTNER,
+    method: "get"
+  });
+};
+
+export const getNotifTags = () => {
+  return Axios({
+    url: API.ADMIN_NOTIFICATION_TAGS,
+    method: "get"
+  });
+};
+
+export const getNotifReports = () => {
+  return Axios({
+    url: API.ADMIN_NOTIFICATION_REPORTS,
     method: "get"
   });
 };

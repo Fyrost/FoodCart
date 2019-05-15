@@ -1,3 +1,6 @@
+import React from "react";
+import { View } from "react-native";
+import { Badge, Text } from "react-native-elements";
 import { createDrawerNavigator, createStackNavigator } from "react-navigation";
 import {
   CustomerNavigator,
@@ -30,6 +33,8 @@ import {
   logIcon,
   orderIcon
 } from "./navOptions/navIcons";
+import { getNotifPartner, getNotifTags, getNotifReports } from "../../actions";
+import BadgeCounter from "../../components/BadgeCounter";
 import ProfileStackNavigator from "../ProfileStackNavigator";
 import PartnerViewScreen from "../../screens/admin/partner/PartnerViewScreen";
 import AdminRestoViewScreen from "../../screens/admin/resto/AdminRestoViewScreen";
@@ -46,7 +51,22 @@ const Partnership = {
   screen: PartnerNavigator,
   navigationOptions: {
     title: "Partnership",
-    drawerIcon: ({ tintColor }) => partnerIcon({ tintColor })
+    drawerIcon: ({ tintColor }) => partnerIcon({ tintColor }),
+    drawerLabel: (
+      <View
+        style={{
+          flex: 1,
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent: "space-between"
+        }}
+      >
+        <Text h5 style={{ margin: 16, fontWeight: "bold" }}>
+          Partnership
+        </Text>
+        <BadgeCounter promise={getNotifPartner} />
+      </View>
+    )
   }
 };
 
@@ -54,7 +74,22 @@ const Tag = {
   screen: TagNavigator,
   navigationOptions: {
     title: "Tags",
-    drawerIcon: ({ tintColor }) => tagIcon({ tintColor })
+    drawerIcon: ({ tintColor }) => tagIcon({ tintColor }),
+    drawerLabel: (
+      <View
+        style={{
+          flex: 1,
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent: "space-between"
+        }}
+      >
+        <Text h5 style={{ margin: 16, fontWeight: "bold" }}>
+          Tags
+        </Text>
+        <BadgeCounter promise={getNotifTags} />
+      </View>
+    )
   }
 };
 
@@ -109,7 +144,22 @@ const Report = {
   screen: ReportNavigator,
   navigationOptions: {
     title: "Reported Users",
-    drawerIcon: ({ tintColor }) => reportIcon({ tintColor })
+    drawerIcon: ({ tintColor }) => reportIcon({ tintColor }),
+    drawerLabel: (
+      <View
+        style={{
+          flex: 1,
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent: "space-between"
+        }}
+      >
+        <Text h5 style={{ margin: 16, fontWeight: "bold" }}>
+          Reported Users
+        </Text>
+        <BadgeCounter promise={getNotifReports} />
+      </View>
+    )
   }
 };
 
