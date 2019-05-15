@@ -107,7 +107,10 @@ class FavoriteListScreen extends Component {
               <View style={styles.itemRowSpaceAround}>
                 <View style={styles.itemRow}>
                   <Icon name={"star"} type={"font-awesome"} color={"#f1c40f"} />
-                  <Text style={styles.itemText}> {item.rating}</Text>
+                  <Text style={styles.itemText}>
+                    {" "}
+                    {Number.parseFloat(item.rating).toFixed(1)}
+                  </Text>
                 </View>
               </View>
             </View>

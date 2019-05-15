@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { View, Text, ActivityIndicator } from "react-native";
-import { ListItem, Overlay } from "react-native-elements";
+import { View } from "react-native";
+import { ListItem, Text } from "react-native-elements";
 import { NavigationEvents } from "react-navigation";
 import { MessageAlert } from "../../../components/Alerts";
 import Search from "../../../components/Search";
@@ -54,6 +54,7 @@ class AdminUsersListScreen extends Component {
 
   renderItem = ({
     item: {
+      id,
       email,
       access_level,
       email_verified_at,
@@ -70,6 +71,7 @@ class AdminUsersListScreen extends Component {
     };
     return (
       <ListItem
+        leftElement={<Text h5>{id}</Text>}
         title={email}
         subtitle={created_at}
         rightTitle={

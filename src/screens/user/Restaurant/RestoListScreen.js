@@ -124,7 +124,7 @@ class RestoListScreen extends Component {
               <Icon name={"star"} type={"font-awesome"} color={"#f1c40f"} />
               <Text style={styles.itemText}>
                 {" "}
-                {Number.parseFloat(item.rating).toFixed(2)}
+                {Number.parseFloat(item.rating).toFixed(1)}
               </Text>
             </View>
 
