@@ -5,7 +5,7 @@ import { ListItem } from "react-native-elements";
 import List from "../../../components/List";
 import Search from "../../../components/Search";
 import { getAdminBlockList, errorHandler, contains } from "../../../actions";
-
+import _ from "lodash"
 class AdminBanListScreen extends Component {
   state = {
     data: [],
@@ -53,22 +53,32 @@ class AdminBanListScreen extends Component {
 
   renderItem = ({
     item: { ban_id, email, created_at, restaurant_id, reason }
-  }) => (
-    <ListItem
-      title={email}
-      titleStyle={{ fontWeight: "500", fontSize: 18, color: "#1B73B4" }}
-      subtitle={`Date Banned: ${created_at}`}
-      chevron={true}
-      onPress={() =>
-        this.props.navigation.push("AdminBanView", {
-          banId: ban_id,
-          banDate: created_at,
-          restoId: restaurant_id,
-          reason: reason
-        })
-      }
-    />
-  );
+  }) => {
+    return (
+      <ListItem
+        title={email}
+        titleStyle={{ fontWeight: "500", fontSize: 18, color: "#1B73B4" }}
+        subtitle={
+          <View>
+            <Text>{restaurant_id ? 'Owner' : 'User' }</Text>
+            <Text>Date Banned: { created_at }</Text>
+          </View>
+        }
+        chevron={true}
+        onPress={_.debounce(() =>
+          this.props.navigation.push("AdminBanView", {
+            banId: ban_id,
+            banDate: created_at,
+            restoId: restaurant_id,
+            reason: reason
+          }), 1500, {
+            leading: true,
+            trailing: false
+          })
+        }
+      />
+    )
+  }
 
   render() {
     const { data, loading, refreshing, search } = this.state;
