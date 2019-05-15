@@ -3,17 +3,17 @@ import { View } from "react-native";
 
 const Card = props => {
   let shadowStyle = {
-    shadowColor: COLORS.grey3,
+    shadowColor: 'grey',
     shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 0.5,
-    shadowRadius: 12,
+    shadowOpacity: 0.4,
+    shadowRadius: 8,
     elevation: 1
   };
   if (props.noShadow) {
     shadowStyle = {};
   }
   return (
-    <View style={[styles.containerStyle, props.style, shadowStyle]}>
+    <View style={[styles.containerStyle, props.style, shadowStyle,{...props.style}]}>
       {props.children}
     </View>
   );
@@ -21,10 +21,10 @@ const Card = props => {
 
 const styles = {
   containerStyle: {
-    padding: 10,
     marginHorizontal: 10,
-    backgroundColor: COLORS.white,
-    borderRadius: 3
+    backgroundColor: 'white',
+    borderRadius: 3,
+    borderWidth: 0.2
   }
 };
 
