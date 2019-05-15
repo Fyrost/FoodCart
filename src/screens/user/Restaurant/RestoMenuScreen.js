@@ -15,7 +15,8 @@ import {
   Overlay,
   Tile,
   Divider,
-  Image
+  Image,
+  Card
 } from "react-native-elements";
 import NumericInput from "react-native-numeric-input";
 import _ from "lodash";
@@ -279,15 +280,8 @@ class RestoViewScreen extends Component {
         style={stylesResto.header}
       >
         <View style={stylesResto.headerOpacityBG}>
-          <View
-            style={{
-              flex: 2,
-              flexDirection: "row",
-              alignItems: "flex-end",
-              justifyContent: "space-between"
-            }}
-          >
-            <View style={{ flex: 1 }}>
+          <View style={{ flex: 1, flexDirection: 'row', alignItems: 'flex-end', justifyContent: 'space-between' }}>
+            <View style={{ flexGrow: 2 }}>
               <Text style={stylesResto.headerRestoName}>
                 {this.state.restoName}
               </Text>
@@ -295,8 +289,9 @@ class RestoViewScreen extends Component {
                 {this.state.restoAddress}
               </Text>
             </View>
-            <View style={{ flex: 1, alignItems: "center" }}>
-              <View style={{ flexDirection: "row" }}>
+
+            <View style={{ flexShrink: 1, alignItems: "center", }}>
+              <View style={{ flexDirection: "row", alignItems: 'center' }}>
                 <Text style={[stylesResto.headerRating, { marginRight: 5 }]}>
                   {this.state.restoRating}
                 </Text>
@@ -347,7 +342,7 @@ class RestoViewScreen extends Component {
           onBackdropPress={() =>
               this.setState({ menuDetailShow: false, cartOverlayValue: 1 })
           }
-          containerStyle={{ flex: 1 }}
+          containerStyle={{ flex: 1, backgroundColor: '#11CDEF' }}
         >
           <View style={{ flex: 1 }}>
             <View style={{ flexShrink: 1, flexDirection: "row", alignItems: "center", justifyContent: "flex-end"  }}>
@@ -518,14 +513,14 @@ class RestoViewScreen extends Component {
           ) : null}  
         </View>
         
-        <View style={{ flex: 2, justifyContent: 'space-between' }}>
-          <View style={{ flex: 2, marginTop: 10 }}>
+        <View style={{ flex: 1.2, justifyContent: 'space-between' }}>
+          <View style={{ flexGrow: 1, marginTop: 10 }}>
             <Text style={stylesResto.menuListTitle}>{name}</Text>
             <View style={{ flexWrap: 'wrap' }}>
               <Text numberOfLines={4}>{description}</Text>
             </View>
           </View>
-          <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'flex-end' }}>
+          <View style={{ flexGrow: 1, flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'flex-end' }}>
             <Text style={stylesResto.menuListPrice}>{price} PHP</Text>
           </View>
         </View>
