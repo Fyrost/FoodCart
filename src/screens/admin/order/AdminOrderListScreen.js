@@ -5,7 +5,7 @@ import { ListItem } from "react-native-elements";
 import List from "../../../components/List";
 import Search from "../../../components/Search";
 import { getAdminOrderList, errorHandler, contains } from "../../../actions";
-
+import _ from 'lodash'
 class OrderCompletedListScreen extends Component {
   state = {
     data: [],
@@ -87,13 +87,17 @@ class OrderCompletedListScreen extends Component {
     return (
       <ListItem
         title={"Order # " + item.code}
+        titleStyle={{ fontWeight: "500", fontSize: 18, color: "#1B73B4" }}
         rightTitle={subtitle.text}
         rightTitleStyle={{ fontWeight: "500", color: subtitle.color }}
-        subtitle={`${item.fname} ${item.lname}`}
+        subtitle={`Ordered By: ${item.fname} ${item.lname}`}
         rightSubtitle={item.created_at}
         chevron={true}
-        onPress={() =>
-          this.props.navigation.navigate("AdminOrderView", { id: item.id })
+        onPress={_.debounce(() =>
+          this.props.navigation.navigate("AdminOrderView", { id: item.id }), 1500, {
+            leading: true,
+            trailing: false
+          })
         }
       />
     );

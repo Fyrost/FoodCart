@@ -6,7 +6,7 @@ import { MessageAlert } from "../../../components/Alerts";
 import Search from "../../../components/Search";
 import { getAdminReportList, errorHandler, contains } from "../../../actions";
 import List from "../../../components/List";
-
+import _ from "lodash"
 class AdminReportListScreen extends Component {
   state = {
     layoutVisible: false,
@@ -104,11 +104,14 @@ class AdminReportListScreen extends Component {
           </View>
         }
         chevron={true}
-        onPress={() =>
+        onPress={_.debounce(() =>
           this.props.navigation.push("AdminReportView", {
             code,
             investigate: status === "0" ? true : false,
             close: status === "2" ? false : true
+          }), 1500, {
+            leading: true,
+            trailing: false
           })
         }
       />

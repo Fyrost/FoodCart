@@ -139,43 +139,47 @@ class AdminMenuViewScreen extends Component {
               <Text style={styles.restoText}>{at.data}</Text>
             </View> */}
 
-            <View style={styles.cardRowContent}>
-              <Text style={styles.restoSubtitleText}>Tags:</Text>
-              <ToolTipHelper>
-                <View
-                  style={{ flexDirection: "row", alignContent: "space-around" }}
-                >
-                  <Text style={styles.tagContainerPending}>Pending</Text>
-                  <Text style={styles.tagContainerRejected}>Rejected</Text>
-                  <Text style={styles.tagContainerAccepted}>Accepted</Text>
-                </View>
-              </ToolTipHelper>
-              {tag.map((tag, index) => {
-                const tagContainer =
-                  tag.status === "0"
-                    ? styles.tagContainerPending
-                    : tag.status === "1"
-                    ? styles.tagContainerAccepted
-                    : styles.tagContainerRejected;
-                return (
-                  <TouchableHighlight
-                    onPress={_.debounce(
-                      () =>
-                        this.props.navigation.push("AdminMenuFilter", {
-                          tag: tag.slug
-                        }),
-                      1000,
-                      {
-                        leading: true,
-                        trailing: false
-                      }
-                    )}
-                    key={index}
+            <View style={styles.cardColContent}>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <Text style={styles.restoSubtitleText}>Tags:</Text>
+                <ToolTipHelper>
+                  <View
+                    style={{ flexDirection: "row", alignContent: "space-around" }}
                   >
-                    <Text style={tagContainer}>{tag.name}</Text>
-                  </TouchableHighlight>
-                );
-              })}
+                    <Text style={styles.tagContainerPending}>Pending</Text>
+                    <Text style={styles.tagContainerRejected}>Rejected</Text>
+                    <Text style={styles.tagContainerAccepted}>Accepted</Text>
+                  </View>
+                </ToolTipHelper>
+              </View>
+              <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-around' }}>
+                {tag.map((tag, index) => {
+                  const tagContainer =
+                    tag.status === "0"
+                      ? styles.tagContainerPending
+                      : tag.status === "1"
+                      ? styles.tagContainerAccepted
+                      : styles.tagContainerRejected;
+                  return (
+                    <TouchableHighlight
+                      onPress={_.debounce(
+                        () =>
+                          this.props.navigation.push("AdminMenuFilter", {
+                            tag: tag.slug
+                          }),
+                        1000,
+                        {
+                          leading: true,
+                          trailing: false
+                        }
+                      )}
+                      key={index}
+                    >
+                      <Text style={tagContainer}>{tag.name}</Text>
+                    </TouchableHighlight>
+                  );
+                })}
+              </View>
             </View>
           </View>
         </Card>
@@ -215,6 +219,10 @@ const styles = {
   restoText: {
     fontWeight: "normal"
   },
+  cardColContent: {
+    paddingHorizontal: 25,
+    paddingVertical: 10
+  },
   cardRowContent: {
     flexDirection: "row",
     justifyContent: "space-between",
@@ -231,7 +239,6 @@ const styles = {
     marginRight: 5,
     marginBottom: 8
   },
-
   tagContainerRejected: {
     backgroundColor: "#F68CA2",
     borderRadius: 3,

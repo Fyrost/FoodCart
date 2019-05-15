@@ -56,7 +56,9 @@ class AdminLogListScreen extends Component {
         contains(`${item.id}`, text) ||
         contains(item.user_id, text) ||
         contains(item.type, text) ||
-        contains(item.description, text)
+        contains(item.description, text) ||
+        contains(item.created_at, text) ||
+        contains(item.origin, text)
       );
     });
     this.setState({ search: text, data });
@@ -93,7 +95,7 @@ class AdminLogListScreen extends Component {
           renderItem={renderItem}
           loading={loading}
           emptyText={search ? `'${search}' was not found` : "No Logs Found"}
-          showsVerticalScrollIndicator={false}
+          showsVerticalScrollIndicator={true}
           refreshing={refreshing}
           onRefresh={handleRefresh}
         />
