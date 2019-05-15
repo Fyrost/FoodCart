@@ -4,6 +4,7 @@ import { NavigationEvents } from "react-navigation";
 import { ListItem, Overlay, Button, Icon } from "react-native-elements";
 import List from "../../../components/List";
 import Search from "../../../components/Search";
+import _ from "lodash"
 import {
   getRequestList,
   acceptRequest,
@@ -105,16 +106,29 @@ class AdminRequestListScreen extends Component {
       });
   };
 
-  renderItem = ({ item }) => (
-    <ListItem
-      title={`Old Email: ${item.old_email}`}
-      rightTitle={`New Email: ${item.new_email}`}
-      titleStyle={{ fontWeight: "500", fontSize: 18, color: "#1B73B4" }}
-      subtitle={`Request Date: ${item.created_at}\nStatus: ${item.status}`}
-      chevron={true}
-      onPress={() => this.handleLayout(item)}
-    />
-  );
+  renderItem = ({ item }) => {
+    const statusType = item.status === "0" 
+    ? {text:"Pending", color: '#9DA0A3'} 
+    : item.status==="1" 
+      ? {text:"Completed", color: '#00CC66'}
+      : {text:"Rejected",  color: '#EF1B17'}
+    return (
+      <ListItem
+        title={
+          <View>
+            <Text style={{ fontSize: 16 }}>Old Email: {item.old_email}</Text>
+            <Text style={{ fontSize: 16 }}>New Email: {item.new_email}</Text>
+          </View>
+        }
+        subtitle={`Request Date: ${item.created_at}`}
+        rightTitle={
+          <Text style={{ fontSize: 16, fontWeight: '500', color: statusType.color }}>{statusType.text}</Text>
+        }
+        chevron={true}
+        onPress={() => this.handleLayout(item)}
+      />
+    )
+  }
 
   renderOverlay = () => {
     const INITIAL_STATE = {
@@ -221,8 +235,14 @@ class AdminRequestListScreen extends Component {
               title={`View Profile`}
               titleStyle={{ fontSize: 18 }}
               type={"clear"}
-              onPress={() =>
-                this.props.navigation.navigate(navigate.screen, navigate.param)
+              onPress={
+                _.debounce(() => {
+                  this.props.navigation.navigate(navigate.screen, navigate.param)
+                  this.setState(INITIAL_STATE)
+                }, 1500, {
+                    leading: true,
+                    trailing: false
+                  })
               }
             />
           </View>

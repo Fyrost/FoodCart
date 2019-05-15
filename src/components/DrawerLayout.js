@@ -63,7 +63,9 @@ export default class DrawerLayout extends Component {
         </View>
         <View style={styles.drawerContent}>
           {this.props.userButton && this.props.userButton()}
-          <ScrollView>
+          <ScrollView
+            alwaysBounceVertical={false}
+          >
             <DrawerItems
               activeTintColor={"white"}
               inactiveTintColor={"black"}
@@ -134,7 +136,7 @@ const styles = {
     flexDirection: "row"
   },
   drawerHeader: {
-    flex: 2,
+    flex: 3,
     backgroundColor: "#11CDEF",
     justifyContent: "center",
     alignItems: "center"
