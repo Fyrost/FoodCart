@@ -31,6 +31,8 @@ class BadgeCounter extends Component {
       <Badge
         value={this.state.value}
         status={this.props.status || "error"}
+        textStyle={{ fontSize: 14 }}
+        badgeStyle={{ borderColor: 'transparent', padding: 5 }}
         containerStyle={{ backgroundColor: "transparent", marginRight: 10 }}
       />
     );
