@@ -163,78 +163,88 @@ class AdminBanViewScreen extends Component {
       ? restaurant.contact_number
       : customer.contact_number;
     return (
-      <ScrollView style={{ marginBottom: 10 }}>
+      <View style={{ flex: 1 }}>
         <Loading loading={screenLoading} size={"large"} />
+        <View style={{ flex: 11 }}>
+          <ScrollView>
+            <Card title={"User Information"}>
+              <View style={styles.cardRow}>
+                <Text style={styles.cardRowTitle}>{
+                  restaurant.id ? 'Restaurant Name' : 'Name'
+                }</Text>
+                <TouchableNativeFeedback
+                  onPress={_.debounce(
+                    () => this.props.navigation.push(nav.screen, nav.param),
+                    1000,
+                    {
+                      leading: true,
+                      trailing: false
+                    }
+                  )}
+                >
+                  <Text style={[styles.cardRowTitle, { color: "#1B73B4" }]}>
+                    {name}
+                  </Text>
+                </TouchableNativeFeedback>
+              </View>
+
+              {restaurant.id && (
+                <View style={styles.cardRow}>
+                  <Text style={styles.cardRowTitle}>Owner Name</Text>
+                  <Text style={styles.cardRowText}>
+                    {`${restaurant.owner_fname} ${restaurant.owner_lname}`}
+                  </Text>
+                </View>
+              )}
+
+              <View style={styles.cardRow2}>
+                <Text style={styles.cardRowTitle}>Address</Text>
+                <Text style={styles.cardRowText}>{address}</Text>
+              </View>
+
+              <View style={styles.cardRow}>
+                <Text style={styles.cardRowTitle}>Contact Number</Text>
+                <Text style={styles.cardRowText}># {contact_number}</Text>
+              </View>
+
+              <View style={styles.cardRow}>
+                <Text style={styles.cardRowTitle}>Ban Date</Text>
+                <Text style={styles.cardRowText}>
+                  # {this.props.navigation.getParam("banDate")}
+                </Text>
+              </View>
+
+              <View style={styles.cardRow2}>
+                <Text style={styles.cardRowTitle}>Ban Reason</Text>
+                <Text style={styles.cardRowText}>
+                  {this.props.navigation.getParam("reason")}
+                </Text>
+              </View>
+            </Card>
+            {!restaurant.id && (
+              <Card title={"Related Reports"}>
+                <List
+                  style={{ flexGrow: 1 }}
+                  data={reports}
+                  renderItem={this.renderItem}
+                  loading={loading}
+                  emptyText={"No Customer Found"}
+                  showsVerticalScrollIndicator={false}
+                />
+              </Card>
+            )}
+            <View style={{ height: 15 }} />
+          </ScrollView>
+        </View>
         <Button
-          title={"Lift Ban"}
+          title={"UNBAN"}
+          containerStyle={{ flex: 1 }}
+          buttonStyle={{ flex: 1 }}
           onPress={() =>
             ConfirmAlert("Lift Ban", "Are you sure?", this.handleLift)
           }
         />
-        <Card title={"User Information"}>
-          <View style={styles.cardRow}>
-            <Text style={styles.cardRowTitle}>Name</Text>
-            <TouchableNativeFeedback
-              onPress={_.debounce(
-                () => this.props.navigation.push(nav.screen, nav.param),
-                1000,
-                {
-                  leading: true,
-                  trailing: false
-                }
-              )}
-            >
-              <Text style={[styles.cardRowText, { color: "#1B73B4" }]}>
-                {name}
-              </Text>
-            </TouchableNativeFeedback>
-          </View>
-
-          {restaurant.id && (
-            <View style={styles.cardRow}>
-              <Text style={styles.cardRowTitle}>Owner Name</Text>
-              <Text style={styles.cardRowText}>
-                {`${restaurant.owner_fname} ${restaurant.owner_lname}`}
-              </Text>
-            </View>
-          )}
-
-          <View style={styles.cardRow2}>
-            <Text style={styles.cardRowTitle}>Address</Text>
-            <Text style={styles.cardRowText}>{address}</Text>
-          </View>
-
-          <View style={styles.cardRow}>
-            <Text style={styles.cardRowTitle}>Contact Number</Text>
-            <Text style={styles.cardRowText}># {contact_number}</Text>
-          </View>
-
-          <View style={styles.cardRow}>
-            <Text style={styles.cardRowTitle}>Ban Date</Text>
-            <Text style={styles.cardRowText}>
-              # {this.props.navigation.getParam("banDate")}
-            </Text>
-          </View>
-
-          <View style={styles.cardRow2}>
-            <Text style={styles.cardRowTitle}>Ban Reason</Text>
-            <Text style={styles.cardRowText}>
-              {this.props.navigation.getParam("reason")}
-            </Text>
-          </View>
-        </Card>
-        {!restaurant.id && (
-          <Card title={"Related Reports"}>
-            <List
-              data={reports}
-              renderItem={this.renderItem}
-              loading={loading}
-              emptyText={"No Customer Found"}
-              showsVerticalScrollIndicator={false}
-            />
-          </Card>
-        )}
-      </ScrollView>
+      </View>
     );
   }
 }

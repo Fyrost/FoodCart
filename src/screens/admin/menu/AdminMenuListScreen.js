@@ -6,6 +6,7 @@ import List from "../../../components/List";
 import Search from "../../../components/Search";
 import { getAdminMenu, errorHandler, contains } from "../../../actions";
 import styles from "../../styles";
+import _ from "lodash"
 class AdminMenuListScreen extends Component {
   state = {
     data: [],
@@ -65,9 +66,12 @@ class AdminMenuListScreen extends Component {
         </View>
       }
       chevron={true}
-      onPress={() => {
-        this.props.navigation.push("AdminMenuView", { menuId: id });
-      }}
+      onPress={_.debounce(() => {
+        this.props.navigation.push("AdminMenuView", { menuId: id })
+      }, 1500, {
+        leading: true,
+        trailing: false
+      })}
     />
   );
 
