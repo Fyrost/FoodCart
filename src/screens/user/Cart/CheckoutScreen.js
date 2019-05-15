@@ -184,13 +184,13 @@ class CheckoutScreen extends Component {
           }}
           placeholder={"Change for..."}
           containerStyle={{
-            width: '35%',
+            width: '40%',
             backgroundColor: "white",
             borderRadius: 5
           }}
           keyboardType={"number-pad"}
           inputContainerStyle={{ borderBottomWidth: 0 }}
-          inputStyle={{ backgroundColor: "white", textAlign: this.state[slug] ? 'right' : 'left' }}
+          inputStyle={{ fontSize: 16, backgroundColor: "white", textAlign: this.state[slug] ? 'right' : 'left' }}
         />
       </View>
     </View>
@@ -311,7 +311,7 @@ class CheckoutScreen extends Component {
         <NavigationEvents onWillFocus={makeRemoteRequest} />
         <Loading loading={screenLoading} size={"large"} />
         <View style={{ flex: 8, justifyContent: 'center' }}>
-          <View style={{ borderBottomWidth: 0.7, paddingHorizontal: 10, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingVertical: 10 }}>
+          <View style={styles.logoRow}>
             <Image 
               source={{ uri: 'http://pinoyfoodcart.com/material/img/navBrand.png' }} 
               style={{ height: 35, width: 150, resizeMode: "contain" }} 
@@ -379,5 +379,19 @@ const styles = {
     paddingVertical: 5, 
     borderColor: "gray", 
     borderBottomWidth: 0.8 
+  },
+  logoRow: { 
+    paddingHorizontal: 10, 
+    flexDirection: 'row', 
+    alignItems: 'center', 
+    justifyContent: 'space-between', 
+    paddingVertical: 10, 
+    shadowOffset: { 
+      height: 1, 
+      width: 0 
+    },
+    elevation: 2,
+    borderBottomWidth: 0.1,
+    borderBottomColor: 'rgba(0, 0, 0, 0.1)'
   },
 };
