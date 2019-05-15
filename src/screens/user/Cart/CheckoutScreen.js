@@ -160,34 +160,31 @@ class CheckoutScreen extends Component {
 }
 
   renderSectionFooter = ({
-    section: { total, slug }
+    section: { total, slug, sub_eta }
   }) => (
-    <View
-      style={{
-        flexDirection: "row",
-        justifyContent: "space-between",
-        alignItems: "center",
-        backgroundColor: "#5999C8",
-        paddingHorizontal: 20,
-        paddingVertical: 10,
-        marginBottom: 5
-      }}
-    >
-      <View style={{ flex: 1 }}>
-        <View style={{ flexDirection: "row", alignItems: "center" }}>
-          <Text style={{ color: "white", fontSize: 16 }}>Total: </Text>
-          <Text style={{ color: "white", fontSize: 16 }}>₱ {total} </Text>
+    <View style={{ flex: 1, justifyContent: "space-evenly", backgroundColor: "#5999C8", paddingVertical: 10, paddingHorizontal:  20, marginBottom: 5 }}>
+      
+      <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingVertical: 5 }} >
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <Text style={{ color: 'white', fontSize: 16 }}>Estimated Time: </Text>
+          <Text style={{ color: 'white', fontSize: 16 }}>{sub_eta} mins</Text>
+        </View>
+
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <Text style={{ color: 'white', fontSize: 16 }}>Total: </Text>
+          <Text style={{ color: 'white', fontSize: 16 }}>₱ {total}.00</Text>
         </View>
       </View>
-      <View style={{ flex: 1, alignSelf: "flex-start" }}>
+      
+      <View style={{ flex: 1, alignItems: "flex-end", paddingVertical: 5 }}>
         <Input
           value={this.state[slug]}
           onChangeText={text => {
             this.setState({ [slug]: text });
           }}
-          placeholder={"Change for"}
+          placeholder={"Change for..."}
           containerStyle={{
-            alignSelf: "flex-end",
+            width: '35%',
             backgroundColor: "white",
             borderRadius: 5
           }}
