@@ -49,23 +49,20 @@ class MAInfoScreen extends Component {
               tags = tag.map(obj => {
                 return obj.name;
               });
-              this.setState(
-                {
-                  id: id,
-                  category: `${category[0].id}`,
-                  categoryList: category_list,
-                  name: { text: name },
-                  description: { text: description },
-                  price: { text: price },
-                  cookTime: { text: cooking_time },
-                  tag: tags,
-                  tempPicture: image_name
-                    ? `http://pinoyfoodcart.com/image/menu/${image_name}`
-                    : null,
-                  loading: false
-                },
-                console.log(this.state)
-              );
+              this.setState({
+                id: id,
+                category: `${category[0].id}`,
+                categoryList: category_list,
+                name: { text: name },
+                description: { text: description },
+                price: { text: price },
+                cookTime: { text: cooking_time },
+                tag: tags,
+                tempPicture: image_name
+                  ? `http://pinoyfoodcart.com/image/menu/${image_name}`
+                  : null,
+                loading: false
+              });
             } else {
               this.setState({
                 error: res.data.message,
@@ -133,7 +130,7 @@ class MAInfoScreen extends Component {
     } = this.state;
     this.checkError()
       ? this.props.navigation.navigate("OwnerMACategoryTag", {
-          menuId:id,
+          menuId: id,
           name: name.text,
           description: description.text,
           price: price.text,

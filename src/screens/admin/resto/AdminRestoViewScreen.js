@@ -229,7 +229,6 @@ class AdminRestoViewScreen extends Component {
     } = this.state.data;
     return (
       <ScrollView style={{ flex: 1 }}>
-        {console.log(this.state.id)}
         <NavigationEvents onWillFocus={makeRemoteRequest} />
         <Loading loading={screenLoading} size={"large"} />
         {banOverlayVisible && renderBanOverlay()}

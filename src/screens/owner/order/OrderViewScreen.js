@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { View, ScrollView, TextInput, Image } from "react-native";
-import { Button, Text, Overlay, ListItem , Icon} from "react-native-elements";
+import { Button, Text, Overlay, ListItem, Icon } from "react-native-elements";
 import { ImagePicker } from "expo";
 import { NavigationEvents } from "react-navigation";
 import {
@@ -80,7 +80,6 @@ class OrderViewScreen extends Component {
               : status === "4"
               ? "rejected"
               : "cancelled";
-          console.log(res.data);
           this.setState({
             loading: false,
             customerId: id,
@@ -183,7 +182,7 @@ class OrderViewScreen extends Component {
       .then(res => {
         this.setState({ screenLoading: false });
         if (res.data.success) {
-          this.setState({ reportOverlayVisible: false })
+          this.setState({ reportOverlayVisible: false });
           MessageAlert("Report", res.data.message);
         } else {
           let errors = ``;
@@ -195,7 +194,7 @@ class OrderViewScreen extends Component {
         }
       })
       .catch(err => {
-        this.setState({ screenLoading: false, reportOverlayVisible: true  });
+        this.setState({ screenLoading: false, reportOverlayVisible: true });
         MessageAlert("Report", errorHandler(err));
       });
   };
@@ -300,8 +299,8 @@ class OrderViewScreen extends Component {
       reportImg1: "",
       reportImg2: "",
       reportImg3: ""
-    }
-    return(
+    };
+    return (
       <Overlay
         fullScreen
         isVisible={this.state.reportOverlayVisible}
@@ -309,7 +308,7 @@ class OrderViewScreen extends Component {
         containerStyle={{ flex: 1 }}
         overlayStyle={{ margin: 0, padding: 0 }}
         windowBackgroundColor={"rgba(0, 0, 0, .8)"}
-        onBackdropPress={() =>  this.setState(INITIAL_STATE)}
+        onBackdropPress={() => this.setState(INITIAL_STATE)}
       >
         <View style={{ flex: 1 }}>
           <Icon
@@ -326,24 +325,32 @@ class OrderViewScreen extends Component {
               right: 10,
               top: 7
             }}
-            onPress={() =>
-              this.setState(INITIAL_STATE)
-            }
+            onPress={() => this.setState(INITIAL_STATE)}
           />
           <View style={{ flex: 12 }}>
             <ScrollView contentContainerStyle={{ paddingHorizontal: 20 }}>
-              <Text h3 h3Style={{ color: '#1B73B4', marginTop: 15 }}>Report</Text>
-              <Text style={{ fontSize: 16, marginTop: 15 }}>Why do you want to report this customer?</Text>
+              <Text h3 h3Style={{ color: "#1B73B4", marginTop: 15 }}>
+                Report
+              </Text>
+              <Text style={{ fontSize: 16, marginTop: 15 }}>
+                Why do you want to report this customer?
+              </Text>
               <TextInput
                 value={this.state.reason}
                 multiline={true}
                 placeholder={"Enter your reason here..."}
                 numberOfLines={5}
-                style={{ borderColor: "gray", borderWidth: 1, paddingHorizontal: 10 }}
+                style={{
+                  borderColor: "gray",
+                  borderWidth: 1,
+                  paddingHorizontal: 10
+                }}
                 onChangeText={reason => this.setState({ reason })}
               />
               <View style={{ justifyContent: "space-evenly" }}>
-                <Text style={{ fontSize: 16, marginTop: 10 }}>Additional Proof</Text>
+                <Text style={{ fontSize: 16, marginTop: 10 }}>
+                  Additional Proof
+                </Text>
                 <ListItem
                   title={"Proof 1"}
                   subtitle={
@@ -411,13 +418,15 @@ class OrderViewScreen extends Component {
             </ScrollView>
           </View>
 
-          <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center'}}>
+          <View style={{ flex: 1, flexDirection: "row", alignItems: "center" }}>
             <Button
               title={"Cancel"}
-              onPress={() =>
-                this.setState(INITIAL_STATE)
-              }
-              buttonStyle={{ borderRadius: 0, backgroundColor: '#EF1B17', flex: 1 }}
+              onPress={() => this.setState(INITIAL_STATE)}
+              buttonStyle={{
+                borderRadius: 0,
+                backgroundColor: "#EF1B17",
+                flex: 1
+              }}
               containerStyle={{ flex: 1 }}
               disabled={this.state.loading}
             />
@@ -426,13 +435,17 @@ class OrderViewScreen extends Component {
               onPress={this.handleReport}
               disabled={this.state.loading}
               containerStyle={{ flex: 1 }}
-              buttonStyle={{ borderRadius: 0, backgroundColor: 'orange', flex: 1 }}
+              buttonStyle={{
+                borderRadius: 0,
+                backgroundColor: "orange",
+                flex: 1
+              }}
             />
           </View>
         </View>
       </Overlay>
-    )
-  }
+    );
+  };
 
   renderItem = ({ item: { id, name, cooking_time, quantity } }) => (
     <View>

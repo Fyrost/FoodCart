@@ -128,7 +128,6 @@ class CategoryListScreen extends Component {
     const { category, id } = this.state;
     postCategory({ category, id })
       .then(res => {
-        console.log(res.data);
         if (res.data.success) {
           this.setState(
             {
@@ -141,13 +140,11 @@ class CategoryListScreen extends Component {
             },
             this.makeRemoteRequest()
           );
-          console.log("Success: " + res.data);
         } else {
           this.setState({
             layoutError: res.data.errors.category_name[0],
             postLoading: false
           });
-          console.log("Fail: " + res.data);
         }
       })
       .catch(err => {
@@ -208,7 +205,6 @@ class CategoryListScreen extends Component {
           layoutVisible: true
         })
       }
-      
     />
   );
 
@@ -241,7 +237,7 @@ class CategoryListScreen extends Component {
         }
       >
         <View>
-        <Icon
+          <Icon
             raised
             reverse
             name={"times"}

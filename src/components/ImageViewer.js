@@ -58,7 +58,6 @@ class ImageViewer extends Component {
             onSwipeDown={() => {
               this.setState({ modalVisible: false });
             }}
-            onMove={data => console.log(data)}
             enableSwipeDown={true}
             loadingRender={()=><ActivityIndicator />}
             {...props}

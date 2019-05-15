@@ -3,6 +3,8 @@ import { View } from "react-native";
 import { Button, Avatar, Icon } from "react-native-elements";
 import _ from "lodash";
 import { ConfirmAlert } from "../../../components/Alerts";
+import { getNotifCart } from "../../../actions";
+import BadgeCounter from "../../../components/BadgeCounter";
 import { HeaderBackButton } from "react-navigation";
 
 export const leftDrawerButton = ({ navigation }) => (
@@ -106,15 +108,22 @@ export const rightCheckoutButton = ({ navigation }) => (
 );
 ////CUSTOMER RESTO////
 export const rightRestoCartButton = ({ navigation }) => (
-  <Avatar
-    rounded
-    containerStyle={{ backgroundColor: "#afafaf" }}
-    icon={{ name: "shopping-cart", type: "font-awesome" }}
-    overlayContainerStyle={{ backgroundColor: "transparent" }}
-    size={40}
-    onPress={() => navigation.navigate("UserCart")}
-    containerStyle={{ marginRight: 5 }}
-  />
+  <View>
+    <Avatar
+      rounded
+      containerStyle={{ backgroundColor: "#afafaf" }}
+      icon={{ name: "shopping-cart", type: "font-awesome" }}
+      overlayContainerStyle={{ backgroundColor: "transparent" }}
+      size={40}
+      onPress={() => navigation.navigate("UserCart")}
+      containerStyle={{ marginRight: 5 }}
+    />
+    <BadgeCounter
+      promise={getNotifCart}
+      badgeStyle={null}
+      containerStyle={{ position: "absolute" }}
+    />
+  </View>
 );
 
 export const rightMenuButton = ({ navigation }) => (

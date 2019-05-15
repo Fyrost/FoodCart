@@ -43,7 +43,7 @@ class RestoListScreen extends Component {
             loading: false,
             refreshing: false,
             resto: data,
-            fullData: data
+            fullData: Object.values(data)
           });
         } else {
           this.setState({

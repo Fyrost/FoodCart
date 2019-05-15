@@ -752,7 +752,6 @@ export const postCheckout = change => {
 };
 
 export const getOrderHistory = status => {
-  console.log(API.ORDER_HISTORY(status));
   return Axios({
     url: API.ORDER_HISTORY(status),
     method: "get"
@@ -762,6 +761,13 @@ export const getOrderHistory = status => {
 export const getOrderDetail = code => {
   return Axios({
     url: API.ORDER_SELECT(code),
+    method: "get"
+  });
+};
+
+export const getNotifCart = () => {
+  return Axios({
+    url: API.CUSTOMER_NOTIFICATION_CART,
     method: "get"
   });
 };
@@ -872,7 +878,7 @@ const imageType = url => {
 };
 
 export const errorHandler = error => {
-  console.log(error.config);
+  error.config && console.log(error.config);
   if (error.response) {
     // The request was made and the server responded with a status code
     // that falls out of the range of

@@ -269,7 +269,6 @@ class AdminOrderViewScreen extends Component {
     return (
       <View style={{ flex: 1 }}>
         <NavigationEvents onWillFocus={makeRemoteRequest} />
-        {console.log(order)}
         {this.state.code && (
           <View
             style={{

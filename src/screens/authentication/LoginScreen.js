@@ -50,7 +50,6 @@ class LoginScreen extends Component {
             const { token } = res.data.data;
             this.setState({ showResend: true, token });
           }
-          console.log(this.state.showResend);
         }
       })
       .catch(err =>

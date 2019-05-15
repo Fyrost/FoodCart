@@ -30,7 +30,7 @@ class RestoApplyApprovedScreen extends Component {
             fullData: res.data.data
           });
         } else {
-          this.setState({ error: res.data.message }, console.log(res.data));
+          this.setState({ error: res.data.message });
           this.setState({ refreshing: false, loading: false });
         }
       })

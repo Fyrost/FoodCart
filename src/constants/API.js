@@ -77,7 +77,7 @@ export const OWNER_REPORT = `owner/report`;
 export const OWNER_REPORT_SELECT = code => `owner/report/${code}`;
 export const OWNER_LOGS = `owner/logs`;
 export const OWNER_PROFILE = `owner/profile`;
-export const OWNER_NOTIFICATION_ORDERS = `owner/notification/orders`
+export const OWNER_NOTIFICATION_ORDERS = `owner/notification/orders`;
 
 export const CUSTOMER_RESTAURANT = `restaurant`;
 export const CUSTOMER_RESTAURANT_SELECT = slug => `restaurant/${slug}`;
@@ -89,6 +89,7 @@ export const CUSTOMER_CART = `guest/cart`;
 export const CUSTOMER_CART_EMPTY = `guest/cart/empty`;
 export const CUSTOMER_CART_SELECT = id => `guest/cart/${id}`;
 export const CUSTOMER_PROFILE = `profile`;
+export const CUSTOMER_NOTIFICATION_CART = `guest/notification/cart`;
 
 export const CHECKOUT = `checkout`;
 

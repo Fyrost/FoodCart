@@ -8,14 +8,14 @@ class BadgeCounter extends Component {
       value: ""
     };
   }
-  timeout = 0
+  timeout = 0;
   componentDidMount() {
     this.makeRemoteRequest();
     this.timeout = setInterval(this.makeRemoteRequest, 5000);
   }
 
-  componentWillUnmount(){
-    clearInterval(this.timeout)
+  componentWillUnmount() {
+    clearInterval(this.timeout);
   }
 
   makeRemoteRequest = () => {
@@ -26,14 +26,21 @@ class BadgeCounter extends Component {
     });
   };
   render() {
-    if (!this.state.value || this.state.value==="0") return null;
+    if (!this.state.value || this.state.value === "0") return null;
     return (
       <Badge
         value={this.state.value}
         status={this.props.status || "error"}
-        textStyle={{ fontSize: 14 }}
-        badgeStyle={{ borderColor: 'transparent', padding: 5 }}
-        containerStyle={{ backgroundColor: "transparent", marginRight: 10 }}
+        textStyle={this.props.textStyle || { fontSize: 14 }}
+        badgeStyle={
+          this.props.badgeStyle || { borderColor: "transparent", padding: 5 }
+        }
+        containerStyle={
+          this.props.containerStyle || {
+            marginRight: 10
+          }
+        }
+        {...this.props}
       />
     );
   }

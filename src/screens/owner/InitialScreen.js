@@ -44,7 +44,6 @@ class InitialScreen extends Component {
 
   handlePost = () => {
     const { flatRate, eta, openTime, closeTime, image } = this.state;
-    console.log(this.checkError());
     if (this.checkError()) {
       this.setState({ loading: true, progress: "" });
       postRestoInfo(

@@ -21,7 +21,6 @@ class AdminMenuViewScreen extends Component {
 
   makeRemoteRequest = () => {
     this.setState({ loading: true });
-    console.log(this.props.navigation.getParam("menuId"));
     getAdminMenuDetail(this.props.navigation.getParam("menuId"))
       .then(res => {
         if (res.data.success) {

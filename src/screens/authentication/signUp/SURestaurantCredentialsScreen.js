@@ -57,7 +57,6 @@ class SURestaurantCredentialsScreen extends Component {
         this.setState.bind(this)
       )
         .then(res => {
-          console.log(res.data);
           if (res.data.success) {
             this.setState({ loading: false, progress: "" });
             alert(res.data.message);

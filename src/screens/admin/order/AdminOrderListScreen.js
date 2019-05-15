@@ -5,7 +5,7 @@ import { ListItem } from "react-native-elements";
 import List from "../../../components/List";
 import Search from "../../../components/Search";
 import { getAdminOrderList, errorHandler, contains } from "../../../actions";
-import _ from 'lodash'
+import _ from "lodash";
 class OrderCompletedListScreen extends Component {
   state = {
     data: [],
@@ -60,6 +60,10 @@ class OrderCompletedListScreen extends Component {
     const data = this.state.fullData.filter(item => {
       return (
         contains(item.code, text) ||
+        contains(item.fname, text) ||
+        contains(item.lname, text) ||
+        contains(`${item.fname} ${item.lname}`, text) ||
+        contains(`${item.lname} ${item.fname}`, text) ||
         contains(item.order_status === "0" ? "Pending" : "", text) ||
         contains(item.order_status === "1" ? "Processing" : "", text) ||
         contains(item.order_status === "2" ? "Delivering" : "", text) ||
@@ -93,12 +97,15 @@ class OrderCompletedListScreen extends Component {
         subtitle={`Ordered By: ${item.fname} ${item.lname}`}
         rightSubtitle={item.created_at}
         chevron={true}
-        onPress={_.debounce(() =>
-          this.props.navigation.navigate("AdminOrderView", { id: item.id }), 1500, {
+        onPress={_.debounce(
+          () =>
+            this.props.navigation.navigate("AdminOrderView", { id: item.id }),
+          1500,
+          {
             leading: true,
             trailing: false
-          })
-        }
+          }
+        )}
       />
     );
   };
