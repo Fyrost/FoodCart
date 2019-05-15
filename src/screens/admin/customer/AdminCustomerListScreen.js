@@ -26,6 +26,9 @@ class AdminCustomerListScreen extends Component {
           });
         } else {
           this.setState({ refreshing: false, loading: false });
+          if (res.data.message.includes("Unauthorized")) {
+            this.props.navigation.navigate("Auth");
+          }
           alert(res.data.message);
         }
       })

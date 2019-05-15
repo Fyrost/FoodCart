@@ -34,6 +34,9 @@ class AdminMenuViewScreen extends Component {
             loading: false,
             error: res.data.message
           });
+          if (res.data.message.includes("Unauthorized")) {
+            this.props.navigation.navigate("Auth");
+          }
         }
       })
       .catch(err => {

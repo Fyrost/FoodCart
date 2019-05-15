@@ -28,8 +28,11 @@ class AdminCustomerViewScreen extends Component {
         } else {
           this.setState({
             loading: false,
-            errpr: res.data.message
+            error: res.data.message
           });
+          if (res.data.message.includes("Unauthorized")) {
+            this.props.navigation.navigate("Auth");
+          }
         }
       })
       .catch(err => {
