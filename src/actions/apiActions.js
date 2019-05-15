@@ -633,6 +633,13 @@ export const getNotifReports = () => {
   });
 };
 
+export const getNotifRequests = () => {
+  return Axios({
+    url: API.ADMIN_NOTIFICATION_REQUESTS,
+    method: "get"
+  });
+};
+
 export const getRestaurantList = () => {
   return Axios({
     url: API.CUSTOMER_RESTAURANT,

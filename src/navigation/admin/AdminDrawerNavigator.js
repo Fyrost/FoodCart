@@ -33,7 +33,12 @@ import {
   logIcon,
   orderIcon
 } from "./navOptions/navIcons";
-import { getNotifPartner, getNotifTags, getNotifReports } from "../../actions";
+import {
+  getNotifPartner,
+  getNotifTags,
+  getNotifReports,
+  getNotifRequests
+} from "../../actions";
 import BadgeCounter from "../../components/BadgeCounter";
 import ProfileStackNavigator from "../ProfileStackNavigator";
 import PartnerViewScreen from "../../screens/admin/partner/PartnerViewScreen";
@@ -183,7 +188,22 @@ const Request = {
   screen: RequestNavigator,
   navigationOptions: {
     title: "Request",
-    drawerIcon: ({ tintColor }) => logIcon({ tintColor })
+    drawerIcon: ({ tintColor }) => logIcon({ tintColor }),
+    drawerLabel: (
+      <View
+        style={{
+          flex: 1,
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent: "space-between"
+        }}
+      >
+        <Text h5 style={{ margin: 16, fontWeight: "bold" }}>
+        Request
+        </Text>
+        <BadgeCounter promise={getNotifRequests} />
+      </View>
+    )
   }
 };
 

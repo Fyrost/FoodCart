@@ -51,6 +51,7 @@ export const ADMIN_PROFILE = `admin/profile`;
 export const ADMIN_NOTIFICATION_PARTNER = `admin/notification/partnership`;
 export const ADMIN_NOTIFICATION_TAGS = `admin/notification/tags`;
 export const ADMIN_NOTIFICATION_REPORTS = `admin/notification/reports`;
+export const ADMIN_NOTIFICATION_REQUESTS = `admin/notification/requests`;
 
 export const OWNER_MENU = `owner/menu`;
 export const OWNER_RESTO_INFO = `owner/info`;
