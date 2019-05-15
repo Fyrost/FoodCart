@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, SectionList, Text } from "react-native";
+import { View, SectionList, Text, TouchableOpacity, ScrollView } from "react-native";
 import { NavigationEvents } from "react-navigation";
 import { Icon, Input, Button, Overlay, Image } from "react-native-elements";
 import {
@@ -70,7 +70,8 @@ class CartScreen extends Component {
     this.setState({
       editOverlayVisible: true,
       overlayQuantity: quantity,
-      cartId: id
+      cartId: id,
+      overLayError: ''
     });
   };
 
@@ -145,49 +146,56 @@ class CartScreen extends Component {
       });
   };
 
-  renderOverLay = () => (
-    <Overlay
-      isVisible={this.state.editOverlayVisible}
-      height={"auto"}
-      width={"60%"}
-      borderRadius={0}
-      windowBackgroundColor={"rgba(0, 0, 0, .8)"}
-      onBackdropPress={() => this.setState({ editOverlayVisible: false })}
-    >
-      <View style={{ alignItems: "center" }}>
-        <Icon
-          raised
-          reverse
-          name={"times"}
-          type={"font-awesome"}
-          color={"#1B73B4"}
-          size={18}
-          underlayColor={"black"}
-          containerStyle={{
-            zIndex: 99999,
-            position: "absolute",
-            right: -32,
-            top: -30
-          }}
-          onPress={() => this.setState({ editOverlayVisible: false })}
-        />
-        <Text>Quantity:</Text>
-        <Input
-          value={this.state.overlayQuantity}
-          inputContainerStyle={{ borderColor: "#11CDEF" }}
-          inputStyle={{ textAlign: "right" }}
-          onChangeText={overlayQuantity => this.setState({ overlayQuantity })}
-          keyboardType={"numeric"}
-        />
-        <Text style={{ color: "red" }}>{this.state.overLayError}</Text>
-        <Button
-          title="SAVE CHANGES"
-          loading={this.state.overlayLoading}
-          onPress={this.handleQuantity}
-        />
-      </View>
-    </Overlay>
-  );
+  renderOverLay = () => {
+    const INITIAL_STATE = {
+      editOverlayVisible: false,
+      overLayError: '',
+    }
+    return (
+      <Overlay
+        isVisible={this.state.editOverlayVisible}
+        height={"auto"}
+        width={"60%"}
+        borderRadius={0}
+        windowBackgroundColor={"rgba(0, 0, 0, .8)"}
+        onBackdropPress={() => this.setState(INITIAL_STATE)}
+      >
+        <View style={{ alignItems: "center" }}>
+          <Icon
+            raised
+            reverse
+            name={"times"}
+            type={"font-awesome"}
+            color={"#1B73B4"}
+            size={18}
+            underlayColor={"black"}
+            containerStyle={{
+              zIndex: 99999,
+              position: "absolute",
+              right: -32,
+              top: -30
+            }}
+            onPress={() => this.setState(INITIAL_STATE)}
+          />
+          <Text style={{ fontSize: 18, fontWeight: '500' }}>Quantity</Text>
+          <Input
+            value={this.state.overlayQuantity}
+            containerStyle={{ width: '45%', alignItems: 'center' }}
+            inputContainerStyle={{ borderColor: "#11CDEF" }}
+            inputStyle={{ textAlign: "center" }}
+            onChangeText={overlayQuantity => this.setState({ overlayQuantity })}
+            keyboardType={"numeric"}
+          />
+          <Text style={{ color: "red" }}>{this.state.overLayError}</Text>
+          <Button
+            title="SAVE CHANGES"
+            loading={this.state.overlayLoading}
+            onPress={this.handleQuantity}
+          />
+        </View>
+      </Overlay>
+    )
+  }
 
   renderSectionHeader = ({ section: { name, flatRate, eta } }) => (
     <View
@@ -240,6 +248,7 @@ class CartScreen extends Component {
       </View>
     </View>
   );
+
   computeTotal = () => {
     let total = 0;
     menu = this.state.cart.map(resto => {
@@ -247,13 +256,24 @@ class CartScreen extends Component {
         total += Number.parseInt(item.price) * Number.parseInt(item.quantity);
       });
     });
-    // this.state.cart.forEach(element => {
-    //   element.menu.forEach(item => {
-    //     total += Number.parseInt(item.price) * Number.parseInt(item.quantity);
-    //   });
-    // });
     return total;
   };
+
+  computeFlatRate = () => {
+    let flatRate = 0;
+    menu = this.state.cart.map(resto => {
+      flatRate += Number.parseInt(resto.flatRate);
+    });
+    return flatRate;
+  }
+
+  computeMins = () => {
+    let mins = 0;
+    menu = this.state.cart.map(resto => {
+      mins += Number.parseInt(resto.eta);
+    });
+    return mins;
+  }
 
   renderItem = ({
     item: { name, price, cooking_time, slug, image_name, quantity, id },
@@ -312,7 +332,8 @@ class CartScreen extends Component {
             paddingRight: 10
           }}
         >
-          <View
+          <TouchableOpacity
+            activeOpacity={0.4}
             style={{
               flex: 1,
               height: 35,
@@ -322,9 +343,10 @@ class CartScreen extends Component {
               borderColor: "#11CDEF",
               borderBottomWidth: 1
             }}
+            onPress={() => this.handleEdit(quantity, id)}
           >
             <Text style={{ fontSize: 20 }}>{quantity}</Text>
-          </View>
+          </TouchableOpacity>
 
           <View
             style={{
@@ -333,15 +355,6 @@ class CartScreen extends Component {
               alignItems: "center"
             }}
           >
-            <Icon
-              name={"edit"}
-              type={"font-awesome"}
-              color={"#1B73B4"}
-              size={30}
-              onPress={() => this.handleEdit(quantity, id)}
-              containerStyle={{ paddingVertical: 5 }}
-            />
-
             <Icon
               name={"trash"}
               type={"font-awesome"}
@@ -399,17 +412,34 @@ class CartScreen extends Component {
 
     return (
       <View style={{ flex: 1 }}>
-        <NavigationEvents onWillFocus={makeRemoteRequest} />
-        <Loading loading={screenLoading} opacity={0.5} size={50} />
-        {editOverlayVisible && renderOverLay()}
-        <SectionList
-          sections={cart}
-          keyExtractor={(item, index) => item + index}
-          renderSectionHeader={renderSectionHeader}
-          renderItem={renderItem}
-          ListFooterComponent={renderFooter}
-          ListEmptyComponent={renderEmpty}
-        />
+        <View style={{ flex: 3 }}>
+          <ScrollView>
+            <NavigationEvents onWillFocus={makeRemoteRequest}/>
+            <Loading loading={screenLoading} opacity={0.5} size={50}/>
+            {editOverlayVisible && renderOverLay()}
+            <SectionList
+              sections={cart}
+              keyExtractor={(item, index) => item + index}
+              renderSectionHeader={renderSectionHeader}
+              renderItem={renderItem}
+              ListFooterComponent={renderFooter}
+              ListEmptyComponent={renderEmpty}
+            />
+          </ScrollView>
+        </View>
+        <View style={{ flex: 1, justifyContent: 'space-evenly', paddingVertical: 10, paddingHorizontal: 15 }}>
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <Text>Estimated Time : {this.computeMins()} mins ( NEED FORMULA )</Text>
+          </View>
+
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <Text>Total Flat Rate : ₱ {this.computeFlatRate()}.00</Text>
+          </View>
+
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <Text>Grand Total : ₱ {this.computeTotal()}.00</Text>
+          </View>
+        </View>
       </View>
     );
   }
