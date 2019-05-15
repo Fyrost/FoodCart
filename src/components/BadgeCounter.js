@@ -26,7 +26,7 @@ class BadgeCounter extends Component {
     });
   };
   render() {
-    if (!this.state.value) return null;
+    if (!this.state.value || this.state.value==="0") return null;
     return (
       <Badge
         value={this.state.value}
