@@ -12,6 +12,9 @@ class OwnerLogListScreen extends Component {
     refreshing: false
   };
 
+  componentWillMount() {
+    this.makeRemoteRequest();
+  }
   makeRemoteRequest = () => {
     this.setState({ loading: true });
     getOwnerLogList()

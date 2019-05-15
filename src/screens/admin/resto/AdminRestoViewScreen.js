@@ -250,7 +250,7 @@ class AdminRestoViewScreen extends Component {
         >
           <View style={{ paddingVertical: 10 }}>
             <Text style={styles.restoTitle}>{name}</Text>
-            <Text style={{ textAlign: "center" }}>#{id}</Text>
+            <Text style={{ textAlign: "center" }}>ID #{id}</Text>
           </View>
 
           <Divider />
