@@ -3,8 +3,7 @@ import {
   View,
   SectionList,
   ActivityIndicator,
-  ScrollView,
-  TouchableHighlight
+  ScrollView
 } from "react-native";
 import { Text, Input, Icon, Divider, Image } from "react-native-elements";
 import _ from "lodash";
@@ -13,7 +12,8 @@ import { MessageAlert } from "../../../components/Alerts";
 import { getCheckout, postCheckout, errorHandler } from "../../../actions";
 import ActivityLoading from "../../../components/ActivityLoading";
 import Loading from "../../../components/Loading";
-
+import { Card } from "../../../components/Card"
+import KeyboardShift from "../../../components/KeyboardShift"
 formatCart = cart => {
   return cart.map(section => {
     return {
@@ -21,6 +21,8 @@ formatCart = cart => {
       slug: section.slug,
       flatRate: section.flat_rate,
       sub_eta: section.sub_eta,
+      eta: section.eta,
+      contact_number: section.contact_number,
       total: section.total,
       data: section.menu
     };
@@ -114,39 +116,51 @@ class CheckoutScreen extends Component {
       );
   };
 
-  renderSectionHeader = ({ section: { name, slug } }) => (
+  renderSectionHeader = ({ section: { name, slug, contact_number, eta, flatRate } }) => {
+    return (
     <View
       style={{
-        flexDirection: "row",
-        justifyContent: "space-between",
-        alignItems: "center",
-        backgroundColor: "#1B73B4",
+        borderColor: 'grey',
+        borderTopWidth: 0.8,
+        borderBottomWidth: 0.8,
         paddingHorizontal: 20,
-        paddingVertical: 10
+        paddingVertical: 10,
+        marginTop: 10
       }}
     >
-      <TouchableHighlight
+    <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+      <Text 
+        style={{ fontWeight: "500", fontSize: 18, color: "#11CDEF" }} 
         onPress={_.debounce(
           () =>
             this.props.navigation.push("UserRestoMenu", {
               slug
             }),
-          1000,
+          1500,
           {
             leading: true,
             trailing: false
           }
-        )}
-      >
-        <Text style={{ fontWeight: "400", fontSize: 18, color: "white" }}>
-          {name}
-        </Text>
-      </TouchableHighlight>
+        )}>
+        {name}
+      </Text>
+      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+        <Icon name={"phone"} type={'entypo'} size={16} />
+        <Text style={{ fontSize: 16 }}> {contact_number}</Text>
+      </View>
     </View>
-  );
+
+    <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+      <Text style={{ fontSize: 16 }}>Delivery Time: {eta}</Text>
+      <Text style={{ fontSize: 16 }}>Flat Rate: ₱ {flatRate}.00</Text>
+    </View>
+
+  </View>
+  )
+}
 
   renderSectionFooter = ({
-    section: { name, flatRate, eta, sub_eta, total, slug }
+    section: { total, slug }
   }) => (
     <View
       style={{
@@ -156,23 +170,13 @@ class CheckoutScreen extends Component {
         backgroundColor: "#5999C8",
         paddingHorizontal: 20,
         paddingVertical: 10,
-        marginBottom: 3
+        marginBottom: 5
       }}
     >
       <View style={{ flex: 1 }}>
-        <View style={{ flexDirection: "row" }}>
-          <Text style={{ color: "white" }}>Flat Rate: </Text>
-          <Text style={{ color: "white" }}>{flatRate} PHP</Text>
-        </View>
         <View style={{ flexDirection: "row", alignItems: "center" }}>
-          <Text style={{ color: "white" }}>ETA: </Text>
-          <Text style={{ color: "white" }}> {sub_eta} MINS </Text>
-          <Icon name="ios-timer" type="ionicon" color={"white"} />
-        </View>
-        <Divider style={{ backgroundColor: "white", width: "90%" }} />
-        <View style={{ flexDirection: "row", alignItems: "center" }}>
-          <Text style={{ color: "white" }}>Total: </Text>
-          <Text style={{ color: "white" }}>₱ {total} </Text>
+          <Text style={{ color: "white", fontSize: 16 }}>Total: </Text>
+          <Text style={{ color: "white", fontSize: 16 }}>₱ {total} </Text>
         </View>
       </View>
       <View style={{ flex: 1, alignSelf: "flex-start" }}>
@@ -188,7 +192,8 @@ class CheckoutScreen extends Component {
             borderRadius: 5
           }}
           keyboardType={"number-pad"}
-          inputStyle={{ backgroundColor: "white", borderBottomColor: "white" }}
+          inputContainerStyle={{ borderBottomWidth: 0 }}
+          inputStyle={{ backgroundColor: "white", textAlign: this.state[slug] ? 'right' : 'left' }}
         />
       </View>
     </View>
@@ -305,94 +310,52 @@ class CheckoutScreen extends Component {
         </View>
       );
     return (
-      <View style={{ flex: 1 }}>
+      <KeyboardShift style={{ flex: 1 }}>
         <NavigationEvents onWillFocus={makeRemoteRequest} />
         <Loading loading={screenLoading} size={"large"} />
-        <View
-          style={{
-            flex: 1,
-            borderColor: "gray",
-            borderBottomWidth: 1,
-            paddingHorizontal: 10,
-            justifyContent: "center"
-          }}
-        >
-          <Text style={{ fontSize: 18, fontWeight: "500" }}>Your Cart</Text>
-        </View>
-        <View style={{ flex: 8 }}>
+        <View style={{ flex: 8, justifyContent: 'center' }}>
+          <View style={{ borderBottomWidth: 0.7, paddingHorizontal: 10, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingVertical: 10 }}>
+            <Image 
+              source={{ uri: 'http://pinoyfoodcart.com/material/img/navBrand.png' }} 
+              style={{ height: 35, width: 150, resizeMode: "contain" }} 
+            />
+            <Text style={{ fontSize: 18, fontWeight: '500' }}>Your Bag</Text>
+          </View>
           <SectionList
             sections={checkout}
             keyExtractor={(item, index) => item + index}
             renderSectionHeader={renderSectionHeader}
             renderSectionFooter={renderSectionFooter}
             renderItem={renderItem}
+            showsVerticalScrollIndicator={false}
             ListFooterComponent={renderFooter}
             ListEmptyComponent={renderEmpty}
           />
         </View>
-        <View
-          style={{
-            flex: 4,
-            borderColor: "gray",
-            borderTopWidth: 1,
-            justifyContent: "center"
-          }}
-        >
-          <View
-            style={{
-              alignItems: "center",
-              paddingVertical: 10,
-              backgroundColor: "#5999C8"
-            }}
-          >
+        <View style={{ flex: 4, borderColor: "gray", borderTopWidth: 1, justifyContent: "center" }}>
+          
+          <View style={{ flex: 1, alignItems: "center", justifyContent: 'center', paddingVertical: 10, backgroundColor: "#1B73B4" }}>
             <Text style={{ color: "white", fontSize: 16, fontWeight: "500" }}>
               Billing Information
             </Text>
           </View>
-          <ScrollView>
-            <View
-              style={{
-                justifyContent: "space-evenly",
-                paddingHorizontal: 10,
-                paddingVertical: 5,
-                borderColor: "gray",
-                borderBottomWidth: 0.8
-              }}
-            >
-              <Text style={{ fontWeight: "500" }}>Estimated Time: </Text>
-              <Text style={{ fontWeight: "normal" }}>{totalCookTime} MINS</Text>
-            </View>
 
-            <View
-              style={{
-                justifyContent: "space-evenly",
-                paddingHorizontal: 10,
-                paddingVertical: 5,
-                borderColor: "gray",
-                borderBottomWidth: 0.8
-              }}
-            >
-              <Text style={{ fontWeight: "500" }}>Total Flat Rate: </Text>
-              <Text style={{ fontWeight: "normal" }}>₱ {totalFlatRate}</Text>
-            </View>
+          <View style={styles.billingRow}>
+            <Text style={{ fontWeight: "500" }}>Estimated Time: </Text>
+            <Text style={{ fontWeight: "normal" }}>{totalCookTime} mins</Text>
+          </View>
 
-            <View
-              style={{
-                justifyContent: "space-evenly",
-                paddingHorizontal: 10,
-                paddingVertical: 5,
-                borderColor: "gray",
-                borderBottomWidth: 0.8
-              }}
-            >
-              <Text style={{ fontWeight: "500" }}>Grand Total: </Text>
-              <Text style={{ fontWeight: "normal" }}>₱ {grandTotal}</Text>
-            </View>
+          <View style={styles.billingRow}>
+            <Text style={{ fontWeight: "500" }}>Total Flat Rate: </Text>
+            <Text style={{ fontWeight: "normal" }}>₱ {totalFlatRate}.00</Text>
+          </View>
 
-            <View style={{ height: 10 }} />
-          </ScrollView>
+          <View style={styles.billingRow}>
+            <Text style={{ fontWeight: "500" }}>Grand Total: </Text>
+            <Text style={{ fontWeight: "normal" }}>₱ {grandTotal}.00</Text>
+          </View>
         </View>
-      </View>
+      </KeyboardShift>
     );
   }
 }
@@ -409,5 +372,15 @@ const styles = {
     backgroundColor: "white",
     borderBottomColor: "lightgrey",
     borderBottomWidth: 1
-  }
+  },
+  billingRow: { 
+    flex: 1, 
+    flexDirection: 'row',
+    alignItems: 'center', 
+    justifyContent: "space-between", 
+    paddingHorizontal: 10, 
+    paddingVertical: 5, 
+    borderColor: "gray", 
+    borderBottomWidth: 0.8 
+  },
 };
