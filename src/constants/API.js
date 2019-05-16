@@ -90,6 +90,7 @@ export const CUSTOMER_CART_EMPTY = `guest/cart/empty`;
 export const CUSTOMER_CART_SELECT = id => `guest/cart/${id}`;
 export const CUSTOMER_PROFILE = `profile`;
 export const CUSTOMER_NOTIFICATION_CART = `guest/notification/cart`;
+export const CUSTOMER_HOME = `home`;
 
 export const CHECKOUT = `checkout`;
 

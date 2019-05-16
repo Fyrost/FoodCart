@@ -771,6 +771,12 @@ export const getNotifCart = () => {
     method: "get"
   });
 };
+export const getHome = () => {
+  return Axios({
+    url: API.CUSTOMER_HOME,
+    method: "get"
+  });
+};
 
 export const getProfile = accessLevel => {
   return Axios({
