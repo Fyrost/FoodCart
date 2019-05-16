@@ -3,7 +3,8 @@ import {
   View,
   SectionList,
   ActivityIndicator,
-  ScrollView
+  ScrollView,
+  TouchableOpacity
 } from "react-native";
 import { Text, Input, Icon, Divider, Image } from "react-native-elements";
 import _ from "lodash";
@@ -118,19 +119,10 @@ class CheckoutScreen extends Component {
 
   renderSectionHeader = ({ section: { name, slug, contact_number, eta, flatRate } }) => {
     return (
-    <View
-      style={{
-        borderColor: 'grey',
-        borderTopWidth: 0.8,
-        borderBottomWidth: 0.8,
-        paddingHorizontal: 20,
-        paddingVertical: 10,
-        marginTop: 10
-      }}
-    >
+    <View style={ styles.sectionHeaderMainRow }>
     <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
-      <Text 
-        style={{ fontWeight: "500", fontSize: 18, color: "#11CDEF" }} 
+      <TouchableOpacity
+        activeOpacity={0.5}
         onPress={_.debounce(
           () =>
             this.props.navigation.push("UserRestoMenu", {
@@ -141,9 +133,13 @@ class CheckoutScreen extends Component {
             leading: true,
             trailing: false
           }
-        )}>
-        {name}
-      </Text>
+        )}
+      >
+        <Text style={{ fontWeight: "500", fontSize: 18, color: "#11CDEF" }}>
+          {name}
+        </Text>
+      </TouchableOpacity>
+     
       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
         <Icon name={"phone"} type={'entypo'} size={16} />
         <Text style={{ fontSize: 16 }}> {contact_number}</Text>
@@ -162,37 +158,38 @@ class CheckoutScreen extends Component {
   renderSectionFooter = ({
     section: { total, slug, sub_eta }
   }) => (
-    <View style={{ flex: 1, justifyContent: "space-evenly", backgroundColor: "#5999C8", paddingVertical: 10, paddingHorizontal:  20, marginBottom: 5 }}>
+    <View style={styles.sectionFooterMainRow}>
       
       <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingVertical: 5 }} >
-        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-          <Text style={{ color: 'white', fontSize: 16 }}>Estimated Time: </Text>
-          <Text style={{ color: 'white', fontSize: 16 }}>{sub_eta} mins</Text>
-        </View>
-
-        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+        
+        <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
           <Text style={{ color: 'white', fontSize: 16 }}>Total: </Text>
           <Text style={{ color: 'white', fontSize: 16 }}>₱ {total}.00</Text>
         </View>
+        
+        <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
+          <Input
+            value={this.state[slug]}
+            onChangeText={text => {
+              this.setState({ [slug]: text });
+            }}
+            placeholder={"Change for..."}
+            containerStyle={{
+              backgroundColor: "white",
+              borderRadius: 5
+            }}
+            keyboardType={"number-pad"}
+            inputContainerStyle={{ borderBottomWidth: 0 }}
+            inputStyle={{ fontSize: 16, backgroundColor: "white", textAlign: this.state[slug] ? 'right' : 'left' }}
+          />
+        </View>
+
       </View>
       
-      <View style={{ flex: 1, alignItems: "flex-end", paddingVertical: 5 }}>
-        <Input
-          value={this.state[slug]}
-          onChangeText={text => {
-            this.setState({ [slug]: text });
-          }}
-          placeholder={"Change for..."}
-          containerStyle={{
-            width: '40%',
-            backgroundColor: "white",
-            borderRadius: 5
-          }}
-          keyboardType={"number-pad"}
-          inputContainerStyle={{ borderBottomWidth: 0 }}
-          inputStyle={{ fontSize: 16, backgroundColor: "white", textAlign: this.state[slug] ? 'right' : 'left' }}
-        />
-      </View>
+      <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center', paddingVertical: 5 }}>
+        <Text style={{ color: 'white', fontSize: 16 }}>Estimated Time: </Text>
+          <Text style={{ color: 'white', fontSize: 16 }}>{sub_eta} mins</Text>
+        </View>
     </View>
   );
 
@@ -310,14 +307,14 @@ class CheckoutScreen extends Component {
       <KeyboardShift style={{ flex: 1 }}>
         <NavigationEvents onWillFocus={makeRemoteRequest} />
         <Loading loading={screenLoading} size={"large"} />
-        <View style={{ flex: 8, justifyContent: 'center' }}>
-          <View style={styles.logoRow}>
-            <Image 
-              source={{ uri: 'http://pinoyfoodcart.com/material/img/navBrand.png' }} 
-              style={{ height: 35, width: 150, resizeMode: "contain" }} 
-            />
-            <Text style={{ fontSize: 18, fontWeight: '500' }}>Your Bag</Text>
-          </View>
+        <View style={styles.logoRow}>
+          <Image 
+            source={{ uri: 'http://pinoyfoodcart.com/material/img/navBrand.png' }} 
+            style={{ height: 35, width: 150, resizeMode: "contain" }} 
+          />
+          <Text style={{ fontSize: 18, fontWeight: '500' }}>Your Bag</Text>
+        </View>
+        <ScrollView contentContainerStyle={{ paddingHorizontal: 10 }}>
           <SectionList
             sections={checkout}
             keyExtractor={(item, index) => item + index}
@@ -328,11 +325,10 @@ class CheckoutScreen extends Component {
             ListFooterComponent={renderFooter}
             ListEmptyComponent={renderEmpty}
           />
-        </View>
-        <View style={{ flex: 4, borderColor: "gray", borderTopWidth: 1, justifyContent: "center" }}>
-          
-          <View style={{ flex: 1, alignItems: "center", justifyContent: 'center', paddingVertical: 10, backgroundColor: "#1B73B4" }}>
-            <Text style={{ color: "white", fontSize: 16, fontWeight: "500" }}>
+        </ScrollView>
+        <View style={{ borderColor: "gray", borderTopWidth: 1, justifyContent: "center" }}>
+          <View style={{ justifyContent: 'center', paddingVertical: 10, paddingHorizontal: 10, backgroundColor: "#1B73B4" }}>
+            <Text style={{ color: "white", fontSize: 18, fontWeight: "500" }}>
               Billing Information
             </Text>
           </View>
@@ -367,11 +363,10 @@ const styles = {
     justifyContent: "space-between",
     paddingVertical: 10,
     backgroundColor: "white",
-    borderBottomColor: "lightgrey",
-    borderBottomWidth: 1
+    borderWidth: 0.6,
+    borderColor: 'grey',
   },
   billingRow: { 
-    flex: 1, 
     flexDirection: 'row',
     alignItems: 'center', 
     justifyContent: "space-between", 
@@ -394,4 +389,35 @@ const styles = {
     borderBottomWidth: 0.1,
     borderBottomColor: 'rgba(0, 0, 0, 0.1)'
   },
+  sectionFooterMainRow: { 
+    flex: 1, 
+    justifyContent: "space-evenly", 
+    backgroundColor: "#5999C8", 
+    paddingVertical: 10, 
+    paddingHorizontal: 20, 
+    marginBottom: 5,
+    borderColor: 'grey',
+    borderWidth: 0.6,
+    borderBottomLeftRadius: 3,
+    borderBottomRightRadius: 3,
+    borderTopWidth: 0.6,
+    borderTopColor: 'lightgrey',
+    shadowOffset: { 
+      height: 1, 
+      width: 0 
+    },
+    elevation: 2,
+  },
+  sectionHeaderMainRow:{
+    borderColor: 'grey',
+    borderTopWidth: 0.8,
+    borderBottomWidth: 0.8,
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    borderWidth: 0.6,
+    borderTopLeftRadius: 3,
+    borderTopRightRadius: 3,
+    borderBottomWidth: 0,
+    marginTop: 10
+  }  
 };
