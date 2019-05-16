@@ -198,56 +198,45 @@ class CartScreen extends Component {
   }
 
   renderSectionHeader = ({ section: { name, flatRate, eta } }) => (
-    <View
-      style={{
-        alignItems: "center",
-        justifyContent: "center",
-        backgroundColor: "#1B73B4",
-        paddingHorizontal: 20,
-        paddingVertical: 10,
-        borderColor: "lightgrey",
-        borderBottomWidth: 1
-      }}
-    >
-      <View style={{ alignItems: "center" }}>
-        <Text style={{ fontWeight: "500", fontSize: 18, color: "white" }}>
+    <View style={styles.sectionHeaderMainRow} >
+      <View>
+        <Text style={{ fontWeight: "500", fontSize: 18, color: '#11CDEF', paddingVertical: 5 }}>
           {name}
         </Text>
       </View>
 
       <View
         style={{
-          flexGrow: 1,
           flexDirection: "row",
           alignItems: "center",
-          justifyContent: "center",
-          paddingHorizontal: 20
+          justifyContent: "space-between"
         }}
       >
         <View
           style={{
             flexDirection: "row",
-            alignItems: "center",
-            paddingHorizontal: 10
+            alignItems: "center"
           }}
         >
-          <Text style={{ color: "white" }}>Flat Rate: </Text>
-          <Text style={{ color: "white" }}>{flatRate} PHP</Text>
+          <Text>Delivery Time: </Text>
+          <Text> {eta} mins</Text>
         </View>
         <View
           style={{
             flexDirection: "row",
-            alignItems: "center",
-            paddingHorizontal: 10
+            alignItems: "center"
           }}
         >
-          <Text style={{ color: "white" }}>ETA: </Text>
-          <Text style={{ color: "white" }}> {eta} MINS </Text>
-          <Icon name="ios-timer" type="ionicon" color={"white"} />
+          <Text>Flat Rate: </Text>
+          <Text>₱ {flatRate}.00</Text>
         </View>
       </View>
     </View>
   );
+
+  renderSectionFooter = () => (
+    <View style={styles.sectionFooterMainRow} />
+  )
 
   computeTotal = () => {
     let total = 0;
@@ -281,9 +270,8 @@ class CartScreen extends Component {
   }) => {
     return (
       <View style={styles.mainRow} key={index} onPress={() => alert(item.slug)}>
-        <View
-          style={{
-            flex: 2,
+        <View style={{
+            flex: 1,
             flexDirection: "row",
             justifyContent: "flex-start",
             alignItems: "center",
@@ -298,68 +286,44 @@ class CartScreen extends Component {
               style={{ height: 100, width: 100, resizeMode: "cover" }}
             />
           )}
-          <View style={{ paddingHorizontal: 10 }}>
-            <Text style={{ fontSize: 16, fontWeight: "600" }}>{name}</Text>
-            <View
-              style={{
-                flexDirection: "row",
-                alignItems: "center",
-                justifyContent: "space-between"
-              }}
-            >
-              <Text>{price} PHP </Text>
-              <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                  alignItems: "center"
-                }}
-              >
-                <Text>{cooking_time} MINS</Text>
-              </View>
-            </View>
-          </View>
         </View>
 
         <View
           style={{
-            flex: 1,
-            flexDirection: "row",
-            alignItems: "center",
-            justifyContent: "flex-end",
+            flex: 2,
             paddingHorizontal: 10,
-            marginLeft: 20,
-            paddingRight: 10
+            justifyContent: 'space-evenly'
           }}
         >
-          <TouchableOpacity
-            activeOpacity={0.4}
-            style={{
-              flex: 1,
-              height: 35,
-              width: 50,
-              justifyContent: "center",
-              alignItems: "center",
-              borderColor: "#11CDEF",
-              borderBottomWidth: 1
-            }}
-            onPress={() => this.handleEdit(quantity, id)}
-          >
-            <Text style={{ fontSize: 20 }}>{quantity}</Text>
-          </TouchableOpacity>
+          <View style={{ flex: 1, paddingHorizontal: 10, justifyContent: 'center' }}>
+            <Text style={{ fontSize: 16, fontWeight: "600" }}>{name}</Text>
+            <Text>₱ {price}.00</Text>
+            <Text>{cooking_time} mins</Text>
+          </View>
+          
+          <View style={{ flexDirection: 'row', justifyContent: "flex-end", paddingHorizontal: 10, alignItems: "center" }}>
+            <TouchableOpacity
+              activeOpacity={0.4}
+              style={{
+                height: 35,
+                width: 'auto',
+                paddingHorizontal: 10,
+                marginHorizontal: 5,
+                justifyContent: "center",
+                alignItems: "center",
+                borderColor: "#11CDEF",
+                borderBottomWidth: 1
+              }}
+              onPress={() => this.handleEdit(quantity, id)}
+            >
+              <Text style={{ fontSize: 20 }}>{quantity}</Text>
+            </TouchableOpacity>
 
-          <View
-            style={{
-              flex: 1,
-              justifyContent: "space-evenly",
-              alignItems: "center"
-            }}
-          >
             <Icon
               name={"trash"}
               type={"font-awesome"}
               color={"#1B73B4"}
-              size={30}
+              size={26}
               onPress={() =>
                 ConfirmAlert(
                   "Delete Item",
@@ -367,7 +331,7 @@ class CartScreen extends Component {
                   this.handleDelete.bind(this, id)
                 )
               }
-              containerStyle={{ paddingVertical: 5 }}
+              containerStyle={{ marginLeft: 6, paddingVertical: 5 }}
             />
           </View>
         </View>
@@ -411,35 +375,21 @@ class CartScreen extends Component {
       );
 
     return (
-      <View style={{ flex: 1 }}>
-        <View style={{ flex: 3 }}>
-          <ScrollView>
-            <NavigationEvents onWillFocus={makeRemoteRequest}/>
-            <Loading loading={screenLoading} opacity={0.5} size={50}/>
-            {editOverlayVisible && renderOverLay()}
-            <SectionList
-              sections={cart}
-              keyExtractor={(item, index) => item + index}
-              renderSectionHeader={renderSectionHeader}
-              renderItem={renderItem}
-              ListFooterComponent={renderFooter}
-              ListEmptyComponent={renderEmpty}
-            />
-          </ScrollView>
-        </View>
-        <View style={{ flex: 1, justifyContent: 'space-evenly', paddingVertical: 10, paddingHorizontal: 15 }}>
-          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            <Text>Estimated Time : {this.computeMins()} mins ( NEED FORMULA )</Text>
-          </View>
-
-          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            <Text>Total Flat Rate : ₱ {this.computeFlatRate()}.00</Text>
-          </View>
-
-          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            <Text>Grand Total : ₱ {this.computeTotal()}.00</Text>
-          </View>
-        </View>
+      <View style={{ flex: 1, justifyContent: 'center' }}>
+        <ScrollView contentContainerStyle={{ paddingHorizontal: 10 }}>
+          <NavigationEvents onWillFocus={makeRemoteRequest}/>
+          <Loading loading={screenLoading} opacity={0.5} size={50}/>
+          {editOverlayVisible && renderOverLay()}
+          <SectionList
+            sections={cart}
+            keyExtractor={(item, index) => item + index}
+            renderSectionHeader={renderSectionHeader}
+            renderSectionFooter={renderSectionFooter}
+            renderItem={renderItem}
+            ListFooterComponent={renderFooter}
+            ListEmptyComponent={renderEmpty}
+          />
+        </ScrollView>
       </View>
     );
   }
@@ -454,7 +404,32 @@ const styles = {
     alignItems: "center",
     justifyContent: "space-between",
     paddingVertical: 10,
-    borderBottomColor: "lightgrey",
-    borderBottomWidth: 1
+    borderColor: "lightgrey",
+    borderWidth: 1
+  },
+  sectionHeaderMainRow: {
+    justifyContent: "center",
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    borderColor: "lightgrey",
+    borderWidth: 1,
+    borderBottomWidth: 0,
+    borderTopLeftRadius: 3,
+    borderTopRightRadius: 3,
+    marginTop: 10
+  },
+  sectionFooterMainRow: {
+    height: 20,
+    borderWidth: 1,
+    borderColor: 'lightgrey',
+    borderTopWidth: 0,
+    borderBottomLeftRadius: 3,
+    borderBottomRightRadius: 3,
+    marginBottom: 10,
+    shadowOffset: { 
+      height: 1, 
+      width: 0 
+    },
+    elevation: 2,
   }
 };
