@@ -359,6 +359,7 @@ class CartScreen extends Component {
       makeRemoteRequest,
       renderOverLay,
       renderSectionHeader,
+      renderSectionFooter,
       renderItem,
       renderFooter,
       renderEmpty
@@ -430,6 +431,6 @@ const styles = {
       height: 1, 
       width: 0 
     },
-    elevation: 2,
+    elevation: 1,
   }
 };
