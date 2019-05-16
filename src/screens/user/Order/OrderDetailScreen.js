@@ -177,13 +177,12 @@ class OrderDetailScreen extends Component {
 
   renderItem = ({ item: { name, price, cooking_time, quantity }, index }) => (
     <View style={styles.mainRow}>
-      <View style={{ flex: 3, paddingHorizontal: 10 }}>
+      <View style={{ flex: 3, paddingHorizontal: 20 }}>
         <Text style={{ fontSize: 16, fontWeight: "500" }}>{name}</Text>
         <View
           style={{
             flexDirection: "row",
             alignItems: "center",
-            paddingHorizontal: 10
           }}
         >
           <Text>Price: </Text>
@@ -192,8 +191,7 @@ class OrderDetailScreen extends Component {
         <View
           style={{
             flexDirection: "row",
-            alignItems: "center",
-            paddingHorizontal: 10
+            alignItems: "center"
           }}
         >
           <Text>Cooking Time: </Text>
@@ -207,24 +205,11 @@ class OrderDetailScreen extends Component {
           flexDirection: "row",
           alignItems: "center",
           justifyContent: "flex-end",
-          paddingHorizontal: 10,
-          marginLeft: 20,
-          paddingRight: 10
+          paddingHorizontal: 20
         }}
       >
-        <View
-          style={{
-            flex: 1,
-            height: 35,
-            width: "auto",
-            justifyContent: "center",
-            alignItems: "center",
-            borderColor: "#11CDEF",
-            borderBottomWidth: 1
-          }}
-        >
-          <Text style={{ fontSize: 20 }}>{quantity}</Text>
-        </View>
+        <Text>Quantity: </Text>
+        <Text>{quantity}</Text>
       </View>
     </View>
   );

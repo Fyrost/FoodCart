@@ -65,6 +65,7 @@ class OrderOnProcessListScreen extends Component {
     return (
       <ListItem
         title={`Order # ${code}`}
+        titleStyle={{ fontSize: 18 }}
         subtitle={subtitle.text}
         subtitleStyle={subtitle.style}
         chevron={true}

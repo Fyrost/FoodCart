@@ -61,6 +61,9 @@ export const menuIcon = ({ tintColor }) => (
   />
 );
 export const customerIcon = ({ tintColor }) => (
+  <Icon name={"user"} type={"font-awesome"} color={tintColor} />
+);
+export const userIcon = ({ tintColor }) => (
   <Icon name={"users"} type={"font-awesome"} color={tintColor} />
 );
 export const salesIcon = ({ tintColor }) => (

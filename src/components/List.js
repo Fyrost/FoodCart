@@ -1,7 +1,7 @@
 import React, { Component } from "React";
 import { View, Text, FlatList, ActivityIndicator } from "react-native";
 import ActivityLoading from "./ActivityLoading";
-class List extends Component {
+class   List extends Component {
   keyExtractor = (item, index) => index.toString();
 
   renderFooter = () => {

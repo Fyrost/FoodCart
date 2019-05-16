@@ -448,36 +448,48 @@ class OrderViewScreen extends Component {
   };
 
   renderItem = ({ item: { id, name, cooking_time, quantity } }) => (
-    <View>
-      <View
-        style={{
-          paddingHorizontal: 10,
-          paddingVertical: 5,
-          backgroundColor: "#5999C8"
-        }}
-      >
-        <Text style={{ color: "white", fontSize: 18, fontWeight: "500" }}>
-          Menu: {name}
-        </Text>
-      </View>
-      <View
-        style={{
-          justifyContent: "space-evenly",
-          paddingHorizontal: 10,
-          paddingVertical: 10,
-          borderColor: "gray",
-          borderBottomWidth: 0.5
-        }}
-      >
-        <View style={{ flexDirection: "row", alignItems: "center" }}>
-          <Text style={{ fontWeight: "500", fontSize: 16 }}>Cook Time: </Text>
-          <Text style={{ fontWeight: "normal", fontSize: 16 }}>
-            {cooking_time} mins
+    <View 
+      style={{ 
+        marginHorizontal: 10,
+        marginVertical: 10, 
+      }} 
+    >
+      <View style={{ borderRadius: 3, borderColor: 'lightgrey', borderWidth: 1 }}>
+        <View
+          style={{
+            paddingHorizontal: 10,
+            paddingVertical: 5,
+            borderBottomWidth: 1,
+            borderBottomColor: 'lightgrey',
+            backgroundColor: '#11CDEF'
+          }}
+        >
+          <Text style={{ color: "white", fontSize: 18, fontWeight: "500" }}>
+            {name}
           </Text>
         </View>
-        <View style={{ flexDirection: "row", alignItems: "center" }}>
-          <Text style={{ fontWeight: "500", fontSize: 16 }}>Quantity: </Text>
-          <Text style={{ fontWeight: "normal", fontSize: 16 }}>{quantity}</Text>
+        <View
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            paddingHorizontal: 10,
+            paddingVertical: 10,
+            borderColor: "gray",
+            borderBottomWidth: 0.5
+          }}
+        >
+          <View style={{ flexDirection: "row", alignItems: "center" }}>
+            <Text style={{ fontWeight: "500", fontSize: 16 }}>Quantity: </Text>
+            <Text style={{ fontWeight: "normal", fontSize: 16 }}>{quantity}</Text>
+          </View>
+
+          <View style={{ flexDirection: "row", alignItems: "center" }}>
+            <Text style={{ fontWeight: "500", fontSize: 16 }}>Cook Time: </Text>
+            <Text style={{ fontWeight: "normal", fontSize: 16 }}>
+              {cooking_time} mins
+            </Text>
+          </View>
         </View>
       </View>
     </View>
@@ -492,6 +504,19 @@ class OrderViewScreen extends Component {
       itemList,
       error
     } = this.state;
+    const subtitle =
+      status === "pending"
+        ? { text: "Pending", style: styles.pendingStyle }
+        : status === "processing"
+        ? { text: "Processing", style: styles.processingStyle }
+        : status === "delivering"
+        ? { text: "Delivering", style: styles.deliveringStyle }
+        : status === "completed"
+        ? { text: "Completed", style: styles.completedStyle }
+        : status === "rejected"
+        ? { text: "Rejected", style: styles.rejectedStyle }
+        : { text: "Cancelled", style: styles.cancelledStyle }
+
     if (loading) return <ActivityLoading type={"list"} size={"large"} />;
     if (error) return <Text>{error}</Text>;
     return (
@@ -499,150 +524,75 @@ class OrderViewScreen extends Component {
         <NavigationEvents onWillFocus={this.makeRemoteRequest} />
         <Loading loading={this.state.screenLoading} opacity={0.5} size={50} />
         {this.renderReportOverlay()}
-        <View
-          style={{
-            flex: 1,
-            borderColor: "gray",
-            borderBottomWidth: 1,
-            paddingHorizontal: 10,
-            paddingVertical: 10,
-            justifyContent: "center"
-          }}
-        >
-          <View>
-            <Text style={{ fontSize: 14 }}>Code#: {code}</Text>
-            <Text style={{ fontSize: 14 }}>Received: {received}</Text>
-            <View style={{ flexDirection: "row", alignItems: "center" }}>
-              <Text style={{ fontSize: 14 }}>Status: </Text>
-              <Text style={{ fontSize: 14 }}>{status}</Text>
-            </View>
+        <View style={{ flex: 5, borderColor: "gray", borderWidth: 1, justifyContent: "center" }}>
+          <View style={{ alignItems: "center", paddingVertical: 10, backgroundColor: "#5999C8" }}>
+            <Text style={{ color: "white", fontSize: 16, fontWeight: "500" }}>
+              Billing Information
+            </Text>
           </View>
+          <ScrollView>
+            <View style={styles.billingRow}>
+              <Text style={styles.billingTitle}>Order #:</Text>
+              <Text style={styles.billingText}>{code}</Text>
+            </View>
+
+            <View style={styles.billingRow}>
+              <Text style={styles.billingTitle}>Received:</Text>
+              <Text style={styles.billingText}>{received}</Text>
+            </View>
+            
+            <View style={styles.billingRow}>
+              <Text style={styles.billingTitle}>Status: </Text>
+              <Text style={subtitle.style}>{subtitle.text}</Text>
+            </View>
+
+            <View style={styles.billingCol}>
+              <Text style={styles.billingTitle}>Deliver to: </Text>
+              <Text style={styles.billingText}>{name}</Text>
+            </View>
+            <View style={styles.billingCol}>
+              <Text style={styles.billingTitle}>Address: </Text>
+              <Text style={styles.billingText}>{address}</Text>
+            </View>
+
+            <View style={styles.billingCol}>
+              <Text style={styles.billingTitle}>Contact Number: </Text>
+              <Text style={styles.billingText}>{contact}</Text>
+            </View>
+
+            
+            <View style={styles.billingRow}>
+              <Text style={styles.billingTitle}>Estimated Time: </Text>
+              <Text style={styles.billingText}>{cookTime} mins</Text>
+            </View>
+
+            <View style={styles.billingRow}>
+              <Text style={styles.billingTitle}>Total: </Text>
+              <Text style={styles.billingText}>₱ {total}.00</Text>
+            </View>
+
+            <View style={styles.billingRow}>
+              <Text style={styles.billingTitle}>Payment: </Text>
+              <Text style={styles.billingText}>₱ {payment}.00</Text>
+            </View>
+
+            <View style={styles.billingRow}>
+              <Text style={styles.billingTitle}>Change: </Text>
+              <Text style={styles.billingText}>₱ {change}.00</Text>
+            </View> 
+          </ScrollView>
         </View>
-        <View style={{ flex: 6 }}>
+        <View style={{ flex: 5, justifyContent: 'center' }}>
           <List
-            listContainerStyle={{ flex: 1 }}
+            listContainerStyle={{ flex: 1}}
+            divider={"none"}
             data={itemList}
             renderItem={this.renderItem}
             loading={loading}
             emptyText={"No item Found"}
             listFooterComponent={null}
             showsVerticalScrollIndicator={false}
-            contentContainerStyle={{ paddingBottom: 75 }}
           />
-        </View>
-        <View
-          style={{
-            flex: 4,
-            borderColor: "gray",
-            borderTopWidth: 1,
-            justifyContent: "center"
-          }}
-        >
-          <View
-            style={{
-              alignItems: "center",
-              paddingVertical: 10,
-              backgroundColor: "#5999C8"
-            }}
-          >
-            <Text style={{ color: "white", fontSize: 16, fontWeight: "500" }}>
-              Billing Information
-            </Text>
-          </View>
-          <ScrollView>
-            <View
-              style={{
-                justifyContent: "space-evenly",
-                paddingHorizontal: 10,
-                paddingVertical: 5,
-                borderColor: "gray",
-                borderBottomWidth: 0.8
-              }}
-            >
-              <Text style={{ fontWeight: "500" }}>Deliver to: </Text>
-              <Text style={{ fontWeight: "normal" }}>{name}</Text>
-            </View>
-
-            <View
-              style={{
-                justifyContent: "space-evenly",
-                paddingHorizontal: 10,
-                paddingVertical: 5,
-                borderColor: "gray",
-                borderBottomWidth: 0.8
-              }}
-            >
-              <Text style={{ fontWeight: "500" }}>Address: </Text>
-              <Text style={{ fontWeight: "normal" }}>{address}</Text>
-            </View>
-
-            <View
-              style={{
-                justifyContent: "space-evenly",
-                paddingHorizontal: 10,
-                paddingVertical: 5,
-                borderColor: "gray",
-                borderBottomWidth: 0.8
-              }}
-            >
-              <Text style={{ fontWeight: "500" }}>Contact Number: </Text>
-              <Text style={{ fontWeight: "normal" }}>{contact}</Text>
-            </View>
-
-            <View
-              style={{
-                justifyContent: "space-evenly",
-                paddingHorizontal: 10,
-                paddingVertical: 5,
-                borderColor: "gray",
-                borderBottomWidth: 0.8
-              }}
-            >
-              <Text style={{ fontWeight: "500" }}>Estimated Time: </Text>
-              <Text style={{ fontWeight: "normal" }}>{cookTime} MINS</Text>
-            </View>
-
-            <View
-              style={{
-                justifyContent: "space-evenly",
-                paddingHorizontal: 10,
-                paddingVertical: 5,
-                borderColor: "gray",
-                borderBottomWidth: 0.8
-              }}
-            >
-              <Text style={{ fontWeight: "500" }}>Total: </Text>
-              <Text style={{ fontWeight: "normal" }}>₱ {total}</Text>
-            </View>
-
-            <View
-              style={{
-                justifyContent: "space-evenly",
-                paddingHorizontal: 10,
-                paddingVertical: 5,
-                borderColor: "gray",
-                borderBottomWidth: 0.8
-              }}
-            >
-              <Text style={{ fontWeight: "500" }}>Payment: </Text>
-              <Text style={{ fontWeight: "normal" }}>₱ {payment}</Text>
-            </View>
-
-            <View
-              style={{
-                justifyContent: "space-evenly",
-                paddingHorizontal: 10,
-                paddingVertical: 5,
-                borderColor: "gray",
-                borderBottomWidth: 0.8
-              }}
-            >
-              <Text style={{ fontWeight: "500" }}>Change: </Text>
-              <Text style={{ fontWeight: "normal" }}>₱ {change}</Text>
-            </View>
-
-            <View style={{ height: 10 }} />
-          </ScrollView>
         </View>
         {this.renderButton()}
       </View>
@@ -651,3 +601,66 @@ class OrderViewScreen extends Component {
 }
 
 export default OrderViewScreen;
+
+const normal = {
+  fontSize: 16,
+  fontWeight: "500"
+}
+const styles = {
+  billingCol: {
+    justifyContent: "space-evenly",
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    borderColor: "gray",
+    borderBottomWidth: 0.8
+  },
+  billingRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: "space-between",
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    borderColor: "gray",
+    borderBottomWidth: 0.8
+  },
+  billingTitle: {
+    fontSize: 16, 
+    fontWeight: "500"
+  },
+  billingText: {
+    fontSize: 16, 
+    fontWeight: "normal"
+  },
+  headerRow: {
+    flex: 5,
+    borderColor: "gray",
+    borderBottomWidth: 1,
+    paddingHorizontal: 10,
+    paddingVertical: 15,
+    justifyContent: "center"
+  },
+  pendingStyle: {
+    ...normal,
+    color: "#9DA0A3"
+  },
+  processingStyle: {
+    ...normal,
+    color: "#11CDEF"
+  },
+  deliveringStyle: {
+    ...normal,
+    color: "#f1c40f"
+  },
+  completedStyle: {
+    ...normal,
+    color: "#00CC66"
+  },
+  rejectedStyle: {
+    ...normal,
+    color: "#EF1B17"
+  },
+  cancelledStyle: {
+    ...normal,
+    color: "orange"
+  }
+}

@@ -203,8 +203,7 @@ class CheckoutScreen extends Component {
           flex: 3,
           flexDirection: "row",
           justifyContent: "flex-start",
-          alignItems: "center",
-          paddingLeft: 20
+          alignItems: "center"
         }}
       >
         {image_name && (
@@ -362,6 +361,7 @@ const styles = {
     alignItems: "center",
     justifyContent: "space-between",
     paddingVertical: 10,
+    paddingHorizontal: 10,
     backgroundColor: "white",
     borderWidth: 0.6,
     borderColor: 'grey',

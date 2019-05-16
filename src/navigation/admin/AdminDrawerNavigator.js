@@ -28,6 +28,7 @@ import {
   restoIcon,
   menuIcon,
   customerIcon,
+  userIcon,
   salesIcon,
   reportIcon,
   logIcon,
@@ -128,7 +129,7 @@ const Users = {
   screen: UsersNavigator,
   navigationOptions: {
     title: "Users",
-    drawerIcon: ({ tintColor }) => customerIcon({ tintColor })
+    drawerIcon: ({ tintColor }) => userIcon({ tintColor })
   }
 };
 

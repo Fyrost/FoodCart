@@ -86,7 +86,6 @@ class RestoListScreen extends Component {
     return (
       <TouchableOpacity
         activeOpacity={0.7}
-        style={{ borderWidth: 0 }}
         onPress={_.debounce(
           () =>
             this.props.navigation.push("UserRestoMenu", { slug: item.slug }),
@@ -163,6 +162,7 @@ class RestoListScreen extends Component {
           numColumns={numColumns}
           refreshing={refreshing}
           onRefresh={handleRefresh}
+          divider={"none"}
         />
       </View>
     );

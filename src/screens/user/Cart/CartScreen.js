@@ -420,7 +420,8 @@ const styles = {
     marginTop: 10
   },
   sectionFooterMainRow: {
-    height: 20,
+    height: 30,
+    backgroundColor: '#5999C8',
     borderWidth: 1,
     borderColor: 'lightgrey',
     borderTopWidth: 0,

@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { View } from "react-native";
 import { Button, Icon } from "react-native-elements";
 import DrawerLayout from "./DrawerLayout";
+import _ from 'lodash'
 export default class UserDrawerLayout extends Component {
   userButton = () => (
     <View
@@ -18,7 +19,10 @@ export default class UserDrawerLayout extends Component {
         titleStyle={{ paddingLeft: 10 }}
         buttonStyle={[styles.drawerButton, { backgroundColor: "#EA5B7A" }]}
         containerStyle={{ flex: 1 }}
-        onPress={() => this.props.navigation.push("Favorite")}
+        onPress={_.debounce(() => this.props.navigation.push("Favorite"), 1500, {
+          leading: true,
+          trailing: false
+        })}
       />
       <Button
         title={"Cart"}
@@ -28,7 +32,10 @@ export default class UserDrawerLayout extends Component {
         titleStyle={{ paddingLeft: 10 }}
         buttonStyle={styles.drawerButton}
         containerStyle={{ flex: 1 }}
-        onPress={() => this.props.navigation.push("Cart")}
+        onPress={_.debounce(() => this.props.navigation.push("Cart"), 1500, {
+          leading: true,
+          trailing: false
+        })}
       />
     </View>
   );
