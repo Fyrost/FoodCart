@@ -50,18 +50,10 @@ class OrderCompletedListScreen extends Component {
     );
   };
   renderItem = ({ item }) => {
-    const subtitle
-    = item.status==="0" ?  {text:"Pending", color: '#9DA0A3'}  
-    : item.status==="1" ?  {text:"Processing", color: '#11CDEF'}
-    : item.status==="2" ?  {text:"Delivering", color: '#f1c40f'}
-    : item.status==="3" ?  {text:"Completed", color: '#00CC66'}
-    : item.status==="4" ?  {text:"Rejected",  color: '#EF1B17'}
-    : {text:"Cancelled", color: 'orange'}
     return(
       <ListItem
       title={"Order # " + item.code}
-      rightTitle={subtitle.text}
-      rightTitleStyle={{ fontWeight: '500', color:subtitle.color }}
+      titleStyle={{ fontWeight: "500", fontSize: 16, color: "#1B73B4" }}
       subtitle={item.date}
       chevron={true}
       
