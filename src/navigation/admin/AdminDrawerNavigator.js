@@ -31,7 +31,9 @@ import {
   salesIcon,
   reportIcon,
   logIcon,
-  orderIcon
+  orderIcon,
+  requestIcon,
+  banIcon
 } from "./navOptions/navIcons";
 import {
   getNotifPartner,
@@ -57,7 +59,7 @@ const Partnership = {
   navigationOptions: {
     title: "Partnership",
     drawerIcon: ({ tintColor }) => partnerIcon({ tintColor }),
-    drawerLabel: (
+    drawerLabel: ({ tintColor }) => (
       <View
         style={{
           flex: 1,
@@ -66,7 +68,7 @@ const Partnership = {
           justifyContent: "space-between"
         }}
       >
-        <Text h5 style={{ margin: 16, fontWeight: "bold" }}>
+        <Text h5 style={{ margin: 16, fontWeight: "bold", color: tintColor }}>
           Partnership
         </Text>
         <BadgeCounter promise={getNotifPartner} />
@@ -80,7 +82,7 @@ const Tag = {
   navigationOptions: {
     title: "Tags",
     drawerIcon: ({ tintColor }) => tagIcon({ tintColor }),
-    drawerLabel: (
+    drawerLabel: ({ tintColor }) => (
       <View
         style={{
           flex: 1,
@@ -89,7 +91,7 @@ const Tag = {
           justifyContent: "space-between"
         }}
       >
-        <Text h5 style={{ margin: 16, fontWeight: "bold" }}>
+        <Text h5 style={{ margin: 16, fontWeight: "bold", color: tintColor }}>
           Tags
         </Text>
         <BadgeCounter promise={getNotifTags} />
@@ -150,7 +152,7 @@ const Report = {
   navigationOptions: {
     title: "Reported Users",
     drawerIcon: ({ tintColor }) => reportIcon({ tintColor }),
-    drawerLabel: (
+    drawerLabel: ({ tintColor }) => (
       <View
         style={{
           flex: 1,
@@ -159,7 +161,7 @@ const Report = {
           justifyContent: "space-between"
         }}
       >
-        <Text h5 style={{ margin: 16, fontWeight: "bold" }}>
+        <Text h5 style={{ margin: 16, fontWeight: "bold", color: tintColor }}>
           Reported Users
         </Text>
         <BadgeCounter promise={getNotifReports} />
@@ -172,7 +174,7 @@ const Ban = {
   screen: BanNavigator,
   navigationOptions: {
     title: "Ban",
-    drawerIcon: ({ tintColor }) => logIcon({ tintColor })
+    drawerIcon: ({ tintColor }) => banIcon({ tintColor })
   }
 };
 
@@ -188,8 +190,8 @@ const Request = {
   screen: RequestNavigator,
   navigationOptions: {
     title: "Request",
-    drawerIcon: ({ tintColor }) => logIcon({ tintColor }),
-    drawerLabel: (
+    drawerIcon: ({ tintColor }) => requestIcon({ tintColor }),
+    drawerLabel: ({ tintColor }) => (
       <View
         style={{
           flex: 1,
@@ -198,7 +200,7 @@ const Request = {
           justifyContent: "space-between"
         }}
       >
-        <Text h5 style={{ margin: 16, fontWeight: "bold" }}>
+        <Text h5 style={{ margin: 16, fontWeight: "bold", color: tintColor }}>
         Request
         </Text>
         <BadgeCounter promise={getNotifRequests} />

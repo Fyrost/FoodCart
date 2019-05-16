@@ -75,3 +75,9 @@ export const logIcon = ({ tintColor }) => (
 export const orderIcon = ({ tintColor }) => (
   <Icon name={"clipboard-text-outline"} type={"material-community"} color={tintColor} />
 );
+export const banIcon = ({ tintColor }) => (
+  <Icon name={"circle-with-minus"} type={"entypo"} color={tintColor} />
+);
+export const requestIcon = ({ tintColor }) => (
+  <Icon name={"file1"} type={"antdesign"} color={tintColor} />
+);

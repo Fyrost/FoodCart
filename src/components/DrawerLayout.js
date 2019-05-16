@@ -98,8 +98,8 @@ export default class DrawerLayout extends Component {
                 style={[styles.flexContainerRow, styles.drawerFooterContent]}
               >
                 <Icon
-                  name={"user-circle-o"}
-                  type={"font-awesome"}
+                  name={"calendar"}
+                  type={"antdesign"}
                   color={"#48494B"}
                 />
                 <Text style={styles.drawerFooterProfile}>My Activity</Text>
