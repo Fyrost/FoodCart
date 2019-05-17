@@ -1,5 +1,11 @@
 import React, { Component } from "react";
-import { View, SectionList, Text, TouchableOpacity, ScrollView } from "react-native";
+import {
+  View,
+  SectionList,
+  Text,
+  TouchableOpacity,
+  ScrollView
+} from "react-native";
 import { NavigationEvents } from "react-navigation";
 import { Icon, Input, Button, Overlay, Image } from "react-native-elements";
 import {
@@ -50,12 +56,13 @@ class CartScreen extends Component {
             loading: false,
             cart: formatCart(data)
           });
+          this.props.navigation.setParams({ isCartNotEmpty: true });
         } else {
           this.setState({
             loading: false,
             error: res.data.message
           });
-          this.props.navigation.setParams({ isCartEmpty: true });
+          this.props.navigation.setParams({ isCartNotEmpty: false });
         }
       })
       .catch(err =>
@@ -71,7 +78,7 @@ class CartScreen extends Component {
       editOverlayVisible: true,
       overlayQuantity: quantity,
       cartId: id,
-      overLayError: ''
+      overLayError: ""
     });
   };
 
@@ -149,8 +156,8 @@ class CartScreen extends Component {
   renderOverLay = () => {
     const INITIAL_STATE = {
       editOverlayVisible: false,
-      overLayError: '',
-    }
+      overLayError: ""
+    };
     return (
       <Overlay
         isVisible={this.state.editOverlayVisible}
@@ -177,10 +184,10 @@ class CartScreen extends Component {
             }}
             onPress={() => this.setState(INITIAL_STATE)}
           />
-          <Text style={{ fontSize: 18, fontWeight: '500' }}>Quantity</Text>
+          <Text style={{ fontSize: 18, fontWeight: "500" }}>Quantity</Text>
           <Input
             value={this.state.overlayQuantity}
-            containerStyle={{ width: '45%', alignItems: 'center' }}
+            containerStyle={{ width: "45%", alignItems: "center" }}
             inputContainerStyle={{ borderColor: "#11CDEF" }}
             inputStyle={{ textAlign: "center" }}
             onChangeText={overlayQuantity => this.setState({ overlayQuantity })}
@@ -194,13 +201,20 @@ class CartScreen extends Component {
           />
         </View>
       </Overlay>
-    )
-  }
+    );
+  };
 
   renderSectionHeader = ({ section: { name, flatRate, eta } }) => (
-    <View style={styles.sectionHeaderMainRow} >
+    <View style={styles.sectionHeaderMainRow}>
       <View>
-        <Text style={{ fontWeight: "500", fontSize: 18, color: '#11CDEF', paddingVertical: 5 }}>
+        <Text
+          style={{
+            fontWeight: "500",
+            fontSize: 18,
+            color: "#11CDEF",
+            paddingVertical: 5
+          }}
+        >
           {name}
         </Text>
       </View>
@@ -234,9 +248,7 @@ class CartScreen extends Component {
     </View>
   );
 
-  renderSectionFooter = () => (
-    <View style={styles.sectionFooterMainRow} />
-  )
+  renderSectionFooter = () => <View style={styles.sectionFooterMainRow} />;
 
   computeTotal = () => {
     let total = 0;
@@ -254,7 +266,7 @@ class CartScreen extends Component {
       flatRate += Number.parseInt(resto.flatRate);
     });
     return flatRate;
-  }
+  };
 
   computeMins = () => {
     let mins = 0;
@@ -262,7 +274,7 @@ class CartScreen extends Component {
       mins += Number.parseInt(resto.eta);
     });
     return mins;
-  }
+  };
 
   renderItem = ({
     item: { name, price, cooking_time, slug, image_name, quantity, id },
@@ -270,7 +282,8 @@ class CartScreen extends Component {
   }) => {
     return (
       <View style={styles.mainRow} key={index} onPress={() => alert(item.slug)}>
-        <View style={{
+        <View
+          style={{
             flex: 1,
             flexDirection: "row",
             justifyContent: "flex-start",
@@ -292,21 +305,30 @@ class CartScreen extends Component {
           style={{
             flex: 2,
             paddingHorizontal: 10,
-            justifyContent: 'space-evenly'
+            justifyContent: "space-evenly"
           }}
         >
-          <View style={{ flex: 1, paddingHorizontal: 10, justifyContent: 'center' }}>
+          <View
+            style={{ flex: 1, paddingHorizontal: 10, justifyContent: "center" }}
+          >
             <Text style={{ fontSize: 16, fontWeight: "600" }}>{name}</Text>
             <Text>₱ {price}.00</Text>
             <Text>{cooking_time} mins</Text>
           </View>
-          
-          <View style={{ flexDirection: 'row', justifyContent: "flex-end", paddingHorizontal: 10, alignItems: "center" }}>
+
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "flex-end",
+              paddingHorizontal: 10,
+              alignItems: "center"
+            }}
+          >
             <TouchableOpacity
               activeOpacity={0.4}
               style={{
                 height: 35,
-                width: 'auto',
+                width: "auto",
                 paddingHorizontal: 10,
                 marginHorizontal: 5,
                 justifyContent: "center",
@@ -376,10 +398,10 @@ class CartScreen extends Component {
       );
 
     return (
-      <View style={{ flex: 1, justifyContent: 'center' }}>
+      <View style={{ flex: 1, justifyContent: "center" }}>
         <ScrollView contentContainerStyle={{ paddingHorizontal: 10 }}>
-          <NavigationEvents onWillFocus={makeRemoteRequest}/>
-          <Loading loading={screenLoading} opacity={0.5} size={50}/>
+          <NavigationEvents onWillFocus={makeRemoteRequest} />
+          <Loading loading={screenLoading} opacity={0.5} size={50} />
           {editOverlayVisible && renderOverLay()}
           <SectionList
             sections={cart}
@@ -421,17 +443,17 @@ const styles = {
   },
   sectionFooterMainRow: {
     height: 30,
-    backgroundColor: '#5999C8',
+    backgroundColor: "#5999C8",
     borderWidth: 1,
-    borderColor: 'lightgrey',
+    borderColor: "lightgrey",
     borderTopWidth: 0,
     borderBottomLeftRadius: 3,
     borderBottomRightRadius: 3,
     marginBottom: 10,
-    shadowOffset: { 
-      height: 1, 
-      width: 0 
+    shadowOffset: {
+      height: 1,
+      width: 0
     },
-    elevation: 1,
+    elevation: 1
   }
 };

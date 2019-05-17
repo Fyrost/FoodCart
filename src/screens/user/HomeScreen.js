@@ -8,11 +8,18 @@ import {
   ActivityIndicator,
   TouchableOpacity
 } from "react-native";
-import { Image, Icon, Avatar, Card, SearchBar, Divider } from "react-native-elements";
+import {
+  Image,
+  Icon,
+  Avatar,
+  Card,
+  SearchBar,
+  Divider
+} from "react-native-elements";
 import { NavigationEvents } from "react-navigation";
 import { getHome, errorHandler } from "../../actions";
-import List from '../../components/List'
-import _ from 'lodash'
+import List from "../../components/List";
+import _ from "lodash";
 
 const numColumns = 1;
 
@@ -29,27 +36,8 @@ class HomeScreen extends Component {
   };
 
   componentWillMount() {
-    this._animatedIsFocused = new Animated.Value(
-      this.state.toggleSearch ? 1 : 0
-    );
+    this.makeRemoteRequest();
   }
-
-  componentDidMount() {
-    this.props.navigation.setParams({
-      toggleSearch: this.handleSearchVisible
-    });
-  }
-
-  componentDidUpdate() {
-    Animated.timing(this._animatedIsFocused, {
-      toValue: this.state.toggleSearch ? 1 : 0,
-      duration: 100
-    }).start();
-  }
-
-  handleSearchVisible = () => {
-    this.setState({ toggleSearch: !this.state.toggleSearch });
-  };
 
   handleRefresh = () => {
     this.setState(
@@ -64,7 +52,12 @@ class HomeScreen extends Component {
     this.setState({ loading: true });
     getHome()
       .then(res => {
-        const { whats_hot, top_rated, newly_added, recommendation } = res.data.data;
+        const {
+          whats_hot,
+          top_rated,
+          newly_added,
+          recommendation
+        } = res.data.data;
         this.setState({
           hot: whats_hot,
           rated: top_rated,
@@ -121,7 +114,7 @@ class HomeScreen extends Component {
       </Animated.View>
     );
   };
-   
+
   renderItem = ({ item }) => {
     const { width } = Dimensions.get("screen");
     const timeColor = item.open ? styles.itemGreen : styles.itemRed;
@@ -183,10 +176,10 @@ class HomeScreen extends Component {
           image={{
             uri: `http://pinoyfoodcart.com/image/restaurant/${item.image_name}`
           }}
-          imageProps={{ resizeMethod: 'auto', resizeMode: 'cover' }}
+          imageProps={{ resizeMethod: "auto", resizeMode: "cover" }}
           containerStyle={{
             flex: 1,
-            width: width - (width/4),
+            width: width - width / 4,
             elevation: 3,
             shadowOffset: {
               width: 0,
@@ -225,14 +218,21 @@ class HomeScreen extends Component {
           </View>
         </Card>
       </TouchableOpacity>
-    )
-  }
+    );
+  };
   render() {
     const width = Dimensions.get("screen").width;
-    const { loading, refreshing, hot, recommendation, rated, newly } = this.state;
+    const {
+      loading,
+      refreshing,
+      hot,
+      recommendation,
+      rated,
+      newly
+    } = this.state;
     const { renderItem, makeRemoteRequest, handleRefresh } = this;
 
-    if (this.state.loading) return <ActivityIndicator size="large" />;
+    if (!this.state.newly) return <ActivityIndicator size="large" />;
     else if (this.state.error) return <Text>{this.state.error}</Text>;
     return (
       <View style={{ flex: 1 }}>
@@ -259,6 +259,7 @@ class HomeScreen extends Component {
                 />
               </View>
             </View>
+          </View>
 
             <View>
               <Text style={styles.homeTitle}>
@@ -280,6 +281,7 @@ class HomeScreen extends Component {
                 />
               </View>
             </View>
+          </View>
 
             <View>
               <Text style={styles.homeTitle}>

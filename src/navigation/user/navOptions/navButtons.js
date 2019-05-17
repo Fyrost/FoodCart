@@ -58,41 +58,41 @@ export const rightSearchButtonBlue = ({ navigation }) => (
   />
 );
 ////CUSTOMER CART////
-export const rightCartButton = ({ navigation }) => (
-  <View
-    style={{
-      flexDirection: "row",
-      alignItems: "center",
-      justifyContent: "space-between",
-      display: navigation.getParam("isCartEmpty") ? "none" : "flex"
-    }}
-  >
-    <Avatar
-      rounded
-      containerStyle={{ backgroundColor: "#afafaf" }}
-      icon={{ name: "remove-shopping-cart", type: "material" }}
-      overlayContainerStyle={{ backgroundColor: "transparent" }}
-      size={48}
-      onPress={() =>
-        ConfirmAlert(
-          "Empty Cart",
-          "Are you sure",
-          navigation.getParam("handleEmpty")
-        )
-      }
-      containerStyle={{ marginRight: 5 }}
-    />
-    <Avatar
-      rounded
-      containerStyle={{ backgroundColor: "#afafaf" }}
-      icon={{ name: "cart-arrow-down", type: "font-awesome" }}
-      overlayContainerStyle={{ backgroundColor: "transparent" }}
-      size={48}
-      onPress={() => navigation.navigate("UserCheckout")}
-      containerStyle={{ marginRight: 5 }}
-    />
-  </View>
-);
+export const rightCartButton = ({ navigation }) =>
+  navigation.getParam("isCartNotEmpty") && (
+    <View
+      style={{
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "space-between"
+      }}
+    >
+      <Avatar
+        rounded
+        containerStyle={{ backgroundColor: "#afafaf" }}
+        icon={{ name: "remove-shopping-cart", type: "material" }}
+        overlayContainerStyle={{ backgroundColor: "transparent" }}
+        size={48}
+        onPress={() =>
+          ConfirmAlert(
+            "Empty Cart",
+            "Are you sure",
+            navigation.getParam("handleEmpty")
+          )
+        }
+        containerStyle={{ marginRight: 5 }}
+      />
+      <Avatar
+        rounded
+        containerStyle={{ backgroundColor: "#afafaf" }}
+        icon={{ name: "cart-arrow-down", type: "font-awesome" }}
+        overlayContainerStyle={{ backgroundColor: "transparent" }}
+        size={48}
+        onPress={() => navigation.navigate("UserCheckout")}
+        containerStyle={{ marginRight: 5 }}
+      />
+    </View>
+  );
 export const rightCheckoutButton = ({ navigation }) => (
   <Button
     title="Place order"
@@ -130,7 +130,7 @@ export const rightRestoCartButtonBlue = ({ navigation }) => (
     <Avatar
       rounded
       containerStyle={{ backgroundColor: "#afafaf" }}
-      icon={{ name: "shopping-cart", type: "font-awesome", color: "#11CDEF" }}
+      icon={{ name: "shopping-cart", type: "font-awesome" , color: "#11CDEF"}}
       overlayContainerStyle={{ backgroundColor: "transparent" }}
       size={40}
       onPress={() => navigation.navigate("UserCart")}
