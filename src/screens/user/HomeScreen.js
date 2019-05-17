@@ -119,7 +119,7 @@ class HomeScreen extends Component {
     const { width } = Dimensions.get("screen");
     const timeColor = item.open ? styles.itemGreen : styles.itemRed;
     const timeText = item.open ? "OPEN" : "CLOSE";
-    
+
     if (item.empty === true) {
       return <View style={styles.itemInvisible} />;
     }
@@ -138,24 +138,24 @@ class HomeScreen extends Component {
           <Card
             containerStyle={{
               flex: 1,
-              width: width - (width/4),
+              width: width - (width / 4),
               elevation: 3,
               shadowOffset: {
                 width: 0,
                 height: 2
               },
-              justifyContent: 'center', 
-              alignItems: 'center' 
+              justifyContent: 'center',
+              alignItems: 'center'
             }}
           >
-            <View style={{ flex: 1 , justifyContent: 'center'}}>
-              <Icon 
-                name={'pluscircleo'} 
-                type={'antdesign'} 
-                size={48}
+            <View style={{ flex: 1, justifyContent: 'center' }}>
+              <Icon
+                name={'pluscircleo'}
+                type={'antdesign'}
+                size={56}
                 color={'#11CDEF'}
               />
-              <Text style={{ paddingVertical: 15, fontSize: 18 }}>View More</Text>
+              <Text style={{ paddingVertical: 15, fontSize: 18, fontWeight: '500' }}>View More</Text>
             </View>
           </Card>
         </TouchableOpacity>
@@ -220,6 +220,7 @@ class HomeScreen extends Component {
       </TouchableOpacity>
     );
   };
+
   render() {
     const width = Dimensions.get("screen").width;
     const {
@@ -238,96 +239,94 @@ class HomeScreen extends Component {
       <View style={{ flex: 1 }}>
         <NavigationEvents onDidFocus={makeRemoteRequest} />
         {this.state.toggleSearch ? this.renderHeader() : null}
-          <ScrollView>
-            <View>
-              <Text style={styles.homeTitle}>
-                What's Hot
-              </Text>
-              <View style={{ backgroundColor: '#171a29' }}>
-                <List
-                  data={[...hot, {viewMore: true}]}
-                  renderItem={renderItem}
-                  horizontal={true}
-                  contentContainerStyle={{ paddingBottom: 20 }}
-                  loading={loading}
-                  emptyText={"No Restaurant"}
-                  showsHorizontalScrollIndicator={false}
-                  numColumns={1}
-                  refreshing={refreshing}
-                  onRefresh={handleRefresh}
-                  divider={"none"}
-                />
-              </View>
+        <ScrollView>
+          <View>
+            <Text style={styles.homeTitle}>
+              What's Hot
+            </Text>
+            <View style={{ backgroundColor: '#171a29' }}>
+              <List
+                data={[...hot, { viewMore: true }]}
+                renderItem={renderItem}
+                horizontal={true}
+                contentContainerStyle={{ paddingBottom: 20 }}
+                loading={loading}
+                emptyText={"No Restaurant"}
+                showsHorizontalScrollIndicator={false}
+                numColumns={1}
+                refreshing={refreshing}
+                onRefresh={handleRefresh}
+                divider={"none"}
+              />
             </View>
           </View>
 
-            <View>
-              <Text style={styles.homeTitle}>
-                Newly Added
-              </Text>
-              <View style={{ backgroundColor: '#171a29' }}>
-                <List
-                  data={[...newly, {viewMore: true}]}
-                  renderItem={renderItem}
-                  horizontal={true}
-                  loading={loading}
-                  emptyText={"No Restaurant"}
-                  showsHorizontalScrollIndicator={false}
-                  contentContainerStyle={{ paddingBottom: 20 }}
-                  numColumns={1}
-                  refreshing={refreshing}
-                  onRefresh={handleRefresh}
-                  divider={"none"}
-                />
-              </View>
+          <View>
+            <Text style={styles.homeTitle}>
+              Newly Added
+            </Text>
+            <View style={{ backgroundColor: '#171a29' }}>
+              <List
+                data={[...newly, { viewMore: true }]}
+                renderItem={renderItem}
+                horizontal={true}
+                loading={loading}
+                emptyText={"No Restaurant"}
+                showsHorizontalScrollIndicator={false}
+                contentContainerStyle={{ paddingBottom: 20 }}
+                numColumns={1}
+                refreshing={refreshing}
+                onRefresh={handleRefresh}
+                divider={"none"}
+              />
             </View>
           </View>
 
+          <View>
+            <Text style={styles.homeTitle}>
+              Top Rated
+              </Text>
+            <View style={{ backgroundColor: '#171a29' }}>
+              <List
+                data={[...rated, { viewMore: true }]}
+                renderItem={renderItem}
+                horizontal={true}
+                loading={loading}
+                emptyText={"No Restaurant"}
+                showsHorizontalScrollIndicator={false}
+                contentContainerStyle={{ paddingBottom: 20 }}
+                numColumns={1}
+                refreshing={refreshing}
+                onRefresh={handleRefresh}
+                divider={"none"}
+              />
+            </View>
+          </View>
+
+          {recommendation &&
             <View>
               <Text style={styles.homeTitle}>
-                Top Rated
-              </Text>
-              <View style={{ backgroundColor: '#171a29' }}>
-                <List
-                  data={[...rated, {viewMore: true}]}
-                  renderItem={renderItem}
-                  horizontal={true}
-                  loading={loading}
-                  emptyText={"No Restaurant"}
-                  showsHorizontalScrollIndicator={false}
-                  contentContainerStyle={{ paddingBottom: 20 }}
-                  numColumns={1}
-                  refreshing={refreshing}
-                  onRefresh={handleRefresh}
-                  divider={"none"}
-                />
-              </View>
-            </View>
-            
-            {recommendation && 
-              <View>
-                <Text style={styles.homeTitle}>
-                  Recommendation
+                Recommendation
                 </Text>
-                <View style={{ backgroundColor: '#171a29' }}>
-                  <List
-                    data={[...recommendation, {viewMore: true}]}
-                    renderItem={renderItem}
-                    horizontal={true}
-                    loading={loading}
-                    emptyText={"No Restaurant"}
-                    showsHorizontalScrollIndicator={false}
-                    numColumns={1}
-                    refreshing={refreshing}
-                    onRefresh={handleRefresh}
-                    contentContainerStyle={{ paddingBottom: 20 }}
-                    divider={"none"}
-                  />
-                </View>
+              <View style={{ backgroundColor: '#171a29' }}>
+                <List
+                  data={[...recommendation, { viewMore: true }]}
+                  renderItem={renderItem}
+                  horizontal={true}
+                  loading={loading}
+                  emptyText={"No Restaurant"}
+                  showsHorizontalScrollIndicator={false}
+                  numColumns={1}
+                  refreshing={refreshing}
+                  onRefresh={handleRefresh}
+                  contentContainerStyle={{ paddingBottom: 20 }}
+                  divider={"none"}
+                />
               </View>
-            }
+            </View>
+          }
 
-          </ScrollView>
+        </ScrollView>
       </View>
     );
   }
