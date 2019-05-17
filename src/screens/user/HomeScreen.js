@@ -123,20 +123,59 @@ class HomeScreen extends Component {
   };
    
   renderItem = ({ item }) => {
-    if (item.empty === true) {
-      return <View style={styles.itemInvisible} />;
-    }
     const { width } = Dimensions.get("screen");
     const timeColor = item.open ? styles.itemGreen : styles.itemRed;
     const timeText = item.open ? "OPEN" : "CLOSE";
+    
+    if (item.empty === true) {
+      return <View style={styles.itemInvisible} />;
+    }
+    if (item.viewMore) {
+      return (
+        <TouchableOpacity
+          activeOpacity={0.8}
+          style={{ flex: 1 }}
+          onPress={_.debounce(
+            () =>
+              this.props.navigation.push("UserRestoList"),
+            1500,
+            { leading: true, trailing: false }
+          )}
+        >
+          <Card
+            containerStyle={{
+              flex: 1,
+              width: width - (width/4),
+              elevation: 3,
+              shadowOffset: {
+                width: 0,
+                height: 2
+              },
+              justifyContent: 'center', 
+              alignItems: 'center' 
+            }}
+          >
+            <View style={{ flex: 1 , justifyContent: 'center'}}>
+              <Icon 
+                name={'pluscircleo'} 
+                type={'antdesign'} 
+                size={48}
+                color={'#11CDEF'}
+              />
+              <Text style={{ paddingVertical: 15, fontSize: 18 }}>View More</Text>
+            </View>
+          </Card>
+        </TouchableOpacity>
+      )
+    }
     return (
       <TouchableOpacity
-        activeOpacity={0.7}
+        activeOpacity={0.8}
         style={{ flex: 1 }}
         onPress={_.debounce(
           () =>
             this.props.navigation.push("UserRestoMenu", { slug: item.slug }),
-          1000,
+          1500,
           { leading: true, trailing: false }
         )}
       >
@@ -206,7 +245,7 @@ class HomeScreen extends Component {
               </Text>
               <View style={{ backgroundColor: '#171a29' }}>
                 <List
-                  data={hot}
+                  data={[...hot, {viewMore: true}]}
                   renderItem={renderItem}
                   horizontal={true}
                   contentContainerStyle={{ paddingBottom: 20 }}
@@ -227,7 +266,7 @@ class HomeScreen extends Component {
               </Text>
               <View style={{ backgroundColor: '#171a29' }}>
                 <List
-                  data={newly}
+                  data={[...newly, {viewMore: true}]}
                   renderItem={renderItem}
                   horizontal={true}
                   loading={loading}
@@ -248,7 +287,7 @@ class HomeScreen extends Component {
               </Text>
               <View style={{ backgroundColor: '#171a29' }}>
                 <List
-                  data={rated}
+                  data={[...rated, {viewMore: true}]}
                   renderItem={renderItem}
                   horizontal={true}
                   loading={loading}
@@ -263,26 +302,29 @@ class HomeScreen extends Component {
               </View>
             </View>
             
-            <View>
-              <Text style={styles.homeTitle}>
-                Recommendation
-              </Text>
-              <View style={{ backgroundColor: '#171a29' }}>
-                <List
-                  data={recommendation}
-                  renderItem={renderItem}
-                  horizontal={true}
-                  loading={loading}
-                  emptyText={"No Restaurant"}
-                  showsHorizontalScrollIndicator={false}
-                  numColumns={1}
-                  refreshing={refreshing}
-                  onRefresh={handleRefresh}
-                  contentContainerStyle={{ paddingBottom: 20 }}
-                  divider={"none"}
-                />
+            {recommendation && 
+              <View>
+                <Text style={styles.homeTitle}>
+                  Recommendation
+                </Text>
+                <View style={{ backgroundColor: '#171a29' }}>
+                  <List
+                    data={[...recommendation, {viewMore: true}]}
+                    renderItem={renderItem}
+                    horizontal={true}
+                    loading={loading}
+                    emptyText={"No Restaurant"}
+                    showsHorizontalScrollIndicator={false}
+                    numColumns={1}
+                    refreshing={refreshing}
+                    onRefresh={handleRefresh}
+                    contentContainerStyle={{ paddingBottom: 20 }}
+                    divider={"none"}
+                  />
+                </View>
               </View>
-            </View>
+            }
+
           </ScrollView>
       </View>
     );
