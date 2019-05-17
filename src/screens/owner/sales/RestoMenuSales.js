@@ -177,12 +177,12 @@ class RestoMenuSales extends Component {
       title={name}
       rightTitle={`Total Sales\nP${sales}.00`}
       rightTitleStyle={{ textAlign: "right" }}
-      subtitle={`Total Orders: ${orders}`}title={item_name}
-      titleStyle={{ fontWeight: '500', fontSize: 18, color: '#1B73B4' }}
+      subtitle={`Total Orders: ${orders}`}
+      title={item_name}
+      titleStyle={{ fontWeight: "500", fontSize: 18, color: "#1B73B4" }}
       rightTitle={`Total Sales\n₱${sales}.00`}
-      rightTitleStyle={{textAlign:'right'}}
+      rightTitleStyle={{ textAlign: "right" }}
       subtitle={`No of Orders: ${orders}`}
-      chevron={true}
       // onPress={() =>
       //   this.setState({
       //     layoutVisible: true,
@@ -194,7 +194,6 @@ class RestoMenuSales extends Component {
       //     }
       //   })
       // }
-      
     />
   );
 
