@@ -336,8 +336,8 @@ class ProfileInfoScreen extends Component {
               title={"Submit Request"}
               onPress={() =>
                 ConfirmAlert(
-                  "Change Password",
-                  "Do you want to Change your Password?",
+                  "Request",
+                  "Continue to send your request?",
                   this.handleRequestEmail
                 )
               }

@@ -233,7 +233,7 @@ class HomeScreen extends Component {
     } = this.state;
     const { renderItem, makeRemoteRequest, handleRefresh } = this;
 
-    if (!this.state.newly) return <ActivityIndicator size="large" />;
+    if (loading) return <ActivityIndicator size="large" />;
     else if (this.state.error) return <Text>{this.state.error}</Text>;
     return (
       <View style={{ flex: 1 }}>
