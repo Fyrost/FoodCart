@@ -91,29 +91,29 @@ class FavoriteListScreen extends Component {
             }
           }}
         >
+          
           <View style={styles.itemRowSpaceBetween}>
-            <Text style={styles.itemTitle}>{item.name}</Text>
+            <View>
+              <Text style={styles.itemTitle}>{item.name}</Text>
+              <Text>{item.address}</Text>
+            </View>
+
+            <View style={styles.itemRowSpaceAround}>
+              <View style={[styles.itemRow,{ justifyContent: 'flex-end' }]}>
+                <Icon name={"star"} type={"font-awesome"} color={"#f1c40f"} />
+                <Text style={styles.itemText}>
+                  {" "}
+                  {Number.parseFloat(item.rating).toFixed(1)}
+                </Text>
+              </View>
+            </View>
           </View>
 
-          <View style={styles.itemRowSpaceBetween}>
-            <Text>{item.address}</Text>
-          </View>
           <View style={styles.space} />
           <Divider style={{ height: 1.5 }} />
           <View style={{ height: 10, flex: 1 }} />
 
           <View style={styles.itemRowSpaceBetween}>
-            <View style={styles.itemRow}>
-              <View style={styles.itemRowSpaceAround}>
-                <View style={styles.itemRow}>
-                  <Icon name={"star"} type={"font-awesome"} color={"#f1c40f"} />
-                  <Text style={styles.itemText}>
-                    {" "}
-                    {Number.parseFloat(item.rating).toFixed(1)}
-                  </Text>
-                </View>
-              </View>
-            </View>
             <Button
               icon={
                 <Icon

@@ -91,7 +91,12 @@ class LoginScreen extends Component {
       showResend,
       loadingResend
     } = this.state;
-    const { onLogin, onResend } = this;
+    const INITIAL_STATE = {
+      email: '',
+      password: '',
+      error: ''
+    }
+    const { onLogin, onResend, setState } = this;
     const { navigate } = this.props.navigation;
     const {
       flexContainer,
@@ -170,6 +175,7 @@ class LoginScreen extends Component {
           <Text
             style={loginLink}
             onPress={() => {
+              setState({ error: '' })
               navigate("FPEmail");
             }}
             disabled={loading}

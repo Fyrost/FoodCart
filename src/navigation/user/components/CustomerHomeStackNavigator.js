@@ -7,8 +7,7 @@ const UserHome = {
   screen: HomeScreen,
   navigationOptions: ({ navigation }) => ({
     headerTitle : (HomeLogo),
-    headerLeft: leftDrawerButtonBlue({ navigation }),
-    headerRight: rightSearchButtonBlue({ navigation })
+    headerLeft: leftDrawerButtonBlue({ navigation })
   }) 
   
 };
