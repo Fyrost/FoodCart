@@ -125,6 +125,24 @@ export const rightRestoCartButton = ({ navigation }) => (
     />
   </View>
 );
+export const rightRestoCartButtonBlue = ({ navigation }) => (
+  <View>
+    <Avatar
+      rounded
+      containerStyle={{ backgroundColor: "#afafaf" }}
+      icon={{ name: "shopping-cart", type: "font-awesome", color: "#11CDEF" }}
+      overlayContainerStyle={{ backgroundColor: "transparent" }}
+      size={40}
+      onPress={() => navigation.navigate("UserCart")}
+      containerStyle={{ marginRight: 5 }}
+    />
+    <BadgeCounter
+      promise={getNotifCart}
+      badgeStyle={null}
+      containerStyle={{ position: "absolute" }}
+    />
+  </View>
+);
 
 export const rightMenuButton = ({ navigation }) => (
   <View

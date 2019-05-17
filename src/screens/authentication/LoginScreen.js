@@ -170,7 +170,13 @@ class LoginScreen extends Component {
           <Text
             style={loginLink}
             onPress={() => {
-              navigate("FPEmail");
+              this.setState(
+                {
+                  email: "",
+                  password: ""
+                },
+                () => navigate("FPEmail")
+              );
             }}
             disabled={loading}
           >
@@ -179,7 +185,13 @@ class LoginScreen extends Component {
           <Text
             style={loginLink}
             onPress={() => {
-              navigate("SUType");
+              this.setState(
+                {
+                  email: "",
+                  password: ""
+                },
+                () => navigate("SUType")
+              );
             }}
             disabled={loading}
           >
