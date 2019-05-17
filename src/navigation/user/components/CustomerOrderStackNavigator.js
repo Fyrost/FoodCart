@@ -4,7 +4,7 @@ import {
 } from "react-navigation";
 import { leftDrawerButton } from "../navOptions/navButtons";
 import { headerStyles, TabStyles } from "../navOptions/navStyles";
-import { HomeIcon } from "../navOptions/navIcons";
+import { HomeIcon, OnProgressIcon, HistoryIcon } from "../navOptions/navIcons";
 import OrderOnProcessListScreen from "../../../screens/user/Order/OrderOnProcessListScreen";
 import OrderCompletedListScreen from "../../../screens/user/Order/OrderCompletedListScreen";
 
@@ -21,7 +21,7 @@ const UserOrderOnProgress = createStackNavigator({
 
 UserOrderOnProgress.navigationOptions = {
   tabBarLabel: "On Progress",
-  tabBarIcon: ({ tintColor }) => HomeIcon({ tintColor })
+  tabBarIcon: ({ tintColor }) => OnProgressIcon({ tintColor })
 };
 
 const UserOrderCompleted = createStackNavigator({
@@ -37,7 +37,7 @@ const UserOrderCompleted = createStackNavigator({
 
 UserOrderCompleted.navigationOptions = {
   tabBarLabel: "History",
-  tabBarIcon: ({ tintColor }) => HomeIcon({ tintColor })
+  tabBarIcon: ({ tintColor }) => HistoryIcon({ tintColor })
 };
 
 const OrderNavigator = createBottomTabNavigator(

@@ -91,7 +91,12 @@ class LoginScreen extends Component {
       showResend,
       loadingResend
     } = this.state;
-    const { onLogin, onResend } = this;
+    const INITIAL_STATE = {
+      email: "",
+      password: "",
+      error: ""
+    };
+    const { onLogin, onResend, setState } = this;
     const { navigate } = this.props.navigation;
     const {
       flexContainer,
@@ -173,7 +178,8 @@ class LoginScreen extends Component {
               this.setState(
                 {
                   email: "",
-                  password: ""
+                  password: "",
+                  error: ""
                 },
                 () => navigate("FPEmail")
               );
@@ -188,7 +194,8 @@ class LoginScreen extends Component {
               this.setState(
                 {
                   email: "",
-                  password: ""
+                  password: "",
+                  error: ""
                 },
                 () => navigate("SUType")
               );
