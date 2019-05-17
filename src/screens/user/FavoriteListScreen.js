@@ -115,7 +115,6 @@ class FavoriteListScreen extends Component {
               </View>
             </View>
             <Button
-              raised
               icon={
                 <Icon
                   name={"heart"}
@@ -124,8 +123,14 @@ class FavoriteListScreen extends Component {
                   size={16}
                 />
               }
-              buttonStyle={{ backgroundColor: "#EA5B7A" }}
               title={" Unfavorite"}
+              buttonStyle={{
+                borderRadius: 0,
+                marginLeft: 0,
+                marginRight: 0,
+                marginBottom: 0,
+                backgroundColor: "#EA5B7A"
+              }}
               titleStyle={{ color: "white" }}
               onPress={() =>
                 ConfirmAlert("Unfavorite", "Are you sure?", () =>
@@ -136,7 +141,6 @@ class FavoriteListScreen extends Component {
             <Button
               icon={<Icon name="eye" type={"font-awesome"} color="#ffffff" />}
               backgroundColor={"#03A9F4"}
-              containerStyle={styles.flexContainer}
               buttonStyle={{
                 borderRadius: 0,
                 marginLeft: 0,
