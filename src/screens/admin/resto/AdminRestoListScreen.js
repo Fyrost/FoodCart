@@ -108,7 +108,7 @@ class AdminRestoListScreen extends Component {
       chevron={true}
       onPress={_.debounce(
         () => this.props.navigation.push("AdminRestoView", { restoId: id }),
-        1000,
+        1500,
         {
           leading: true,
           trailing: false

@@ -136,7 +136,7 @@ class HomeScreen extends Component {
         onPress={_.debounce(
           () =>
             this.props.navigation.push("UserRestoMenu", { slug: item.slug }),
-          1500,
+          1000,
           { leading: true, trailing: false }
         )}
       >

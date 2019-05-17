@@ -149,7 +149,7 @@ class FavoriteListScreen extends Component {
                   this.props.navigation.navigate("UserRestoMenu", {
                     slug: item.slug
                   }),
-                1000,
+                1500,
                 { leading: true, trailing: false }
               )}
             />

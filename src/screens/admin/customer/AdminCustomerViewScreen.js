@@ -130,17 +130,20 @@ class AdminCustomerViewScreen extends Component {
     } = this.state.data;
     return (
       <ScrollView style={{ marginBottom: 15 }}>
-        {banned && (
-          <Text style={{ textAlign: "center", color: "red" }} h2>
-            Banned
-          </Text>
-        )}
         <Card
           image={logo}
           imageStyle={{ marginTop: 25, height: 100 }}
           imageProps={{ resizeMode: "contain" }}
         >
           <NavigationEvents onWillFocus={this.makeRemoteRequest} />
+          
+          {banned && (
+            <View style={styles.cardBan}>
+              <Text style={styles.banText} h3>
+                Banned
+              </Text>
+            </View>
+          )}
 
           <View style={styles.cardRow}>
             <Text style={styles.cardRowTitle}>First Name</Text>
@@ -193,7 +196,7 @@ class AdminCustomerViewScreen extends Component {
         <Card wrapperStyle={{ margin: 0, padding: 0 }}>
           <View>
             <Text h4 style={styles.cardTitle}>
-              Ticket Reports(Latest 5)
+              Ticket Reports (Latest 5)
             </Text>
           </View>
           <Divider />
@@ -287,8 +290,22 @@ const styles = {
     fontWeight: "normal",
     textAlign: "left"
   },
+  cardBan : {
+    flex: 1,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    paddingVertical: 10,
+    paddingHorizontal: 15,
+    borderColor: "lightgrey",
+    borderBottomWidth: 0.8
+  },
   bottomSpacer: {
     flex: 1,
     height: 25
+  },
+  banText: { 
+    textAlign: "center", 
+    color: "#EF1B17",  
   }
 };

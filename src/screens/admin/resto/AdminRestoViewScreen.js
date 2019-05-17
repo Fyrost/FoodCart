@@ -228,94 +228,100 @@ class AdminRestoViewScreen extends Component {
       time
     } = this.state.data;
     return (
-      <ScrollView style={{ flex: 1 }}>
-        <NavigationEvents onWillFocus={makeRemoteRequest} />
+      <View style={{ flex: 1 }}>
         <Loading loading={screenLoading} size={"large"} />
-        {banOverlayVisible && renderBanOverlay()}
-        {banned ? (
-          <Text style={{ textAlign: "center", color: "red" }} h2>
+        {banned && (
+          <Text style={styles.banText} h2>
             Banned
           </Text>
-        ) : (
+        )}
+        <View style={{ flex: 11 }}>
+        <ScrollView style={{ flex: 1 }}>
+          <NavigationEvents onWillFocus={makeRemoteRequest} />
+          {banOverlayVisible && renderBanOverlay()}
+            <Card
+              image={{
+                uri: `http://pinoyfoodcart.com/image/restaurant/${image_name}`
+              }}
+            >
+              <View style={{ paddingVertical: 10 }}>
+                <Text style={styles.restoTitle}>{name}</Text>
+                <Text style={{ textAlign: "center" }}>ID #{id}</Text>
+              </View>
+
+              <Divider />
+              {/* BASIC INFORMATION */}
+              <View style={styles.restoTitle}>
+                <Text style={styles.restoSubtitle}>Basic Information</Text>
+
+                <View style={styles.cardRowContent}>
+                  <Text style={styles.restoSubtitleText}>Owner:</Text>
+                  <Text style={styles.restoText}>
+                    {owner_fname} {String(owner_mname).charAt(0)}. {owner_lname}
+                  </Text>
+                </View>
+
+                <View style={{ paddingVertical: 10, paddingHorizontal: 25 }}>
+                  <Text style={styles.restoSubtitleText}>Address:</Text>
+                  <Text style={styles.restoText}>{address}</Text>
+                </View>
+
+                <View style={styles.cardRowContent}>
+                  <Text style={styles.restoSubtitleText}>
+                    {contactType} Number:
+                  </Text>
+                  <Text style={styles.restoText}>{contact_number}</Text>
+                </View>
+              </View>
+
+              <Divider />
+              {/* RESTAURANT SETTING */}
+              <View style={styles.restoTitle}>
+                <Text style={styles.restoSubtitle}>Restaurant Settings</Text>
+
+                <View style={styles.cardRowContent}>
+                  <Text style={styles.restoSubtitleText}>Flat Rate:</Text>
+                  <Text style={styles.restoText}>₱ {flat_rate}.00</Text>
+                </View>
+
+                <View style={styles.cardRowContent}>
+                  <Text style={styles.restoSubtitleText}>Delivery Time:</Text>
+                  <Text style={styles.restoText}>{eta} mins</Text>
+                </View>
+
+                <View style={styles.cardRowContent}>
+                  <Text style={styles.restoSubtitleText}>Open Time:</Text>
+                  <Text style={styles.restoText}>{time}</Text>
+                </View>
+              </View>
+
+              <Divider />
+              {/* MENU LIST */}
+              <View style={styles.restoTitle}>
+                <Text style={styles.restoSubtitle}>Menu List</Text>
+
+                <View>
+                  <List
+                    data={this.state.menu}
+                    renderItem={this.renderItem}
+                    loading={this.state.loading}
+                    emptyText={"No Menu"}
+                    showsVerticalScrollIndicator={false}
+                  />
+                </View>
+              </View>
+            </Card>
+            <View style={{ height: 15 }} />
+          </ScrollView>
+        </View>
+        {!banned && 
           <Button
             title={"Ban"}
+            buttonStyle={{ flex: 1 }}
+            containerStyle={{ flex: 1 }}
             onPress={() => this.setState({ banOverlayVisible: true })}
-          />
-        )}
-        <Card
-          image={{
-            uri: `http://pinoyfoodcart.com/image/restaurant/${image_name}`
-          }}
-        >
-          <View style={{ paddingVertical: 10 }}>
-            <Text style={styles.restoTitle}>{name}</Text>
-            <Text style={{ textAlign: "center" }}>ID #{id}</Text>
-          </View>
-
-          <Divider />
-          {/* BASIC INFORMATION */}
-          <View style={styles.restoTitle}>
-            <Text style={styles.restoSubtitle}>Basic Information</Text>
-
-            <View style={styles.cardRowContent}>
-              <Text style={styles.restoSubtitleText}>Owner:</Text>
-              <Text style={styles.restoText}>
-                {owner_fname} {String(owner_mname).charAt(0)}. {owner_lname}
-              </Text>
-            </View>
-
-            <View style={{ paddingVertical: 10, paddingHorizontal: 25 }}>
-              <Text style={styles.restoSubtitleText}>Address:</Text>
-              <Text style={styles.restoText}>{address}</Text>
-            </View>
-
-            <View style={styles.cardRowContent}>
-              <Text style={styles.restoSubtitleText}>
-                {contactType} Number:
-              </Text>
-              <Text style={styles.restoText}>{contact_number}</Text>
-            </View>
-          </View>
-
-          <Divider />
-          {/* RESTAURANT SETTING */}
-          <View style={styles.restoTitle}>
-            <Text style={styles.restoSubtitle}>Restaurant Settings</Text>
-
-            <View style={styles.cardRowContent}>
-              <Text style={styles.restoSubtitleText}>Flat Rate:</Text>
-              <Text style={styles.restoText}>₱ {flat_rate}.00</Text>
-            </View>
-
-            <View style={styles.cardRowContent}>
-              <Text style={styles.restoSubtitleText}>Delivery Time:</Text>
-              <Text style={styles.restoText}>{eta} mins</Text>
-            </View>
-
-            <View style={styles.cardRowContent}>
-              <Text style={styles.restoSubtitleText}>Open Time:</Text>
-              <Text style={styles.restoText}>{time}</Text>
-            </View>
-          </View>
-
-          <Divider />
-          {/* MENU LIST */}
-          <View style={styles.restoTitle}>
-            <Text style={styles.restoSubtitle}>Menu List</Text>
-
-            <View>
-              <List
-                data={this.state.menu}
-                renderItem={this.renderItem}
-                loading={this.state.loading}
-                emptyText={"No Menu"}
-                showsVerticalScrollIndicator={false}
-              />
-            </View>
-          </View>
-        </Card>
-        <View style={{ height: 15 }} />
-      </ScrollView>
+          />}
+      </View>
     );
   }
 }
@@ -356,5 +362,16 @@ const styles = {
     alignItems: "center",
     paddingHorizontal: 25,
     paddingVertical: 10
-  }
+  },
+  banText: { 
+    flex: 1, 
+    textAlign: "center", 
+    color: "white", 
+    backgroundColor: '#EF1B17', 
+    justifyContent: 'center',
+    shadowOffset: { 
+      height: 1, 
+      width: 0 
+    },
+    elevation: 1 }
 };
