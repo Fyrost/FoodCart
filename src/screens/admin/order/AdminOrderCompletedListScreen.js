@@ -6,7 +6,7 @@ import List from "../../../components/List";
 import Search from "../../../components/Search";
 import { getAdminOrderList, errorHandler, contains } from "../../../actions";
 import _ from "lodash";
-class OrderCompletedListScreen extends Component {
+class AdminOrderCompletedListScreen extends Component {
   state = {
     data: [],
     loading: false,
@@ -17,7 +17,7 @@ class OrderCompletedListScreen extends Component {
 
   makeRemoteRequest = () => {
     this.setState({ loading: true });
-    getAdminOrderList()
+    getAdminOrderList("completed")
       .then(res => {
         if (res.data.success) {
           const { data } = res.data;
@@ -136,4 +136,4 @@ class OrderCompletedListScreen extends Component {
   }
 }
 
-export default OrderCompletedListScreen;
+export default AdminOrderCompletedListScreen;

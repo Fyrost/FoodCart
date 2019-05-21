@@ -4,7 +4,7 @@ import { NavigationEvents } from "react-navigation";
 import { ListItem, Overlay, Button, Icon } from "react-native-elements";
 import List from "../../../components/List";
 import Search from "../../../components/Search";
-import _ from "lodash"
+import _ from "lodash";
 import {
   getRequestList,
   acceptRequest,
@@ -15,7 +15,7 @@ import {
 import { MessageAlert, ConfirmAlert } from "../../../components/Alerts";
 import Loading from "../../../components/Loading";
 
-class AdminRequestListScreen extends Component {
+class AdminRequestCloseListScreen extends Component {
   state = {
     data: [],
     details: {
@@ -34,7 +34,7 @@ class AdminRequestListScreen extends Component {
 
   makeRemoteRequest = () => {
     this.setState({ loading: true });
-    getRequestList()
+    getRequestList("close")
       .then(res => {
         if (res.data.success) {
           this.setState({
@@ -107,11 +107,12 @@ class AdminRequestListScreen extends Component {
   };
 
   renderItem = ({ item }) => {
-    const statusType = item.status === "0" 
-    ? {text:"Pending", color: '#9DA0A3'} 
-    : item.status==="1" 
-      ? {text:"Completed", color: '#00CC66'}
-      : {text:"Rejected",  color: '#EF1B17'}
+    const statusType =
+      item.status === "0"
+        ? { text: "Pending", color: "#9DA0A3" }
+        : item.status === "1"
+        ? { text: "Completed", color: "#00CC66" }
+        : { text: "Rejected", color: "#EF1B17" };
     return (
       <ListItem
         title={
@@ -122,13 +123,17 @@ class AdminRequestListScreen extends Component {
         }
         subtitle={`Request Date: ${item.created_at}`}
         rightTitle={
-          <Text style={{ fontSize: 16, fontWeight: '500', color: statusType.color }}>{statusType.text}</Text>
+          <Text
+            style={{ fontSize: 16, fontWeight: "500", color: statusType.color }}
+          >
+            {statusType.text}
+          </Text>
         }
         chevron={true}
         onPress={() => this.handleLayout(item)}
       />
-    )
-  }
+    );
+  };
 
   renderOverlay = () => {
     const INITIAL_STATE = {
@@ -235,59 +240,65 @@ class AdminRequestListScreen extends Component {
               title={`View Profile`}
               titleStyle={{ fontSize: 18 }}
               type={"clear"}
-              onPress={
-                _.debounce(() => {
-                  this.props.navigation.navigate(navigate.screen, navigate.param)
-                  this.setState(INITIAL_STATE)
-                }, 1500, {
-                    leading: true,
-                    trailing: false
-                  })
-              }
+              onPress={_.debounce(
+                () => {
+                  this.props.navigation.navigate(
+                    navigate.screen,
+                    navigate.param
+                  );
+                  this.setState(INITIAL_STATE);
+                },
+                1500,
+                {
+                  leading: true,
+                  trailing: false
+                }
+              )}
             />
           </View>
-
-          <View
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-              justifyContent: "space-evenly"
-            }}
-          >
-            <Button
-              title={`Reject`}
-              titleStyle={{ fontSize: 16 }}
-              buttonStyle={{
-                flexGrow: 1,
-                borderRadius: 0,
-                backgroundColor: "#EF1B17"
+          {status === "0" && (
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "space-evenly"
               }}
-              onPress={() =>
-                ConfirmAlert(
-                  "Reject Request",
-                  `Are you sure?`,
-                  this.handleRejectRequest
-                )
-              }
-            />
+            >
+              <Button
+                title={`Reject`}
+                titleStyle={{ fontSize: 16 }}
+                buttonStyle={{
+                  flexGrow: 1,
+                  borderRadius: 0,
+                  backgroundColor: "#EF1B17"
+                }}
+                onPress={() =>
+                  ConfirmAlert(
+                    "Reject Request",
+                    `Are you sure?`,
+                    this.handleRejectRequest
+                  )
+                }
+              />
 
-            <Button
-              title={`Approve`}
-              titleStyle={{ fontSize: 16 }}
-              buttonStyle={{
-                flexGrow: 1,
-                borderRadius: 0,
-                backgroundColor: "#00CC66"
-              }}
-              onPress={() =>
-                ConfirmAlert(
-                  "Accept Request",
-                  `Are you sure?`,
-                  this.handleAcceptequest
-                )
-              }
-            />
-          </View>
+              <Button
+                title={`Approve`}
+                titleStyle={{ fontSize: 16 }}
+                buttonStyle={{
+                  flexGrow: 1,
+                  borderRadius: 0,
+                  backgroundColor: "#00CC66"
+                }}
+                onPress={() =>
+                  ConfirmAlert(
+                    "Accept Request",
+                    `Are you sure?`,
+                    this.handleAcceptequest
+                  )
+                }
+              />
+            </View>
+          )}
         </View>
       </Overlay>
     );
@@ -322,4 +333,4 @@ class AdminRequestListScreen extends Component {
   }
 }
 
-export default AdminRequestListScreen;
+export default AdminRequestCloseListScreen;

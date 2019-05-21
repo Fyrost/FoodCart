@@ -7,7 +7,7 @@ import Search from "../../../components/Search";
 import { getAdminReportList, errorHandler, contains } from "../../../actions";
 import List from "../../../components/List";
 import _ from "lodash"
-class AdminReportListScreen extends Component {
+class AdminReportClosedListScreen extends Component {
   state = {
     layoutVisible: false,
     ticket: {
@@ -30,7 +30,7 @@ class AdminReportListScreen extends Component {
 
   makeRemoteRequest = () => {
     this.setState({ loading: true });
-    getAdminReportList()
+    getAdminReportList("closed")
       .then(res => {
         this.setState({
           data: res.data.data,
@@ -146,4 +146,4 @@ class AdminReportListScreen extends Component {
   }
 }
 
-export default AdminReportListScreen;
+export default AdminReportClosedListScreen;

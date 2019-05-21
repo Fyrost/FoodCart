@@ -488,9 +488,9 @@ export const getAdminMenuSales = search => {
   });
 };
 
-export const getAdminOrderList = () => {
+export const getAdminOrderList = status => {
   return Axios({
-    url: API.ADMIN_ORDER,
+    url: API.ADMIN_ORDER(status),
     method: "get"
   });
 };
@@ -534,9 +534,9 @@ export const liftBlock = id => {
   });
 };
 
-export const getAdminReportList = () => {
+export const getAdminReportList = filter => {
   return Axios({
-    url: API.ADMIN_REPORT,
+    url: API.ADMIN_REPORT(filter),
     method: "get"
   });
 };
@@ -584,9 +584,9 @@ export const getAllLogList = () => {
   });
 };
 
-export const getRequestList = () => {
+export const getRequestList = filter => {
   return Axios({
-    url: API.ADMIN_REQUEST,
+    url: API.ADMIN_REQUEST(filter),
     method: "get"
   });
 };

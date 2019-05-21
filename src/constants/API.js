@@ -31,19 +31,19 @@ export const ADMIN_RESTO_SALES_SEARCH = query =>
   `admin/sales/restaurant?search=${query}`;
 export const ADMIN_MENU_SALES_SEARCH = query =>
   `admin/sales/menu?search=${query}`;
-export const ADMIN_ORDER = `admin/order`;
+export const ADMIN_ORDER = status => `admin/order?status=${status}`;
 export const ADMIN_ORDER_SELECT = id => `admin/order/${id}`;
 export const ADMIN_BLOCK = `admin/ban`;
 export const ADMIN_BLOCK_SELECT = id => `admin/ban/${id}`;
 export const ADMIN_BLOCK_LIFT = id => `admin/ban/${id}/lift`;
-export const ADMIN_REPORT = `admin/report`;
+export const ADMIN_REPORT = filter => `admin/report?filter=${filter}`;
 export const ADMIN_REPORT_SELECT = code => `admin/report/${code}`;
 export const ADMIN_REPORT_INVESTIGATE = code =>
   `admin/report/${code}/investigate`;
 export const ADMIN_REPORT_CLOSE = code => `admin/report/${code}/close`;
 export const ADMIN_LOGS = `admin/logs`;
 export const ADMIN_LOGS_TABLE = `admin/logs/table`;
-export const ADMIN_REQUEST = `admin/request`;
+export const ADMIN_REQUEST = filter => `admin/request?filter=${filter}`;
 export const ADMIN_REQUEST_ACCEPT = id => `admin/request/${id}/accept`;
 export const ADMIN_REQUEST_REJECT = id => `admin/request/${id}/reject`;
 export const ADMIN_USERS = `admin/users`;

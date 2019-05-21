@@ -66,10 +66,7 @@ AdminPartnerRejected.navigationOptions = {
 
 const PartnerNavigator = createBottomTabNavigator(
   { AdminPartnerPending, AdminPartnerApproved, AdminPartnerRejected },
-  {
-    tabBarOptions: TabStyles,
-    animationEnabled: true
-  }
+  { tabBarOptions: TabStyles, animationEnabled: true }
 );
 
 export { PartnerNavigator };

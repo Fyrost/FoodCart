@@ -1,20 +1,50 @@
-import { createStackNavigator } from "react-navigation";
+import {
+  createBottomTabNavigator,
+  createStackNavigator
+} from "react-navigation";
 import { leftDrawerButton, rightSearchButton } from "../navOptions/navButtons";
-import { headerStyles } from "../navOptions/navStyles";
-import AdminOrderListScreen from "../../../screens/admin/order/AdminOrderListScreen";
+import { headerStyles, TabStyles } from "../navOptions/navStyles";
+import { partnerPendingIcon } from "../navOptions/navIcons";
+import AdminOrderProcessingListScreen from "../../../screens/admin/order/AdminOrderProcessingListScreen";
+import AdminOrderCompletedListScreen from "../../../screens/admin/order/AdminOrderCompletedListScreen";
 
-const AdminOrderList = {
-  screen: AdminOrderListScreen,
-  navigationOptions: ({ navigation }) => ({
-    title: "Orders",
-    headerLeft: leftDrawerButton({ navigation }),
-    headerRight: rightSearchButton({ navigation })
-  })
+const AdminOrderProcessingList = createStackNavigator({
+  OrderProcessing: {
+    screen: AdminOrderProcessingListScreen,
+    navigationOptions: ({ navigation }) => ({
+      ...headerStyles,
+      title: "Orders",
+      headerLeft: leftDrawerButton({ navigation }),
+      headerRight: rightSearchButton({ navigation })
+    })
+  }
+});
+
+AdminOrderProcessingList.navigationOptions = {
+  tabBarLabel: "On Progress",
+  tabBarIcon: ({ tintColor }) => partnerPendingIcon({ tintColor })
 };
 
-const OrderNavigator = createStackNavigator(
-  { AdminOrderList },
-  { defaultNavigationOptions: headerStyles }
+const AdminOrderCompletedList = createStackNavigator({
+  OrderCompleted: {
+    screen: AdminOrderCompletedListScreen,
+    navigationOptions: ({ navigation }) => ({
+      ...headerStyles,
+      title: "Orders",
+      headerLeft: leftDrawerButton({ navigation }),
+      headerRight: rightSearchButton({ navigation })
+    })
+  }
+});
+
+AdminOrderCompletedList.navigationOptions = {
+  tabBarLabel: "Completed",
+  tabBarIcon: ({ tintColor }) => partnerPendingIcon({ tintColor })
+};
+
+const OrderNavigator = createBottomTabNavigator(
+  { AdminOrderProcessingList, AdminOrderCompletedList },
+  { tabBarOptions: TabStyles, animationEnabled: true }
 );
 
 export { OrderNavigator };
