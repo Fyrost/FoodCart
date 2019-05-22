@@ -96,6 +96,8 @@ export const CHECKOUT = `checkout`;
 
 export const ORDER_HISTORY = status => `order/history?status=${status}`;
 export const ORDER_SELECT = code => `order/${code}`;
+export const ORDER_COMPLETE = subOrderId =>
+  `guest/order/${subOrderId}/complete`;
 
 export const USER_PASSWORD = `user/update`;
 export const USER_REQUEST = `request`;

@@ -252,21 +252,23 @@ class OrderViewScreen extends Component {
           justifyContent: "space-evenly"
         }}
       >
-        <Button
-          icon={{
-            name: proceedButtonTitle.iconName,
-            type: proceedButtonTitle.iconType,
-            color: "white"
-          }}
-          buttonStyle={{
-            flex: 1,
-            borderRadius: 0,
-            backgroundColor: proceedButtonTitle.color
-          }}
-          containerStyle={{ flex: 1 }}
-          title={proceedButtonTitle.text}
-          onPress={this.handleProceed.bind(this)}
-        />
+        {status !== "delivering" && (
+          <Button
+            icon={{
+              name: proceedButtonTitle.iconName,
+              type: proceedButtonTitle.iconType,
+              color: "white"
+            }}
+            buttonStyle={{
+              flex: 1,
+              borderRadius: 0,
+              backgroundColor: proceedButtonTitle.color
+            }}
+            containerStyle={{ flex: 1 }}
+            title={proceedButtonTitle.text}
+            onPress={this.handleProceed.bind(this)}
+          />
+        )}
         <Button
           icon={{
             name: stopButtonTitle.iconName,
@@ -448,20 +450,22 @@ class OrderViewScreen extends Component {
   };
 
   renderItem = ({ item: { id, name, cooking_time, quantity } }) => (
-    <View 
-      style={{ 
+    <View
+      style={{
         marginHorizontal: 10,
-        marginVertical: 10, 
-      }} 
+        marginVertical: 10
+      }}
     >
-      <View style={{ borderRadius: 3, borderColor: 'lightgrey', borderWidth: 1 }}>
+      <View
+        style={{ borderRadius: 3, borderColor: "lightgrey", borderWidth: 1 }}
+      >
         <View
           style={{
             paddingHorizontal: 10,
             paddingVertical: 5,
             borderBottomWidth: 1,
-            borderBottomColor: 'lightgrey',
-            backgroundColor: '#11CDEF'
+            borderBottomColor: "lightgrey",
+            backgroundColor: "#11CDEF"
           }}
         >
           <Text style={{ color: "white", fontSize: 18, fontWeight: "500" }}>
@@ -470,9 +474,9 @@ class OrderViewScreen extends Component {
         </View>
         <View
           style={{
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'space-between',
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "space-between",
             paddingHorizontal: 10,
             paddingVertical: 10,
             borderColor: "gray",
@@ -481,7 +485,9 @@ class OrderViewScreen extends Component {
         >
           <View style={{ flexDirection: "row", alignItems: "center" }}>
             <Text style={{ fontWeight: "500", fontSize: 16 }}>Quantity: </Text>
-            <Text style={{ fontWeight: "normal", fontSize: 16 }}>{quantity}</Text>
+            <Text style={{ fontWeight: "normal", fontSize: 16 }}>
+              {quantity}
+            </Text>
           </View>
 
           <View style={{ flexDirection: "row", alignItems: "center" }}>
@@ -515,7 +521,7 @@ class OrderViewScreen extends Component {
         ? { text: "Completed", style: styles.completedStyle }
         : status === "rejected"
         ? { text: "Rejected", style: styles.rejectedStyle }
-        : { text: "Cancelled", style: styles.cancelledStyle }
+        : { text: "Cancelled", style: styles.cancelledStyle };
 
     if (loading) return <ActivityLoading type={"list"} size={"large"} />;
     if (error) return <Text>{error}</Text>;
@@ -524,8 +530,21 @@ class OrderViewScreen extends Component {
         <NavigationEvents onWillFocus={this.makeRemoteRequest} />
         <Loading loading={this.state.screenLoading} opacity={0.5} size={50} />
         {this.renderReportOverlay()}
-        <View style={{ flex: 5, borderColor: "gray", borderWidth: 1, justifyContent: "center" }}>
-          <View style={{ alignItems: "center", paddingVertical: 10, backgroundColor: "#5999C8" }}>
+        <View
+          style={{
+            flex: 5,
+            borderColor: "gray",
+            borderWidth: 1,
+            justifyContent: "center"
+          }}
+        >
+          <View
+            style={{
+              alignItems: "center",
+              paddingVertical: 10,
+              backgroundColor: "#5999C8"
+            }}
+          >
             <Text style={{ color: "white", fontSize: 16, fontWeight: "500" }}>
               Billing Information
             </Text>
@@ -540,7 +559,7 @@ class OrderViewScreen extends Component {
               <Text style={styles.billingTitle}>Received:</Text>
               <Text style={styles.billingText}>{received}</Text>
             </View>
-            
+
             <View style={styles.billingRow}>
               <Text style={styles.billingTitle}>Status: </Text>
               <Text style={subtitle.style}>{subtitle.text}</Text>
@@ -560,7 +579,6 @@ class OrderViewScreen extends Component {
               <Text style={styles.billingText}>{contact}</Text>
             </View>
 
-            
             <View style={styles.billingRow}>
               <Text style={styles.billingTitle}>Estimated Time: </Text>
               <Text style={styles.billingText}>{cookTime} mins</Text>
@@ -579,12 +597,12 @@ class OrderViewScreen extends Component {
             <View style={styles.billingRow}>
               <Text style={styles.billingTitle}>Change: </Text>
               <Text style={styles.billingText}>₱ {change}.00</Text>
-            </View> 
+            </View>
           </ScrollView>
         </View>
-        <View style={{ flex: 5, justifyContent: 'center' }}>
+        <View style={{ flex: 5, justifyContent: "center" }}>
           <List
-            listContainerStyle={{ flex: 1}}
+            listContainerStyle={{ flex: 1 }}
             divider={"none"}
             data={itemList}
             renderItem={this.renderItem}
@@ -605,7 +623,7 @@ export default OrderViewScreen;
 const normal = {
   fontSize: 16,
   fontWeight: "500"
-}
+};
 const styles = {
   billingCol: {
     justifyContent: "space-evenly",
@@ -615,8 +633,8 @@ const styles = {
     borderBottomWidth: 0.8
   },
   billingRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     justifyContent: "space-between",
     paddingHorizontal: 10,
     paddingVertical: 5,
@@ -624,11 +642,11 @@ const styles = {
     borderBottomWidth: 0.8
   },
   billingTitle: {
-    fontSize: 16, 
+    fontSize: 16,
     fontWeight: "500"
   },
   billingText: {
-    fontSize: 16, 
+    fontSize: 16,
     fontWeight: "normal"
   },
   headerRow: {
@@ -663,4 +681,4 @@ const styles = {
     ...normal,
     color: "orange"
   }
-}
+};

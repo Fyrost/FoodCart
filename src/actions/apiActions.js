@@ -765,6 +765,13 @@ export const getOrderDetail = code => {
   });
 };
 
+export const completOrder = id => {
+  return Axios({
+    url: API.ORDER_COMPLETE(id),
+    method: "get"
+  });
+};
+
 export const getNotifCart = () => {
   return Axios({
     url: API.CUSTOMER_NOTIFICATION_CART,
