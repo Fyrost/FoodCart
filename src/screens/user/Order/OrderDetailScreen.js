@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { View, SectionList, ActivityIndicator, ScrollView, TouchableOpacity } from "react-native";
 import { NavigationEvents } from "react-navigation";
-import { Text, Icon, Divider, Image } from "react-native-elements";
+import { Text, Icon, Button } from "react-native-elements";
 import _ from "lodash"
 import { getOrderDetail, errorHandler } from "../../../actions";
 const formatOrder = order => {
@@ -83,7 +83,7 @@ class OrderDetailScreen extends Component {
 
     return (
       <View style={[styles.sectionHeaderRowMain, { borderTopLeftRadius: 3, borderTopRightRadius: 3 }]}>
-        <View style={styles.rowBetween}>
+        <View style={[styles.rowBetween,{ paddingVertical: 10 }]}>
           <TouchableOpacity
             activeOpacity={0.5}
             onPress={_.debounce(
@@ -107,9 +107,11 @@ class OrderDetailScreen extends Component {
             <Text style={{ fontSize: 16, fontWeight: '500', color: subtitle.color }}>{subtitle.text}</Text>
           </View>
         </View>
-        <View style={styles.row}>
-          <Icon name={"phone"} type={'entypo'} size={16} />
-          <Text style={{ fontSize: 16 }}> {contact_number}</Text>
+        <View style={[styles.rowBetween,{ paddingVertical: 5 }]}>
+          <View style={styles.rowBetween}>
+            <Icon name={"phone"} type={'entypo'} size={16} />
+            <Text style={{ fontSize: 16 }}> {contact_number}</Text>
+          </View>
         </View>
         <View style={[styles.rowBetween, { marginTop: 10, paddingTop: 10, borderTopWidth: 0.6, borderTopColor: 'rgba(0, 0, 0, 0.7)' }]}>
           <View style={styles.row}>
@@ -132,44 +134,30 @@ class OrderDetailScreen extends Component {
     const change = Number(payment) - Number(total);
     return (
       <View style={styles.sectionFooterRowMain}>
-        <View style={styles.rowBetween}>
+        <View style={[styles.rowBetween,{ paddingVertical: 5 }]}>
+          <View style={styles.row}>
+            <Text style={{ color: "white" }}>Total: </Text>
+            <Text style={{ color: "white" }}>₱ {total} </Text>
+          </View>
           <View style={styles.row}>
             <Text style={{ color: "white" }}>Estimated Time: </Text>
             <Text style={{ color: "white" }}> {estimatedTime} mins </Text>
           </View>
-          
-          <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "flex-end",
-              alignItems: "center"
-            }}
-          >
-            <Text style={{ color: "white" }}>Total: </Text>
-            <Text style={{ color: "white" }}>₱ {total} </Text>
+        </View>
+
+        <View style={styles.rowBetween}>
+          <View>
+            <View style={[styles.row,{ paddingVertical: 5 }]}>
+              <Text style={{ color: "white" }}>Payment: </Text>
+              <Text style={{ color: "white" }}>₱ {payment} </Text>
+            </View>
+            
+            <View style={[styles.row,{ paddingVertical: 5 }]}>
+              <Text style={{ color: "white" }}>Change: </Text>
+              <Text style={{ color: "white" }}>₱ {change} </Text>
+            </View>
           </View>
-        </View>
-
-        <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "flex-end",
-            alignItems: "center"
-          }}
-        >
-          <Text style={{ color: "white" }}>Payment: </Text>
-          <Text style={{ color: "white" }}>₱ {payment} </Text>
-        </View>
-
-        <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "flex-end",
-            alignItems: "center"
-          }}
-        >
-          <Text style={{ color: "white" }}>Change: </Text>
-          <Text style={{ color: "white" }}>₱ {change} </Text>
+          {this.renderCompleteButton()}
         </View>
       </View>
     );
@@ -222,6 +210,15 @@ class OrderDetailScreen extends Component {
   renderEmpty = () =>
     !this.state.loading ? <Text>Cart is Empty!</Text> : null;
 
+  renderCompleteButton = () => {
+    return(
+      <Button
+        title={'Complete Order'}
+        titleStyle={{ fontSize: 14 }}
+        buttonStyle={{ backgroundColor: '#00CC66', borderRadius: 0 }}
+      />
+    )
+  }
   render() {
     const { order, error, data, loading } = this.state;
     const {
