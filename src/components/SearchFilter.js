@@ -58,15 +58,10 @@ class Search extends Component {
         inputRange: [0, 1],
         outputRange: [-100, 0]
       }),
-      position: 'absolute',
-      height: '100%',
-      width: '100%',
       opacity: this._animatedIsFocused.interpolate({
         inputRange: [0, 1],
         outputRange: [0, 1]
       }),
-      zIndex: 9999,
-      backgroundColor: 'white'
     };
     const { selectedItems } = this.state
     if (!this.state.toggleFilter) return null;
@@ -75,28 +70,25 @@ class Search extends Component {
         style={viewStyle}
       >
         <MultiSelect
-            hideTags
             items={items}
-            uniqueKey="id"
+            uniqueKey={"id"}
             onSelectedItemsChange={this.onSelectedItemsChange}
             selectedItems={selectedItems}
-            selectText="Pick Tag"
-            searchInputPlaceholderText="Search Tags..."
+            selectText={"Pick Tag"}
+            searchInputPlaceholderText={"Search Tags..."}
             onChangeInput={ (text)=> console.log(text)}
-            tagRemoveIconColor="#CCC"
-            tagBorderColor="#CCC"
-            tagTextColor="#CCC"
-            selectedItemTextColor="#CCC"
-            selectedItemIconColor="#CCC"
-            itemTextColor="#000"
-            displayKey="name"
+            tagRemoveIconColor={"#11CDEF"}
+            tagBorderColor={"#11CDEF"}
+            tagTextColor={"#11CDEF"}
+            selectedItemTextColor={"#CCC"}
+            selectedItemIconColor={"#CCC"}
+            itemTextColor={"#000"}
+            displayKey={"name"}
             searchInputStyle={{ color: '#CCC' }}
-            submitButtonColor="#CCC"
-            submitButtonText="Submit"
+            submitButtonColor={"#11CDEF"}
+            submitButtonText={"Submit"}
+            styleInputGroup={{ paddingHorizontal: 10, paddingVertical: 10  }}
         />
-        <View>
-          <Text>{selectedItems}</Text>
-        </View>   
       </Animated.View>
     );
   }

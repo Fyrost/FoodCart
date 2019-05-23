@@ -148,13 +148,13 @@ class RestoListScreen extends Component {
     return (
       <View style={{ flex: 1, backgroundColor: "#F9F9F9" }}>
         <NavigationEvents onWillFocus={makeRemoteRequest} />
-        <SearchFilter {...this.props}/>
         <Search
           value={search}
           data={resto}
           handleSearch={handleSearch}
           {...this.props}
         />
+        <SearchFilter {...this.props}/>
         <List
           data={formatData(resto, numColumns)}
           renderItem={renderItem}
