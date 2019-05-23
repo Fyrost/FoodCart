@@ -45,7 +45,7 @@ export const rightReportButton = ({ navigation }) => (
       <Avatar
         rounded
         containerStyle={{ backgroundColor: "transparent" }}
-        icon={{ name: "close", type: "font-awesome" }}
+        icon={{ name: "magnify-close", type: "material-community" }}
         overlayContainerStyle={{ backgroundColor: "#EF1B17" }}
         size={40}
         containerStyle={{ marginRight: 5 }}

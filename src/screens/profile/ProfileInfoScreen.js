@@ -501,7 +501,7 @@ class ProfileInfoScreen extends Component {
         </View>
 
         <Button
-          title={" Edit Profile Information"}
+          title={"  Profile Information"}
           icon={{
             name: "edit",
             type: "font-awesome",
@@ -735,7 +735,7 @@ class ProfileInfoScreen extends Component {
         </View>
 
         <Button
-          title={" Edit Profile Information"}
+          title={" Update Profile Information"}
           icon={{
             name: "edit",
             type: "font-awesome",

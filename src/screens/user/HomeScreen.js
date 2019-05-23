@@ -303,10 +303,10 @@ class HomeScreen extends Component {
             </View>
           </View>
 
-          {recommendation &&
+          { recommendation &&
             <View>
               <Text style={styles.homeTitle}>
-                Recommendation
+                Recommended
                 </Text>
               <View style={{ backgroundColor: '#171a29' }}>
                 <List

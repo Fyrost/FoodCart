@@ -201,7 +201,7 @@ class AdminReportViewScreen extends Component {
             onPress={() => this.setState(INITIAL_STATE)}
           />
           <View style={{ flex: 12 }}>
-            <ScrollView contentContainerStyle={{ paddingHorizontal: 20 }}>
+            <ScrollView contentContainerStyle={{ paddingHorizontal: 20, justifyContent: 'space-evenly' }}>
               <Text h3 h3Style={{ color: "#1B73B4", marginTop: 15 }}>
                 Close Report
               </Text>
@@ -220,33 +220,34 @@ class AdminReportViewScreen extends Component {
                 }}
                 onChangeText={comment => this.setState({ comment })}
               />
+              <CheckBox
+                right
+                title="Do you want to ban this customer?"
+                checked={this.state.ban}
+                onPress={() => this.setState({ ban: !this.state.ban })}
+              />
+              {this.state.ban && (
+                <View>
+                  <Text style={{ fontSize: 16, marginTop: 15 }}>
+                    Why do you want to ban this customer?
+                  </Text>
+                  <TextInput
+                    value={this.state.banReason}
+                    multiline={true}
+                    placeholder={"Enter your reason here..."}
+                    numberOfLines={5}
+                    style={{
+                      borderColor: "gray",
+                      borderWidth: 1,
+                      paddingHorizontal: 10
+                    }}
+                    onChangeText={banReason => this.setState({ banReason })}
+                  />
+                </View>
+              )}
             </ScrollView>
           </View>
-          <CheckBox
-            right
-            title="Do you want to ban this customer?"
-            checked={this.state.ban}
-            onPress={() => this.setState({ ban: !this.state.ban })}
-          />
-          {this.state.ban && (
-            <View>
-              <Text style={{ fontSize: 16, marginTop: 15 }}>
-                Why do you want to ban this customer?
-              </Text>
-              <TextInput
-                value={this.state.banReason}
-                multiline={true}
-                placeholder={"Enter your reason here..."}
-                numberOfLines={5}
-                style={{
-                  borderColor: "gray",
-                  borderWidth: 1,
-                  paddingHorizontal: 10
-                }}
-                onChangeText={banReason => this.setState({ banReason })}
-              />
-            </View>
-          )}
+
           <View style={{ flex: 1, flexDirection: "row", alignItems: "center" }}>
             <Button
               title={"Cancel"}

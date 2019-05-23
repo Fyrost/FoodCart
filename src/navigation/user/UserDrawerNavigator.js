@@ -36,7 +36,7 @@ const Resto = {
 const Order = {
   screen: OrderNavigator,
   navigationOptions: {
-    drawerLabel: "Order",
+    drawerLabel: "Order History",
     drawerIcon: ({ tintColor }) => OrderIcon({ tintColor })
   }
 };
