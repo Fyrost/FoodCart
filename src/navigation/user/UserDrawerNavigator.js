@@ -7,9 +7,7 @@ import {
 } from "./components";
 import {
   leftBackButton,
-  rightRestoCartButton,
-  rightSearchButton,
-  rightMenuButton
+  rightRestoCartButton
 } from "./navOptions/navButtons";
 import { headerStyles } from "./navOptions/navStyles";
 import { HomeIcon, OrderIcon, RestoIcon } from "./navOptions/navIcons";

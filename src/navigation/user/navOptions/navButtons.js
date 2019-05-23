@@ -46,7 +46,7 @@ export const rightSearchButton = ({ navigation }) => (
   />
 );
 
-export const rightFilterButton = () => (
+export const rightFilterButton = ({ navigation }) => (
   <Avatar
     rounded
     containerStyle={{ backgroundColor: "#afafaf" }}
@@ -54,6 +54,7 @@ export const rightFilterButton = () => (
     overlayContainerStyle={{ backgroundColor: "transparent" }}
     size={45}
     containerStyle={{ marginRight: 5 }}
+    onPress={navigation.getParam("toggleFilter")}
   />
 ) 
 
@@ -165,6 +166,6 @@ export const rightMenuButton = ({ navigation }) => (
   >
     {rightRestoCartButton({ navigation })}
     {rightSearchButton({ navigation })}
-    {rightFilterButton()}
+    {rightFilterButton({ navigation })}
   </View>
 );

@@ -4,6 +4,7 @@ import { Card, Icon, Divider } from "react-native-elements";
 import { NavigationEvents } from "react-navigation";
 import List from "../../../components/List";
 import Search from "../../../components/Search";
+import SearchFilter from "../../../components/SearchFilter";
 import { getRestaurantList, errorHandler, contains } from "../../../actions";
 
 import _ from "lodash";
@@ -147,6 +148,7 @@ class RestoListScreen extends Component {
     return (
       <View style={{ flex: 1, backgroundColor: "#F9F9F9" }}>
         <NavigationEvents onWillFocus={makeRemoteRequest} />
+        <SearchFilter {...this.props}/>
         <Search
           value={search}
           data={resto}
