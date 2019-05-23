@@ -641,10 +641,6 @@ export const getNotifRequests = () => {
 };
 
 export const getRestaurantList = ({ search, tag }) => {
-  // let params = new FormData();
-  // if (search) params.append("search", search);
-  // if (tag) params.append("tag", tag.join(","));
-  // console.log(params);
   return Axios({
     url: API.CUSTOMER_RESTAURANT,
     method: "post",

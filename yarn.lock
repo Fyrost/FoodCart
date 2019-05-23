@@ -4856,6 +4856,11 @@ react-native-maps@expo/react-native-maps#v0.22.1-exp.0:
   version "0.22.1"
   resolved "https://codeload.github.com/expo/react-native-maps/tar.gz/e6f98ff7272e5d0a7fe974a41f28593af2d77bb2"
 
+react-native-multiple-select@^0.5.0:
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/react-native-multiple-select/-/react-native-multiple-select-0.5.0.tgz#b166ef9e6ccb9e6baabfaaf8982582191b902896"
+  integrity sha512-xz78+qQum2l2usQ7IVbE6boSgfh1htRe/7uPU7dwZOP/juO65sfTE3U/W29fTx0Q1IY1jRoV/z5Ep429m5L6kA==
+
 react-native-numeric-input@^1.6.5:
   version "1.6.5"
   resolved "https://registry.yarnpkg.com/react-native-numeric-input/-/react-native-numeric-input-1.6.5.tgz#bf338a691b7e72bfd4985bb2567c3a12e30626aa"
