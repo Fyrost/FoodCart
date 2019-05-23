@@ -30,12 +30,15 @@ class RestoListScreen extends Component {
   state = {
     resto: [],
     loading: false,
-    refreshing: false
+    refreshing: false,
+    search: "",
+    tag: []
   };
 
   makeRemoteRequest = () => {
     this.setState({ loading: true });
-    getRestaurantList()
+    const { search, tag } = this.state;
+    getRestaurantList({ search, tag })
       .then(res => {
         if (res.data.success) {
           const { data } = res.data;
@@ -71,10 +74,8 @@ class RestoListScreen extends Component {
   };
 
   handleSearch = text => {
-    const resto = this.state.fullData.filter(item => {
-      return contains(item.name, text) || contains(item.slug, text);
-    });
-    this.setState({ search: text, resto });
+    const resto = this.state.fullData.filter(item => contains(item.name, text));
+    this.setState({ search: text, resto }, () => this.makeRemoteRequest());
   };
 
   renderItem = ({ item }) => {
