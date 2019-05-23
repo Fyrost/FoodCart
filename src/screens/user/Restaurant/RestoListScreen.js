@@ -6,7 +6,6 @@ import List from "../../../components/List";
 import Search from "../../../components/Search";
 import SearchFilter from "../../../components/SearchFilter";
 import { getRestaurantList, errorHandler, contains } from "../../../actions";
-
 import _ from "lodash";
 
 const numColumns = 1;
@@ -29,7 +28,7 @@ const formatData = (data, numColumns) => {
 
 const formatTag = data => {
   let arr = data.map(item => {
-    return item.name;
+    return { name: item.name };
   });
   return arr;
 };
@@ -152,9 +151,19 @@ class RestoListScreen extends Component {
     );
   };
 
+  onSelectedItemsChange = tag => {
+    this.setState({ tag, refreshing: true }, this.makeRemoteRequest);
+  };
+
   render() {
-    const { resto, loading, refreshing, search } = this.state;
-    const { makeRemoteRequest, renderItem, handleRefresh, handleSearch } = this;
+    const { resto, loading, refreshing, search, selectItem, tag } = this.state;
+    const {
+      makeRemoteRequest,
+      renderItem,
+      handleRefresh,
+      handleSearch,
+      onSelectedItemsChange
+    } = this;
     return (
       <View style={{ flex: 1, backgroundColor: "#F9F9F9" }}>
         <NavigationEvents onWillFocus={makeRemoteRequest} />
@@ -164,7 +173,14 @@ class RestoListScreen extends Component {
           handleSearch={handleSearch}
           {...this.props}
         />
-        <SearchFilter {...this.props}/>
+        <SearchFilter
+          items={selectItem}
+          uniqueKey={"name"}
+          displayKey={"name"}
+          onSelectedItemsChange={onSelectedItemsChange}
+          selectedItems={tag}
+          {...this.props}
+        />
         <List
           data={formatData(resto, numColumns)}
           renderItem={renderItem}

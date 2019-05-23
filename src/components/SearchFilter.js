@@ -1,23 +1,7 @@
 import React, { Component } from "React";
-import { Animated, View, Text } from "react-native";
-import { Overlay, Icon } from "react-native-elements";
+import { Animated } from "react-native";
 import MultiSelect from "react-native-multiple-select";
 import _ from "lodash";
-
-const items = [
-    {
-        id: '92iijs7yta',
-        name: 'Ondo',
-    },
-    {
-        id: 'a0s0a8ssbsd',
-        name: 'Ogun',
-    },
-    {
-        id: '16hbajsabsd',
-        name: 'Calabar',
-    },
-    ]
 
 class Search extends Component {
   state = {
@@ -27,7 +11,7 @@ class Search extends Component {
 
   componentWillMount() {
     this._animatedIsFocused = new Animated.Value(
-        this.state.toggleFilter ? 1 : 0
+      this.state.toggleFilter ? 1 : 0
     );
   }
 
@@ -61,33 +45,30 @@ class Search extends Component {
       opacity: this._animatedIsFocused.interpolate({
         inputRange: [0, 1],
         outputRange: [0, 1]
-      }),
+      })
     };
-    const { selectedItems } = this.state
     if (!this.state.toggleFilter) return null;
     return (
-      <Animated.View
-        style={viewStyle}
-      >
+      <Animated.View style={viewStyle}>
         <MultiSelect
-            items={items}
-            uniqueKey={"id"}
-            onSelectedItemsChange={this.onSelectedItemsChange}
-            selectedItems={selectedItems}
-            selectText={"Pick Tag"}
-            searchInputPlaceholderText={"Search Tags..."}
-            onChangeInput={ (text)=> console.log(text)}
-            tagRemoveIconColor={"#11CDEF"}
-            tagBorderColor={"#11CDEF"}
-            tagTextColor={"#11CDEF"}
-            selectedItemTextColor={"#CCC"}
-            selectedItemIconColor={"#CCC"}
-            itemTextColor={"#000"}
-            displayKey={"name"}
-            searchInputStyle={{ color: '#CCC' }}
-            submitButtonColor={"#11CDEF"}
-            submitButtonText={"Submit"}
-            styleInputGroup={{ paddingHorizontal: 10, paddingVertical: 10  }}
+          items={this.props.items}
+          uniqueKey={this.props.uniqueKey}
+          displayKey={this.props.displayKey}
+          onSelectedItemsChange={this.props.onSelectedItemsChange}
+          selectedItems={this.props.selectedItems}
+          selectText={"Pick Tag"}
+          searchInputPlaceholderText={"Search Tags..."}
+          onChangeInput={this.props.onChangeInput}
+          tagRemoveIconColor={"#11CDEF"}
+          tagBorderColor={"#11CDEF"}
+          tagTextColor={"#11CDEF"}
+          selectedItemTextColor={"#CCC"}
+          selectedItemIconColor={"#CCC"}
+          itemTextColor={"#000"}
+          searchInputStyle={{ color: "#CCC" }}
+          submitButtonColor={"#11CDEF"}
+          submitButtonText={"Submit"}
+          styleInputGroup={{ paddingHorizontal: 10, paddingVertical: 10 }}
         />
       </Animated.View>
     );
