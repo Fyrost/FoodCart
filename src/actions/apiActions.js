@@ -640,10 +640,18 @@ export const getNotifRequests = () => {
   });
 };
 
-export const getRestaurantList = () => {
+export const getRestaurantList = ({ search, tag }) => {
+  // let params = new FormData();
+  // if (search) params.append("search", search);
+  // if (tag) params.append("tag", tag.join(","));
+  // console.log(params);
   return Axios({
     url: API.CUSTOMER_RESTAURANT,
-    method: "post"
+    method: "post",
+    params: {
+      search,
+      tag: tag.join(",")
+    }
   });
 };
 export const getRestaurantMenu = slug => {
