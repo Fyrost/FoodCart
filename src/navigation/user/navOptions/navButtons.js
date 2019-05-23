@@ -46,6 +46,17 @@ export const rightSearchButton = ({ navigation }) => (
   />
 );
 
+export const rightFilterButton = () => (
+  <Avatar
+    rounded
+    containerStyle={{ backgroundColor: "#afafaf" }}
+    icon={{ name: "tune", type: "material" }}
+    overlayContainerStyle={{ backgroundColor: "transparent" }}
+    size={45}
+    containerStyle={{ marginRight: 5 }}
+  />
+) 
+
 export const rightSearchButtonBlue = ({ navigation }) => (
   <Avatar
     rounded
@@ -152,7 +163,8 @@ export const rightMenuButton = ({ navigation }) => (
       justifyContent: "space-between"
     }}
   >
-    {rightSearchButton({ navigation })}
     {rightRestoCartButton({ navigation })}
+    {rightSearchButton({ navigation })}
+    {rightFilterButton()}
   </View>
 );
