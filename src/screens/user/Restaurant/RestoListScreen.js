@@ -27,13 +27,21 @@ const formatData = (data, numColumns) => {
   return arr;
 };
 
+const formatTag = data => {
+  let arr = data.map(item => {
+    return item.name;
+  });
+  return arr;
+};
+
 class RestoListScreen extends Component {
   state = {
     resto: [],
     loading: false,
     refreshing: false,
     search: "",
-    tag: []
+    tag: [],
+    selectItem: []
   };
 
   makeRemoteRequest = () => {
@@ -42,13 +50,15 @@ class RestoListScreen extends Component {
     getRestaurantList({ search, tag })
       .then(res => {
         if (res.data.success) {
-          const { data } = res.data;
+          const { data, tags } = res.data;
           this.setState({
             loading: false,
             refreshing: false,
             resto: data,
             fullData: Object.values(data)
           });
+          this.state.selectItem !== formatTag(tags) &&
+            this.setState({ selectItem: formatTag(tags) });
         } else {
           this.setState({
             loading: false,
