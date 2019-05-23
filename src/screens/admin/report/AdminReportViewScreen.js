@@ -220,33 +220,40 @@ class AdminReportViewScreen extends Component {
                 }}
                 onChangeText={comment => this.setState({ comment })}
               />
+              <CheckBox
+                right
+                title="Do you want to ban this customer?"
+                checked={this.state.ban}
+                onPress={() => this.setState({ ban: !this.state.ban })}
+                containerStyle={{
+                  backgroundColor: "transparent",
+                  borderColor: "transparent",
+                  padding: 0
+                }}
+                iconRight
+              />
+              {this.state.ban && (
+                <View>
+                  <Text style={{ fontSize: 16, marginTop: 15 }}>
+                    Why do you want to ban this customer?
+                  </Text>
+                  <TextInput
+                    value={this.state.banReason}
+                    multiline={true}
+                    placeholder={"Enter your reason here..."}
+                    numberOfLines={5}
+                    style={{
+                      borderColor: "gray",
+                      borderWidth: 1,
+                      paddingHorizontal: 10
+                    }}
+                    onChangeText={banReason => this.setState({ banReason })}
+                  />
+                </View>
+              )}
             </ScrollView>
           </View>
-          <CheckBox
-            right
-            title="Do you want to ban this customer?"
-            checked={this.state.ban}
-            onPress={() => this.setState({ ban: !this.state.ban })}
-          />
-          {this.state.ban && (
-            <View>
-              <Text style={{ fontSize: 16, marginTop: 15 }}>
-                Why do you want to ban this customer?
-              </Text>
-              <TextInput
-                value={this.state.banReason}
-                multiline={true}
-                placeholder={"Enter your reason here..."}
-                numberOfLines={5}
-                style={{
-                  borderColor: "gray",
-                  borderWidth: 1,
-                  paddingHorizontal: 10
-                }}
-                onChangeText={banReason => this.setState({ banReason })}
-              />
-            </View>
-          )}
+
           <View style={{ flex: 1, flexDirection: "row", alignItems: "center" }}>
             <Button
               title={"Cancel"}
