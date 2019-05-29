@@ -225,15 +225,6 @@ class AdminReportViewScreen extends Component {
                 title="Do you want to ban this customer?"
                 checked={this.state.ban}
                 onPress={() => this.setState({ ban: !this.state.ban })}
-<<<<<<< HEAD
-=======
-                containerStyle={{
-                  backgroundColor: "transparent",
-                  borderColor: "transparent",
-                  padding: 0
-                }}
-                iconRight
->>>>>>> bbf2061253d408f998c35465286066d69477a256
               />
               {this.state.ban && (
                 <View>
