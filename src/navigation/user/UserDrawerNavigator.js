@@ -28,7 +28,7 @@ const Home = {
 const Resto = {
   screen: RestoNavigator,
   navigationOptions: {
-    drawerLabel: "Restaurant",
+    drawerLabel: "Restaurants",
     drawerIcon: ({ tintColor }) => RestoIcon({ tintColor })
   }
 };

@@ -66,7 +66,7 @@ const Menu = {
 const Category = {
   screen: CategoryNavigator,
   navigationOptions: {
-    drawerLabel: "Menu Category",
+    drawerLabel: "Menu Categories",
     drawerIcon: ({ tintColor }) => CategoryIcon({ tintColor })
   }
 };

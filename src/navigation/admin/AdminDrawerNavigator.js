@@ -58,7 +58,7 @@ import DrawerLayout from "../../components/DrawerLayout";
 const Partnership = {
   screen: PartnerNavigator,
   navigationOptions: {
-    title: "Partnership",
+    title: "Partnership Application",
     drawerIcon: ({ tintColor }) => partnerIcon({ tintColor }),
     drawerLabel: ({ tintColor }) => (
       <View
@@ -104,7 +104,7 @@ const Tag = {
 const Resto = {
   screen: RestoNavigator,
   navigationOptions: {
-    title: "Restaurant",
+    title: "Restaurants",
     drawerIcon: ({ tintColor }) => restoIcon({ tintColor })
   }
 };
@@ -120,7 +120,7 @@ const Menu = {
 const Customer = {
   screen: CustomerNavigator,
   navigationOptions: {
-    title: "Customer",
+    title: "Customers",
     drawerIcon: ({ tintColor }) => customerIcon({ tintColor })
   }
 };
@@ -174,7 +174,7 @@ const Report = {
 const Ban = {
   screen: BanNavigator,
   navigationOptions: {
-    title: "Ban",
+    title: "Ban List",
     drawerIcon: ({ tintColor }) => banIcon({ tintColor })
   }
 };
@@ -190,7 +190,7 @@ const Logs = {
 const Request = {
   screen: RequestNavigator,
   navigationOptions: {
-    title: "Request",
+    title: "Request List",
     drawerIcon: ({ tintColor }) => requestIcon({ tintColor }),
     drawerLabel: ({ tintColor }) => (
       <View
