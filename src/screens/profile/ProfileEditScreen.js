@@ -243,7 +243,7 @@ class ProfileEditScreen extends Component {
         const { success, message } = res.data;
         if (success) {
           const { message } = res.data;
-          MessageAlert("Manage Profile", message);
+          MessageAlert("Update Profile", message);
           this.props.navigation.pop();
         } else {
           const {
